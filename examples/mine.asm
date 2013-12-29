@@ -8,7 +8,7 @@ filename "Mine Sweeper"
 ;---------------------------------------------------------
 ; A very simple game for MSX
 ;---------------------------------------------------------
-; Assemble with asMSX v.0.11
+; Assemble with asmsx v.0.11
 ; Generates a 8 KB ROM (7494 bytes used)
 ;---------------------------------------------------------
 ; Coded for Robsy's MSX Workshop

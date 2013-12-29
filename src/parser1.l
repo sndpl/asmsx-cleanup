@@ -12,22 +12,31 @@
 */
 
 %{
-	#include <stdio.h>
-	#define MAX_INCLUDE_LEVEL 16
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
-	char *text,*tmpstr,*name,i,include_index=0;
-	FILE *output_file,*input_file;
- 	struct
-	{
-		YY_BUFFER_STATE buffer;
-		unsigned int line;
-  		char *name;
-	} include_stack[MAX_INCLUDE_LEVEL];
+#define YY_NO_INPUT 1
+#ifdef _MSC_VER
+#define YY_NO_UNISTD_H 1
+#endif
+#define MAX_INCLUDE_LEVEL 16
 
-extern prompt_error1(char);
+char *text,*tmpstr,*name;//,i,include_index=0;
+int i,include_index=0;
+FILE *output_file,*input_file;
+struct
+{
+	YY_BUFFER_STATE buffer;
+	unsigned int line;
+	char *name;
+} include_stack[MAX_INCLUDE_LEVEL];
+
+extern int prompt_error1(char);
 %}
 
 %option yylineno
+%option nounput
 
 %s comment
 %s pascal_comment
@@ -44,7 +53,9 @@ extern prompt_error1(char);
 	if (tmpstr==NULL) prompt_error1(5);
 	if (tmpstr[strlen(tmpstr)-1]<=32) prompt_error1(1);
 	if (include_index>=MAX_INCLUDE_LEVEL) prompt_error1(2);
-	for (i=0;i<include_index;i++) if (!strcmp(tmpstr,include_stack[i].name)) prompt_error1(4);
+	for (i=0;i<include_index;i++)
+		if (!strcmp(tmpstr,include_stack[i].name))
+			prompt_error1(4);
 	include_stack[include_index].name=(char*)malloc(0x100);
 	strcpy(include_stack[include_index].name,name);
 	include_stack[include_index].line=yylineno;
@@ -106,7 +117,7 @@ extern prompt_error1(char);
 %%
 #define VERSION 
 
-prompt_error1(char c)
+int prompt_error1(char c)
 {
  printf("%s, line %d: ",name,yylineno-1);
  switch (c)
@@ -122,17 +133,19 @@ prompt_error1(char c)
  return 0;
 }
 
-yywrap()
+int yywrap(void)
 {
  return 1;
 }
 
-preprocessor1(char *input_name)
+int preprocessor1(char *input_name)
 {
 // Memory allocation for strings
+ char *tmpstr_;
  text=(char*)malloc(256);
  name=(char*)malloc(256);
  tmpstr=(char*)malloc(256);
+ tmpstr_=tmpstr;
 
 // Strings initialization
  text[0]=0;
@@ -164,7 +177,7 @@ preprocessor1(char *input_name)
 // Free string pointers
  free(text);
  free(name);
- free(tmpstr);
+ free(tmpstr_);
 
 // Done
  return 0;

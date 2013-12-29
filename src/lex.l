@@ -1,5 +1,13 @@
 %{
-#include"dura.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#define YY_NO_INPUT 1
+#ifdef _MSC_VER
+#define YY_NO_UNISTD_H 1
+#endif
+#include "core.h"
 %}
 
 %%
@@ -9,7 +17,7 @@
 
 [ ]*
 
-'               return COMILLA;
+'               return APOSTROPHE;
 
 "^"             return OP_XOR;
 "|"             return OP_OR;
@@ -24,19 +32,19 @@
 "&&"            return OP_AND_LOG;
 '!'             return OP_NEG_LOG;
 
-'.' yylval.val=yytext[1];return NUMERO;
+'.' yylval.val=yytext[1];return NUMBER;
 
 [0-9]*"."[0-9]+ yylval.real=atof(yytext);return REAL;
 
-[1-9][0-9]* yylval.val=atoi(yytext);return NUMERO;
-#[0-9a-f]+ yytext[0]='0';yylval.val=(int)strtol(yytext,NULL,16);return NUMERO;
-$[0-9a-f]+ yytext[0]='0';yylval.val=(int)strtol(yytext,NULL,16);return NUMERO;
-0x[0-9a-f]+ yylval.val=(int)strtol(yytext,NULL,16);return NUMERO;
-[0-9][0-9a-f]*h yylval.val=(int)strtol(yytext,NULL,16);return NUMERO;
-0[0-7]* yylval.val=(int)strtol(yytext,NULL,0);return NUMERO;
-[0-7]+o yylval.val=(int)strtol(yytext,NULL,8);return NUMERO;
-[0-1]+b yylval.val=(int)strtol(yytext,NULL,2);return NUMERO;
-"$" yylval.val=ePC;return NUMERO;
+[1-9][0-9]* yylval.val=atoi(yytext);return NUMBER;
+#[0-9a-f]+ yytext[0]='0';yylval.val=(int)strtol(yytext,NULL,16);return NUMBER;
+$[0-9a-f]+ yytext[0]='0';yylval.val=(int)strtol(yytext,NULL,16);return NUMBER;
+0x[0-9a-f]+ yylval.val=(int)strtol(yytext,NULL,16);return NUMBER;
+[0-9][0-9a-f]*h yylval.val=(int)strtol(yytext,NULL,16);return NUMBER;
+0[0-7]* yylval.val=(int)strtol(yytext,NULL,0);return NUMBER;
+[0-7]+o yylval.val=(int)strtol(yytext,NULL,8);return NUMBER;
+[0-1]+b yylval.val=(int)strtol(yytext,NULL,2);return NUMBER;
+"$" yylval.val=ePC;return NUMBER;
 
 ld[ ]+sp        return MNEMO_LD_SP;
 ld              return MNEMO_LD;
@@ -108,49 +116,49 @@ reti            return MNEMO_RETI;
 retn            return MNEMO_RETN;
 rst             return MNEMO_RST;
 
-a               yylval.val=7;return REGISTRO;
-b               yylval.val=0;return REGISTRO;
-c               yylval.val=1;return REGISTRO;
-d               yylval.val=2;return REGISTRO;
-e               yylval.val=3;return REGISTRO;
-h               yylval.val=4;return REGISTRO;
-l               yylval.val=5;return REGISTRO;
+a               yylval.val=7;return REGISTER;
+b               yylval.val=0;return REGISTER;
+c               yylval.val=1;return REGISTER;
+d               yylval.val=2;return REGISTER;
+e               yylval.val=3;return REGISTER;
+h               yylval.val=4;return REGISTER;
+l               yylval.val=5;return REGISTER;
 
-"["bc"]"        return REGISTRO_IND_BC;
-"["de"]"        return REGISTRO_IND_DE;
-"["hl"]"        return REGISTRO_IND_HL;
-"["sp"]"        return REGISTRO_IND_SP;
+"["bc"]"        return REGISTER_IND_BC;
+"["de"]"        return REGISTER_IND_DE;
+"["hl"]"        return REGISTER_IND_HL;
+"["sp"]"        return REGISTER_IND_SP;
 
-ixh             yylval.val=4;return REGISTRO_IX;
-ixl             yylval.val=5;return REGISTRO_IX;
+ixh             yylval.val=4;return REGISTER_IX;
+ixl             yylval.val=5;return REGISTER_IX;
 
-ix              return REGISTRO_16_IX;
+ix              return REGISTER_16_IX;
 
-iyh             yylval.val=4;return REGISTRO_IY;
-iyl             yylval.val=5;return REGISTRO_IY;
+iyh             yylval.val=4;return REGISTER_IY;
+iyl             yylval.val=5;return REGISTER_IY;
 
-iy              return REGISTRO_16_IY;
+iy              return REGISTER_16_IY;
 
-bc              yylval.val=0;return REGISTRO_PAR;
-de              yylval.val=1;return REGISTRO_PAR;
-hl              yylval.val=2;return REGISTRO_PAR;
-sp              yylval.val=3;return REGISTRO_PAR;
+bc              yylval.val=0;return REGISTER_PAR;
+de              yylval.val=1;return REGISTER_PAR;
+hl              yylval.val=2;return REGISTER_PAR;
+sp              yylval.val=3;return REGISTER_PAR;
 
-i               return REGISTRO_I;
-r               return REGISTRO_R;
-f               return REGISTRO_F;
-af              return REGISTRO_AF;
+i               return REGISTER_I;
+r               return REGISTER_R;
+f               return REGISTER_F;
+af              return REGISTER_AF;
 
-nz              yylval.val=0;return CONDICION;
-z               yylval.val=1;return CONDICION;
-nc              yylval.val=2;return CONDICION;
-cc              yylval.val=3;return CONDICION;
-po              yylval.val=4;return CONDICION;
-pe              yylval.val=5;return CONDICION;
-p               yylval.val=6;return CONDICION;
-m               yylval.val=7;return CONDICION;
+nz              yylval.val=0;return CONDITION;
+z               yylval.val=1;return CONDITION;
+nc              yylval.val=2;return CONDITION;
+cc              yylval.val=3;return CONDITION;
+po              yylval.val=4;return CONDITION;
+pe              yylval.val=5;return CONDITION;
+p               yylval.val=6;return CONDITION;
+m               yylval.val=7;return CONDITION;
                       
-0"/"1         return MODO_MULTIPLE;
+0"/"1         return MULTI_MODE;
 
 .?db/[ \t]+ return PSEUDO_DB;
 .?defb/[ \t]+ return PSEUDO_DB;
@@ -204,10 +212,10 @@ m               yylval.val=7;return CONDICION;
 .?cassette/[ \042\t\n]+        yylval.val=1;return PSEUDO_CASSETTE;
 .?wav/[ \042\t\n]+        yylval.val=2;return PSEUDO_CASSETTE;
 
-konami yylval.val=0;return NUMERO;
-konamiscc yylval.val=1;return NUMERO;
-ascii8 yylval.val=2;return NUMERO;
-ascii16 yylval.val=3;return NUMERO;
+konami yylval.val=0;return NUMBER;
+konamiscc yylval.val=1;return NUMBER;
+ascii8 yylval.val=2;return NUMBER;
+ascii16 yylval.val=3;return NUMBER;
 
 at/[ \t\n]+ return PSEUDO_AT;
 fixmul return PSEUDO_FIXMUL;
@@ -234,9 +242,9 @@ random return PSEUDO_RANDOM;
 "<<"            return SHIFT_L;
 
 <<EOF>> {unput('\n');pass++;if (pass==2) printf("Assembling labels, calls and jumps\n");yyin=fopen(original,"r");return PSEUDO_END;}           
-\42[^\42\n]+\42 yylval.tex=strtok(yytext,"\42");yylval.tex=strtok(yytext,"\42");return TEXTO;
-[a-z_]+[a-z0-9_]* yylval.tex=yytext;return IDENTIFICADOR;
-"@@"[a-z0-9_]+ yylval.tex=yytext;return LOCAL_IDENTIFICADOR;
+\42[^\42\n]+\42 yylval.tex=strtok(yytext,"\42");yylval.tex=strtok(yytext,"\42");return TEXT;
+[a-z_]+[a-z0-9_]* yylval.tex=yytext;return IDENTIFICATOR;
+"@@"[a-z0-9_]+ yylval.tex=yytext;return LOCAL_IDENTIFICATOR;
 
 [^\n^|]           return yytext[0];
 [\n]+             return EOL;

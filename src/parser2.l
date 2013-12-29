@@ -8,12 +8,24 @@
 */
 
 %{
- #include<stdio.h>
- FILE *output;
- char *text,*buffer,nested=0,level;
- unsigned int number,lines,i;
- extern prompt_error2(char);
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#define YY_NO_INPUT 1
+#ifdef _MSC_VER
+#define YY_NO_UNISTD_H 1
+#endif
+
+FILE *output;
+char *text,*buffer,nested=0,level;
+unsigned int number,lines,i;
+extern int prompt_error2(char);
+extern int error_message(char);
 %}
+
+%option yylineno
+%option nounput
 
 %s rept
 %s repnum
@@ -46,14 +58,14 @@
              }
 <rept>. buffer=strcat(text,yytext);
 <rept>\n   buffer=strcat(buffer,yytext);
-<rept><<EOF>> hacer_error(2);
+<rept><<EOF>> error_message(2);
 <repnum>.     prompt_error2(1);
 <INITIAL>\n   fprintf(output,"%s%s",text,yytext);text[0]=0;
 <INITIAL>.    strcat(text,yytext);
 
 %%
 
-prompt_error2(char c)
+int prompt_error2(char c)
 {
  printf(", line %d: ",lines);
  switch (c)
@@ -66,12 +78,12 @@ prompt_error2(char c)
  return 0;
 }
 
-yywrap()
+int yywrap(void)
 {
  return 1;
 }
 
-preprocessor2()
+int preprocessor2(void)
 {
  FILE *input;
  char *filename,loop=0;

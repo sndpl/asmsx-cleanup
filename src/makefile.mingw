@@ -1,0 +1,12 @@
+asmsx:	parser1.c parser2.c parser3.c core.y lex.l asmsx.c
+	bison core.y -ocore.c -d
+	flex -i -olex.c lex.l 
+	gcc asmsx.c parser1.c parser2.c parser3.c -oasmsx.exe -O2 -s -lm -Wall 2>asmsx.mingw.err
+parser1.c: parser1.l
+	flex -i -Pparser1 -oparser1.c parser1.l
+parser2.c: parser2.l
+	flex -i -Pparser2 -oparser2.c parser2.l
+parser3.c: parser3.l
+	flex -i -Pparser3 -oparser3.c parser3.l
+clean:
+	rm -f core.c core.h lex.c parser?.c *.o
