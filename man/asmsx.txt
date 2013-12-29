@@ -1,0 +1,396 @@
+
+
+asMSX
+Ensamblador cruzado para MSX
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+v.0.16
+
+– Edición 2010 –
+
+ [1 de junio de 2010]
+Indice
+
+asMSX	1
+1. Introducción	3
+1.1. Descripción	3
+1.2. Características	3
+1.3. Justificación	3
+1.4. Sintaxis	4
+1.5. Utilización	4
+2. Lenguaje ensamblador	5
+2.1. Sintaxis de lenguaje	5
+2.2. Etiquetas	5
+2.3. Expresiones numéricas	6
+2.3.1. Formatos numéricos	6
+2.3.2. Operadores	7
+2.4. Introducción de datos	10
+2.5. Directivas	10
+2.6. Comentarios	15
+2.7. Ensamblado condicional	15
+
+
+1. Introducción
+1.1. Descripción
+asMSX es un ensamblador para el procesador Z80 que además incorpora una serie de elementos que facilitan mucho la tarea de programar para MSX. Se trata de un ensamblador cruzado que se ejecuta en ordenadores PC con sistema operativo Windows. Gracias a la velocidad de los actuales ordenadores personales, el ensamblado es prácticamente instantáneo, lo cual supone una ventaja considerable respecto a los ensambladores nativos para MSX. Del mismo modo, no existe ninguna restricción para el tamaño del código fuente y se puede editar con cualquier editor o tratamiento de textos.
+1.2. Características
+Entre los puntos a destacar de asMSX pueden citarse los siguientes:
+Soporta todas las instrucciones oficiales del Z80 con la sintaxis de Zilog.
+Ensambla todas las instrucciones no oficiales documentadas.
+Acepta la sintaxis estandarizada del Z80 (acumulador implícito).
+Compatible con distintos sistemas numéricos decimal, hexadecimal, octal y binario.
+Operaciones aritméticas y lógicas incluidas a nivel de código fuente.
+Soporta números decimales con punto flotante convertidos a punto fijo de 16 bits.
+Funciones matemáticas reales: trigonométricas, potenciales, etc.
+Acepta múltiples ficheros a través de inclusiones, permitiendo su anidación.
+Inclusión total o parcial de ficheros binarios externos inyectados directamente.
+Etiquetas locales y globales para el código.
+Rutinas de la BIOS del MSX predefinidas con sus nombres oficiales.
+Generación automática de ficheros binarios cargables desde BASIC.
+Producción automática de archivos ROM.
+Soporta 4 tipos distintos de megaROM: Konami, Konami SCC, ASCII 8 y 16 KB.
+Uso de variables numéricas internas del ensamblador.
+Ensamblado de ficheros COM para MSX-DOS.
+Exportación de tabla de símbolos (SYM).
+Impresión de textos indicativos desde el código (TXT).
+Integración con el debugger de BlueMSX.
+Ensamblado condicional completo
+Generación de ficheros CAS para emuladores y ficheros WAV cargables en MSX
+1.3. Justificación
+El propósito de asMSX es proporcionar un ensamblador con soporte completo de las instrucciones del Z80, flexible y cómodo, fiable y orientado en gran medida al desarrollo de software para MSX. Estos objetivos se han alcanzado con la versión actual. Se trata del ensamblador más cómodo para el desarrollo específico de ROMs y MegaROMs para MSX.
+El resultado es una pequeña aplicación de consola con una velocidad de ensamblado muy elevada y muy estable, al hacer uso de librerías estándar presentes en todos los ordenadores.
+1.4. Sintaxis
+La implementación del lenguaje ensamblador para el microprocesador Z80 que hace asMSX diverge en algunos aspectos de la sintaxis oficial de Zilog. La mayor diferencia es que las indirecciones se hacen utilizando los corchetes, [ ], no los paréntesis ( ). El porqué de este cambio quedará claro al ver el potente lenguaje matemático que incorpora asMSX, que permite cálculos muy complejos, por lo que los paréntesis se emplean en la evaluación numérica.
+En cualquier caso, y para mejorar la compatibilidad y la importación de código fuente ajustado a la sintaxis original, se ha incluido la directiva ZILOG para que las indirecciones se indiquen con paréntesis, utilizándose entonces los corchetes como separadores en las operaciones matemáticas.
+1.5. Utilización
+Se trata de una aplicación de consola (Windows) o un comando de línea (Linux), por lo que la forma más cómoda de utilizarla es desde una ventana del intérprete de comandos o MS-DOS. Para ensamblar un fichero basta con hacer lo siguiente:
+
+asMSX fichero.ext
+
+Si la extensión no se especifica, se tomará por defecto .asm. Los ficheros de código fuente deben ser ficheros de texto sin formato, codificado como ASCII de 8 bits. En cualquier caso, soporta ficheros de texto plano generados tanto en Windows como en Linux sin necesidad de conversión previa. También es posible ensamblar el código fuente arrastrando el icono que contiene el programa hasta el icono del propio asMSX, aunque no se recomienda. Los nombres largos podrían no funcionar adecuadamente, por lo que se sugiere que no se incluyan puntos ni caracteres especiales dentro del nombre del fichero, salvo el que indica el inicio de su extensión.
+Durante el ensamblado aparecerán una serie de mensajes, y si no hay ningún error en el código, se generarán una serie de archivos:
+fichero.sym: un fichero de texto en modo ASCII que contiene todos los símbolos definidos en el programa así como su valor expresado en decimal. Este archivo es compatible con el emulador BlueMSX, cuyo debugger permite cargar tablas de símbolos externos para facilitar el depurado de programas. Si no se ha definido ninguna etiqueta, constante o variable, no se generará dicho fichero.
+fichero.txt: otro fichero de texto en modo ASCII con las impresiones que se hayan hecho desde el programa. Si no se emplea ninguna de las instrucciones de tipo PRINT, no se generará.
+fichero[.z80/.bin/.com/.rom]: el resultado de ensamblar el código fuente se guardará con el mismo nombre que el archivo de entrada, eligiendo la extensión adecuada según las directivas que se empleen. Así, la extensión Z80 es para código sin cabecera, BIN es para los archivos binarios cargables desde MSX-BASIC con BLOAD, COM para los ejecutables de MSX-DOS, y ROM para las ROMs y megaROMs de MSX.
+Fichero.cas: si se hace uso de la directiva CAS y el formato de salida lo permite, se generará un fichero CAS, listo para ser cargado en cualquier emulador de MSX a través de la emulación de cassette desde MSX-BASIC con la instrucción BLOAD”CAS:”,R
+Fichero.wav: al utilizar la directiva WAV se generará un fichero de audio estéreo de 16 bits a 44.100 Hz (calidad CD) listo para ser cargado en un MSX real a través del puerto de audio desde MSX-BASIC con la instrucción BLOAD”CAS:”,R 
+2. Lenguaje ensamblador
+2.1. Sintaxis de lenguaje
+El formato de línea en el código fuente que acepta asMSX es el siguiente:
+
+[etiqueta:] [directiva[parametros]] [;comentario]
+[etiqueta:] [opcode[parametros]] [;comentario]
+
+Cada uno de estos bloques son opcionales, y se explican con mayor detalle en los siguientes apartados. No hay ningún tipo de limitación respecto a longitud de línea, espacios intermedios o tabulación, ya que el preprocesador de código se encarga de ajustar estos aspectos.
+Ejemplos:
+bucle:
+	ld	a,[0ffffh]
+; lee el registro maestro
+puntos:
+	db	20,30,40,50
+; tabla de puntos
+	Org	08000h; posiciona el código en la página 2
+	Nop
+2.2. Etiquetas
+Las etiquetas son una forma de identificar una cierta posición de memoria. En realidad, equivale a dar un nombre a un valor de 16 bits. Los nombres para las etiquetas pueden ser alfanuméricos, aunque el primer carácter tiene que ser una letra o el carácter barra baja “_”. Para que quede definida como etiqueta, debe quedar seguida por dos puntos. Eso sí, las mayúsculas y las minúsculas se distinguen, es decir ETIQUETA: y eTiQuEta: generarían dos etiquetas distintas.
+Ejemplos:
+ETIQUETA:
+Etiqueta:
+_alfanumerica:
+bucle001:
+
+Los dos puntos sirven para definir la etiqueta, cuyo valor equivaldrá a la posición de memoria a ocupar por la próxima instrucción o datos. Para hacer uso del valor de la etiqueta, se debe referenciar sin incluir los dos puntos. Además, es posible definir etiquetas locales, precediendo las etiquetas con @@. La particularidad de las etiquetas locales es que sólo están disponibles entre una etiqueta global y otra. Por ello, es perfectamente lícito un código así: 
+
+RUTINA1:
+...
+@@BUCLE:
+...
+RUTINA2:
+...
+@@BUCLE:
+...
+
+2.3. Expresiones numéricas
+Las expresiones numéricas pueden ser números o bien el resultado de operaciones más o menos complejas hechas con esos números.
+2.3.1. Formatos numéricos
+En cuanto a los sistemas de numeración compatibles, se indican a continuación junto con la sintaxis adecuada y algunos ejemplos:
+DECIMAL: los números en base 10 se expresan normalmente, como un grupo de uno o más dígitos decimales. La única restricción es que no se deben incluir ceros a la izquierda, es decir, se emplean tal y cómo se expresan habitualmente por escrito.
+Ejemplos: 
+0    10    25    1    255    2048
+
+DECIMAL NO ENTERO: se expresan como los decimales enteros, pero separando con un punto la parte entera de la parte decimal. Es necesario que siempre esté presente ese punto como separador, porque en caso contrario se interpretará como un número entero.
+Ejemplos:
+3.14    1.25    0.0    32768.0    -0.50    15.2
+
+OCTAL: los números en base 8 se pueden expresar de dos formas distintas. La primera es el formato que se utiliza en los lenguajes C, C++ o Java para indicarlos, es decir, precedidos por un 0 siempre y a continuación todos los dígitos octales (es decir, del 0 al 7). La otra forma es la habitual de los lenguajes ensambladores, es decir, el grupo de dígitos octales y seguido por una letra O, sea minúscula o mayúscula. Se han incluido por compatibilidad, pero no se trata de un sistema de numeración incómodo para una arquitectura como la del Z80.
+Ejemplos:
+01    077    010    1o    77o    10o
+
+HEXADECIMAL: los números en base 16, los más habituales al programar en ensamblador, pueden expresarse de tres formas diferentes. La primera de ellas es, de nuevo, compatible con la utilizada en los lenguajes C, C++ o Java, es decir, siempre precedidos por 0x y a continuación el grupo de dígitos hexadecimales (de 0 a 9 y de A a F). La segunda forma de expresarlos es la utilizada en el lenguaje Pascal: el grupo de dígitos hexadecimales va precedido por el símbolo $. Finalmente, se ha incluido también el formato más habitual de los números hexadecimales en ensamblador: el grupo de dígitos hexadecimales seguido por la letra H, sea minúscula o mayúscula. Nótese que en este caso, el primer dígito debe ser siempre numérico, es decir, que si el número hexadecimal empieza por una letra, habrá que añadirle un cero adicional a la izquierda.
+Ejemplos:
+0x8a   0xff   0x10   $8a   $ff   $10   8ah   0ffh   10h
+
+BINARIO: los números en base 2 tienen una única forma de expresión compatible con asMSX. Tras el grupo de dígitos binarios (cero y uno) debe ir la letra B, sea en minúscula o en mayúscula.
+Ejemplos:
+1000000b    11110000b    0010101b    1001b
+2.3.2. Operadores
+Además de los números, expresados en cualquiera de las formas vistas, se pueden realizar operaciones con ellos. La notación de los operadores es la habitual, y para las operaciones menos comunes se ha optado por seguir la sintaxis del lenguaje C/C++, que equivale también a la convención utilizada en Java, JavaScript, PHP y otros muchos.
++	Suma
+-	Resta
+*	Multiplicación
+/	División
+%	Módulo (resto de división entera)
+
+Adicionalmente, hay otras operaciones:
+<< 	Desplazamiento a la izquierda (shift left). Desplaza a la izquierda el número de bits indicado, lo que equivale a multiplicar por dos el mismo número de veces.
+>> 	Desplazamiento a la derecha (shift right). Desplaza a la derecha el número de bits indicado, equivale a dividir entre dos el número de veces dado. 
+
+Además de las operaciones aritméticas disponemos de las operaciones lógicas, que operan a nivel de bits. De nuevo, la sintaxis preferida es la del lenguaje C y sus descendientes. Las operaciones binarias son las siguientes:
+|	O a nivel de bits(OR).
+&	Y a nivel de bits (AND).
+^	O exclusivo a nivel de bits (XOR).
+
+Y existe una operación unaria:
+~ 	NO lógico (NOT). Realiza el complemento a uno.
+
+También se han definido operaciones de comparación lógica, que utilizan también la misma sintaxis del lenguaje C:
+	||	O lógico (OR)
+	&&	AND lógico
+	==	Igualdad
+	!=	Desigualdad
+	<	Menor
+	<=	Menor o igual
+	>	Mayor
+	>=	Mayor o igual
+
+El orden de preferencia de los operadores es el habitual, el mismo empleado en C/C++. Además, se pueden utilizar los paréntesis para agrupar las operaciones, como se hace habitualmente con las operaciones ariméticas.
+Ejemplo:
+((2*8)/(1+3))<<2
+
+En cuanto a los decimales no enteros, se pueden emplear las mismas operaciones indicadas antes y, además, otras funciones reales:
+SIN(X) 	Función del seno. Las unidades de entrada son los radianes.
+COS(X)	Función del coseno.
+TAN(X)	Función tangente.
+ACOS(X)	Arcocoseno.
+ASIN(X)	Arcoseno.
+ATAN(X)	Arcotangente.
+SQR(X)	Elevar al cuadrado.
+SQRT(X)	Raíz cuadrada.
+EXP(X)	Función potencial, e elevado a X.
+POW(X,Y) 	Elevar la base X al exponente Y.
+LOG(X)	Logaritmo decimal.
+LN(X)	Logaritmo neperiano.
+ABS(X)	Devuelve el valor absoluto de X.
+
+Adicionalmente, se ha definido por defecto PI con precisión doble, para poderlo utilizar directamente con las funciones reales el valor ?.
+Ejemplo:
+sin(pi*45.0/180.0)
+
+Para utilizar estos valores no enteros dentro del programa en ensamblador para Z80 de una forma sencilla es indispensable convertir los números de punto flotante a punto fijo. Para ello, están disponibles las siguientes funciones de conversión:
+FIX(X) 		Convierte la punto flotante a punto fijo.
+FIXMUL(X,Y)	Calcula el producto de dos números en punto fijo.
+FIXDIV(X,Y)		Calcula la división de X entre Y.
+INT(X) 	Convierte a entero un número no entero.
+
+Existe un símbolo que tiene siempre un valor cambiante, y es $. El valor del símbolo $ equivaldrá en todo momento a la dirección de ensamblado actual, o, lo que es lo mismo en términos de ejecución, al valor del registro PC.
+2.4. Introducción de datos
+Los datos se pueden incluir a través de distintas directivas:
+
+db 		dato,[dato...]
+defb 	dato,[dato...]
+dt 		"texto"
+deft 	"texto"
+
+Con estas instrucciones se incluyen los datos como bytes, datos de 8 bits. DT se
+ha incluido por compatibilidad con otros ensambladores, pero en realidad, las cuatro
+instrucciones son equivalentes.
+
+dw 		dato,[dato...]
+defw 	dato,[dato...]
+
+Así se incluyen datos como words, es decir, datos de 16 bits.
+
+ds 		X
+defs 	X
+
+De este modo se reserva un espacio de X bytes en el punto actual de memoria. Sirve para identificar variables en RAM, por ejemplo. Para facilitar, los tamaños más habituales, es decir, byte y word, han sido predefinidos, pudiéndose usar las siguientes directivas:
+
+.byte	reserva un espacio de un byte (8 bits)
+.word	reserva un espacio de dos bytes (16 bits), es decir, un word.
+
+2.5. Directivas
+Las instrucciones predefinidas sirven para organizar el código y habilitar las características adicionales de asMSX.
+.ZILOG	Si se emplea esta directiva, todo el código a partir de ese punto podrá estar con la notación de indirecciones de Zilog, es decir, empleando el paréntesis para las indirecciones y los corchetes para agrupar operaciones matemáticas complejas.
+.ORG X	Sirve para indicar una posición en memoria al ensamblador. El código subsiguiente se ensamblará a partir de esa dirección.
+.PAGE X	Equivale a la instrucción anterior, pero no se indica una dirección sino un número de página de la memoria. Así, .PAGE 0 equivale a .ORG 0000h, y .PAGE 1 equivale a .ORG 4000h, .PAGE 2 equivale a .ORG 8000h y .PAGE 3 equivale a .ORG 0C000h.
+Identificador .EQU expresión	Sirve para definir una constante. Las reglas de construcción del identificador son las mismas que para construir un nombre de etiqueta, si bien no es posible definer identificadores locales.
+Variable = expresión	asMSX permite también el uso de variables enteras. Las variables deben ser inicializadas, y después se les puede asignar valores numéricos y hacer operaciones con ellas. Por ejemplo, se podría realizar lo siguiente:
+Valor1=0
+Valor1=Valor1+1
+Ld	a,Valor1
+Valor1=Valor1*2
+Ld	b,valor1
+
+.BIOS	Predefine las direcciones de las rutinas de la BIOS, incluyendo las especificadas en los estándares MSX, MSX2, MSX2+ y Turbo-R. Se emplean los nombres habituales en mayúsculas.
+.ROM		Define la cabecera para producir una ROM. Es imprescindible indicar antes la posición, que puede hacerse con la directiva .PAGE. También es conveniente indicar con la directiva .START el punto de inicio del programa.
+.MEGAROM [mapeador]		Define la cabecera y estructura para producir una megaROM. Por defecto se define también la subpágina 0 del mapeador, por lo que no es necesario incluir ninguna instrucción ORG ni PAGE o SUBPAGE previa. Los tipos de mapeador soportado son los siguientes:
+Konami: tamaño de subpágina de 8 KB, límite de 32 páginas. El tamaño máximo de la megaROM será de 256 KB (2 megabits). Entre 4000h y 5FFFh está necesariamente la subpágina 0, es decir, no puede cambiarse.
+KonamiSCC: tamaño de subpágina de 8 KB, límite de 64 páginas. El tamaño máximo de la megaROM será de 512 KB (4 megabits). Soporta acceso a SCC, el Sound Custom Chip de Konami.
+ASCII8: tamaño de subpágina de 8 KB, límite de 256 páginas. El tamaño máximo de la megaROM será de 2048 KB (16 megabits, 2 megabytes).
+ASCII16: tamaño de subpágina de 16 KB, límite de 256 páginas. El tamaño máximo de la megaROM será de 4096 KB (32 megabits, 4 megabytes).
+.BASIC	Genera la cabecera para producir un archivo binario cargable desde MSX-BASIC. Es necesario indicar antes una posición inicial con la directiva .ORG, y en el caso de que el principio de ejecución del programa no coincida con el principio del programa, utilizar también la directiva .START. La extensión por defecto del fichero de salida es BIN.
+.MSXDOS	Produce como resultado un archivo COM ejecutable desde MSX-DOS. No es necesario utilizar la instrucción .ORG porque el inicio se establece en 0100h.
+.START X	Indica la dirección de inicio de ejecución para archivos ROM, megaROM y BIN de no coincidir ésta con el principio del fichero.
+.SEARCH	Para ROMs y megaROMs que arrancan en la página 1 (4000h), se encarga de buscar automáticamente el slot y subslot de la página 2 correspondiente (8000h). Equivale al siguiente bloque de código:
+        call    0138h ;RSLREG 
+        rrca 
+        rrca 
+        and     03h 
+; Secondary Slot 
+        ld      c,a 
+        ld      hl,0FCC1h 
+        add     a,l 
+        ld      l,a 
+        ld      a,[hl] 
+        and     80h 
+        or      c 
+        ld      c,a 
+        inc     l 
+        inc     l 
+        inc     l 
+        inc     l 
+        ld      a,[hl] 
+; Define slot ID
+        and     0ch 
+        or      c 
+        ld      h,80h 
+; Enable
+        call    0024h ;ENASLT
+
+.SUBPAGE n AT X	Esta macro se usa para definer las distintas subpáginas de una megaROM. En el modelo de generación de megaROMs de asMSX, todo el código y los datos deben incluirse en subpáginas, que equivalen a los bloques lógicos de operación del mapeador. Se debe indicar el número de subpágina que se desea crear, y en qué dirección lógica ensamblarla, es decir, en que posición se dará su ejecución.
+.SELECT n AT x / .SELECT registro AT x		Como replica a la anterior, esta macro selecciona la subpágina n en la dirección x. El código concreto utilizado para esta operación dependerá del tipo de mapeador que se haya seleccionado. No altera el valor de ningún registro ni afecta al modo de interrupción ni a las banderas de estado.
+.PHASE X / .DEPHASE		Estas dos rutinas permiten utilizan direcciones virtuales de memoria. Es decir, ensamblar en una posición de memoria instrucciones que luego se ubicarán en otra. Puede ser útil para introducir código en una ROM que luego se tenga que copiar y ejecutar desde la RAM. Su efecto es que las etiquetas se ensamblarán de acuerdo con la dirección dada. .DEPHASE revierte al estado normal, si bien cualquier instrucción ORG, PAGE, SUBPAGE tendrán el mismo efecto.
+.CALLBIOS X	Llama a una rutina de la BIOS desde MSX-DOS. Equivale al siguiente bloque de código:
+LD 	IY,[EXPTBL-1]
+LD 	IX,RUTINA
+CALL CALSLT
+.CALLDOS X	Ejecuta una de las funciones del MSX-DOS. Equivale al siguiente código:
+LD C,CODIGO
+CALL 0005h
+.SIZE X	Establece el tamaño del archivo resultante en Kilobytes.
+.INCLUDE "archivo"	Incluye código fuente almacenado en un fichero externo.
+.INCBIN "archivo" [SKIP X] [SIZE Y]	Inyecta un fichero binario externo dentro del programa. Se pueden utilizar adicionalmente los modificadores SKIP y SIZE, que permiten indicar el número de bytes a descartar desde el principio del archivo y el número de bytes a guardar en total.
+.RANDOM(n)	Genera un valor aleatorio entero entre 0 y n-1. Permite una aleatoriedad mayor que el uso directo del registro R del Z80.
+.DEBUG "texto"	Establece un texto dentro del programa para que pueda ser visto al hacer debug, que es transparente en cuanto a la ejecución. El debugger del emulador BlueMSX soporta funcionalidades adicionales.
+.BREAK [X] / .BREAKPOINT [X]	Definen un breakpoint para el debugger del emulador BlueMSX. Su ejecución es trasparente, si bien se recomienda su eliminación en el fichero final. Si no se indica la dirección, se ejecutará el breakpoint en la posición en la que se haya definido.
+REPT n / ENDR	Esta macroinstrucción permite repetir un número dado de veces un bloque de código. Admite anidaciones para generar automáticamente tablas complejas. La única restricción es que el número de repeticiones debe indicarse como un número decimal directo, no como una expresión numérica. Como ejemplos:
+REPT  16
+  OUTI
+ENDR
+
+X=0
+Y=0
+REPT 10
+   REPT 10
+      DB X*Y
+      X=X+1
+   ENDR
+   Y=Y+1
+ENDR
+.PRINTTEXT "texto" / .PRINTSTRING "texto"	Imprime un texto en el fichero de texto de salida.
+.PRINT expresión / .PRINTDEC expresión	Imprime un valor numérico en formato decimal.
+.PRINTHEX expresión		Imprime un valor numérico en formato hexadecimal
+.PRINTFIX expresión		Imprime un valor numérico en punto fijo.
+.CAS [“texto”] / .CASSETTE [“texto”]	Genera un fichero CAS con el resultado del ensamblado. Sólo válido para formato BASIC, ROM en página 2 y Z80 directo. El texto permite indicar un nombre para la carga desde cassette, con un máximo de 6 caracteres de longitud. Si no se indica, se tomará el nombre del fichero de salida.
+.WAV [“texto”]		Como el comando anterior, pero en lugar de generar un fichero CAS, genera un fichero WAV de audio, que puede ser cargado directamente en un MSX real a través del puerto de cassette.
+.FILENAME [“texto”]		Si se emplea esta directiva, todos los archivos resultantes del ensamblado recibirán el nombre de archivo indicado. Si no se emplea, recibirán como nombre por defecto el mismo que el del fichero de código fuente ensamblado, además de la extensión adecuada.
+.SINCLAIR			La directiva Sinclair hace que el fichero ensamblado se guarde en formato TAP con las cabeceras adecuadas para ser cargado en un emulador de Sinclair ZX Spectrum o en el hardware real si se dispone de las aplicaciones necesarias [problema con checksum de cabeceras].
+
+2.6. Comentarios
+Es muy recomendable utilizar comentarios a lo largo del código fuente en ensamblador. asMSX permite introducir comentarios en distintos formatos: 
+; Comentario	
+Comentario en una única línea. El punto y coma es el indicador estándar para comentarios en listados en ensamblador. La línea completa se tomará como un comentario, hasta el retorno de línea. 
+// Comentario 
+Funciona igual que el anterior. La doble barra es el indicador de comentario de una línea en C/C++.
+/* Comentarios */
+{ Comentarios }
+Comentarios en múltiples líneas. Todo el texto encerrado entre los delimitadores se interpreta como comentario y no será ensamblado.
+2.7. Ensamblado condicional
+asMSX incorpora soporte preliminar para ensamblado condicional. El formato de un bloque de ensamblado condicional es el siguiente:
+	IF	condición
+		Instrucciones
+	ELSE
+		Instrucciones
+	ENDIF
+
+La condición puede ser de cualquier tipo, coherente con las reglas de formación de condiciones en C/C++ o Java. Es decir, una condición será cierta si su evaluación es distinta de cero.
+Si la condición es cierta, se ensamblará el código siguiente al IF. Si la condición no es cierta, se omitirá su ensamblado y se ensamblará el código recogido a partir del ELSE.
+Por supuesto, el bloque ELSE es opcional y no es necesario incluirlo en toda sentencia IF. Sin embargo, ENDIF tiene que ser utilizado para cerrar todo bloque condicional.
+Es posible anidar sentencias IF sin limitaciones, tal y como se muestra en el ejemplo siguiente:
+
+IF (ordenador==MSX)
+	call	MSX1_Init
+ELSE
+	IF (ordenador==MSX2)
+		call	MSX2_Init
+	ELSE
+		IF (ordenador==MSX2plus)
+			call	MSX2plus_Init
+		ELSE
+			call	TurboR_Init
+		ENDIF
+	ENDIF
+ENDIF
+
+Además, todo el código, directivas y macros serán ejecutadas según las condiciones, por lo que es posible crear estructuras del tipo siguiente:
+
+CARTUCHO=1 
+BINARIO=2
+
+formato=CARTUCHO
+
+IF (formato==CARTUCHO)
+	.page	2
+	.ROM
+ELSE
+	.org	8800h
+	.Basic
+ENDIF
+
+.START Init
+
+La única limitación es que las sentencias IF <condición>, ELSE y ENDIF deben aparecer en líneas separadas, es decir, no pueden agruparse con otras instrucciones o macros en una misma línea de código. El siguiente código produciría un error al ensamblarse:
+
+IF (variable) nop ELSE inc a ENDIF
+
+Debería escribirse como sigue:
+
+IF (variable)
+	nop
+ELSE
+	inc	a
+ENDIF
+
+Adicionalmente, se dispone de otro tipo de instrucción condicional, IFDEF, que no verifica el valor de la expresión utilizada, sino si dicha etiqueta, constante o variable se ha definido o no. Por ejemplo, el siguiente bloque:
+
+	IFDEF pruebas
+		.WAV “Prueba”
+	ENDIF
+
+Este fragmento de código hará que se genere un archivo WAV si y sólo si la etiqueta o símbolo pruebas ha sido definido previamente en el código fuente. Nótese que IFDEF sólo reconocerá una etiqueta como definida si se ha incluido antes de la sentencia IFDEF.
+
