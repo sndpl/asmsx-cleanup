@@ -9,10 +9,22 @@
 */
 
 %{
- #include<stdio.h>
- FILE *output;
- char *text;
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#define YY_NO_INPUT 1
+#ifdef _MSC_VER
+#define YY_NO_UNISTD_H 1
+#endif
+
+
+FILE *output;
+char *text;
 %}
+
+%option yylineno
+%option nounput
 
 %s line
 %s zilog
@@ -34,12 +46,12 @@
 
 %%
 
-yywrap()
+int yywrap(void)
 {
  return 1;
 }
 
-preprocessor3()
+int preprocessor3(void)
 {
  FILE *input;
 

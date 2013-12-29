@@ -1,43 +1,45 @@
+#include "core.c"
+#include "lex.c"
 
 int main(int argc, char *argv[])
 {
  unsigned char i;
- printf("-------------------------------------------------------------------------------\n");
- printf(" asMSX v.%s. MSX cross-assembler. Eduardo A. Robsy Petrus [%s]\n",VERSION,DATE);
- printf("-------------------------------------------------------------------------------\n");
+ printf("----------------------------------------------------------------------------------\n");
+ printf(" asmsx v.%s. MSX cross-assembler. Eduardo A. Robsy Petrus [%s]\n",VERSION,__DATE__);
+ printf("----------------------------------------------------------------------------------\n");
  if (argc!=2)
  {
-  printf("Syntax: asMSX [file.asm]\n");
+  printf("Syntax: asmsx [file.asm]\n");
   exit(0);
  }
  clock();
- inicializar_sistema();
- ensamblador=(unsigned char*)malloc(0x100);
- fuente=(unsigned char*)malloc(0x100);
+ initialize_system();
+ assembler=(unsigned char*)malloc(0x100);
+ source=(unsigned char*)malloc(0x100);
  original=(unsigned char*)malloc(0x100);
- binario=(char*)malloc(0x100);
- simbolos=(char*)malloc(0x100);
- salida=(char*)malloc(0x100);
+ binary=(char*)malloc(0x100);
+ symbols=(char*)malloc(0x100);
+ outputfname=(char*)malloc(0x100);
  filename=(char*)malloc(0x100);
 
  strcpy(filename,argv[1]);
- strcpy(ensamblador,filename);
+ strcpy(assembler,filename);
 
  for (i=strlen(filename)-1;(filename[i]!='.')&&i;i--);
 
- if (i) filename[i]=0; else strcat(ensamblador,".asm");
+ if (i) filename[i]=0; else strcat(assembler,".asm");
 
- preprocessor1(ensamblador);
+ preprocessor1(assembler);
  preprocessor3();
  sprintf(original,"~tmppre.%i",preprocessor2());
  
- printf("Assembling source file %s\n",ensamblador);
+ printf("Assembling source file %s\n",assembler);
 
  conditional[0]=1;
 
- archivo=fopen(original,"r");
+ foriginal=fopen(original,"r");
 
- yyin=archivo;
+ yyin=foriginal;
 
  yyparse();
 
