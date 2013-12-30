@@ -213,3 +213,6 @@ pip-log.txt
 
 #Mr Developer
 .mr.developer.cfg
+
+#asmsx custom exclusions
+*.err
