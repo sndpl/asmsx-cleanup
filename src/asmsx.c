@@ -22,8 +22,8 @@ int main(int argc, char *argv[])
  outputfname=(char*)malloc(0x100);
  filename=(char*)malloc(0x100);
 
- strcpy(filename,argv[1]);
- strcpy(assembler,filename);
+ strcpy(filename, argv[1]);
+ strcpy(assembler, filename);
 
  for (i=strlen(filename)-1;(filename[i]!='.')&&i;i--);
 

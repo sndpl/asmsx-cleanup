@@ -1,84 +1,9 @@
-/* asmsx - an MSX / Z80 assembler
-   (C) Eduardo A. Robsy Petrus, 2000-2010
-   Bison grammar file
-         v.0.01a: [10/09/2000] First public version
-
-         v.0.01b: [03/05/2001] Bugfixes. Added PRINTFIX,FIXMUL, FIXDIV
-
-         v.0.10 : [19/08/2004] Overall enhance. Opcodes 100% checked
-
-         v.0.11 : [31/12/2004] IX, IY do accept negative or null offsets
-
-         v.0.12 : [11/09/2005] Recovery version
-         Added REPT/ENDR, variables/constants, RANDOM, DEBUG blueMSX,
-                     BREAKPOINT blueMSX, PHASE/DEPHASE, $ symbol
-
-         v.0.12e: [07/10/2006]
-                     Additional parameters for INCBIN "file" [SKIP num] [SIZE num]
-                     Second page locating macro (32KB ROMs / megaROMs)
-                     Added experimental support for MegaROMs:
-                        * MEGAROM [mapper] - define mapper type
-                        * SUBPAGE [n] AT [address] - define page
-                        * SELECT [n] AT [address] - set page
-
-         v.0.12f: [16/11/2006]
-                     Several binary operators fixed
-                     Conditional assembly
-
-         v.0.12f1:[17/11/2006]
-                     Nested conditional assembly and other conditions
-
-         v.0.12g:[18/03/2007]
-                     PHASE/DEPHASE bug fixed
-                     Initial CAS format support
-                     WAV output added
-                     Enhanced conditional assembly: IFDEF
-
-         v.0.14: [UNRELEASED]
-		     First working Linux version
-		     Somewhat improved stability
-
-         v.0.15: [UNRELEASED]
-                     ADD IX,HL and ADD IY,HL operations removed
-                     Label vs Macro collisions solved
-                     Overall improvement in pointer stability
-		     INCBIN now can SKIP and SIZE upto 32-bit 
-
-         v.0.16: [CANDIDATE]		     First version fully developed in Linux
-		     Fixed bug affecting filename extensions
-		     Removed the weird IM 0/1 - apparently it is just a plain undocumented IM 0 opcode
-		     FILENAME directive to set assembler output filenames
-		     ZILOG directive for using Zilog style indirections and official syntax
-		     ROM/MEGAROM now have a standard 16 byte header
-		     Fixed a really annoying bug regarding $DB data read as pseudo DB
-		     SINCLAIR directive included to support TAP file generation (ouch!) --> STILL TO BE TESTED 
-
-		Pending:
-			- Adjust BIOS for SINCLAIR model?
-			- DISK support
-			- R800/Z80/8080/Gameboy support
-			- Sinclair ZX Spectrum TAP/TZX file format supported
-
-		Eduardo "Pitpan" Robsy sold this version of asmsx along with all copyrights to cjv99.
-		cjv99 released it as free software under GPLv3 license here:
-		https://code.google.com/p/asmsx-license-gpl/
-
-
-         v.0.16.1: [December 17, 2013]
-		This is a new fork of cjv99 release, hosted at https://code.google.com/p/asmsx
-
-		This release is fully translated from Spanish to English
-		Added fix from asmsx-license-gpl project error tracker: https://code.google.com/p/asmsx-license-gpl/issues/detail?id=1
-*/
-
-/* C header files and definitions */
-
 %{
-#include<stdio.h>
-#include<stdlib.h>
-#include<string.h>
-#include<time.h>
-#include<math.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <time.h>
+#include <math.h>
 
 #define VERSION "0.16.1 WIP"
 
@@ -148,7 +73,7 @@ unsigned int maxpage[4]={32,64,256,256};
 unsigned char locate32[31]={0xCD,0x38,0x1,0xF,0xF,0xE6,0x3,0x4F,0x21,0xC1,0xFC,0x85,0x6F,0x7E,0xE6,0x80,
 0xB1,0x4F,0x2C,0x2C,0x2C,0x2C,0x7E,0xE6,0xC,0xB1,0x26,0x80,0xCD,0x24,0x0};
 
-signed int maximum=0,last_global=0;
+int maximum=0, last_global=0;
 FILE *foriginal,*fmessages,*foutput;
  struct
  {
@@ -1182,7 +1107,7 @@ void conditional_jump(int address)
 
 void register_label(const char *name)
 {
- signed int i;
+ int i;
  if (pass==2)
    for (i=0;i<maximum;i++) if (!strcmp(name,id_list[i].name)) {last_global=i;return;}
  for (i=0;i<maximum;i++) if (!strcmp(name,id_list[i].name)) error_message(14);
@@ -1198,7 +1123,7 @@ void register_label(const char *name)
 
 void register_local(const char *name)
 {
- signed int i;
+ int i;
  if (pass==2) return;
  for (i=last_global;i<maximum;i++) if (!strcmp(name,id_list[i].name)) error_message(14);
  if (++maximum==max_id) error_message(11);
