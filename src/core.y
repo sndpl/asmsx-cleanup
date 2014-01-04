@@ -332,7 +332,7 @@ pseudo_instruction: PSEUDO_ORG value {if (conditional[conditional_level]) {PC=$2
                   | IDENTIFICATOR PSEUDO_EQU value {if (conditional[conditional_level]) {register_symbol(strtok($1,"="),$3,2);}}
                   | IDENTIFICATOR PSEUDO_ASSIGN value {if (conditional[conditional_level]) {register_variable(strtok($1,"="),$3);}}
                   | PSEUDO_INCBIN TEXT {if (conditional[conditional_level]) {include_binary($2,0,0);}}
-                  | PSEUDO_INCBIN TEXT PSEUDO_SKIP value {if (conditional[conditional_level]) {if ($4<=0) error_message(30);include_binary($2,$4,0);}}
+                  | PSEUDO_INCBIN TEXT PSEUDO_SKIP value {if (conditional[conditional_level]) {if ($4<=0) error_message(30); include_binary($2,$4,0);}}
                   | PSEUDO_INCBIN TEXT PSEUDO_SIZE value {if (conditional[conditional_level]) {if ($4<=0) error_message(30);include_binary($2,0,$4);}}
                   | PSEUDO_INCBIN TEXT PSEUDO_SKIP value PSEUDO_SIZE value {if (conditional[conditional_level]) {if (($4<=0)||($6<=0)) error_message(30);include_binary($2,$4,$6);}}
                   | PSEUDO_INCBIN TEXT PSEUDO_SIZE value PSEUDO_SKIP value {if (conditional[conditional_level]) {if (($4<=0)||($6<=0)) error_message(30);include_binary($2,$6,$4);}}
