@@ -26,6 +26,7 @@
 #define SILENCE 0x0000
 
 /* function prototypes */
+extern int yylex(void);
 void warning_message(int);
 void error_message(int);
 void msx_bios(void);
@@ -66,7 +67,8 @@ unsigned char wav_header[44]={
 FILE *wav;
 
 
-unsigned char *memory,zilog=0,pass=1,size=0,bios=0,type=0,conditional[16],conditional_level=0,parity;
+unsigned char *memory,zilog=0,pass=1,size=0,bios=0,type=0,parity;
+int conditional[16], conditional_level=0;
 unsigned char *filename,*assembler,*binary,*symbols,*outputfname,*source,*original,cassette=0,*intname;
 unsigned int ePC=0,PC=0,subpage,pagesize,usedpage[256],lastpage,mapper,pageinit,addr_start=0xffff,addr_end=0x0000,start=0,warnings=0,lines;
 unsigned int maxpage[4]={32,64,256,256};
@@ -585,7 +587,7 @@ mnemo_general: MNEMO_DAA {write_byte(0x27);}
              | MNEMO_HALT {write_byte(0x76);}
              | MNEMO_DI {write_byte(0xf3);}
              | MNEMO_EI {write_byte(0xfb);}
-             | MNEMO_IM value_8bits {if (($2<0)||($2>2)) error_message(3);write_byte(0xed);if ($2==0) write_byte(0x46); else if ($2==1) write_byte(0x56); else write_byte(0x5e);}
+             | MNEMO_IM value_8bits {if (($2<0)||($2>2)) error_message(3); write_byte(0xed); if ($2==0) write_byte(0x46); else if ($2==1) write_byte(0x56); else write_byte(0x5e);}
 ;
 
 mnemo_rotate: MNEMO_RLCA {write_byte(0x07);}
@@ -1085,8 +1087,9 @@ if (type==MEGAROM)
 
 void write_text(const char *text)
 {
- unsigned int i;
- for (i=0;i<strlen(text);i++) write_byte(text[i]);
+	size_t i;
+	for (i = 0; i < strlen(text); i++)
+		write_byte(text[i]);
 }
 
 void write_word(int w)
