@@ -148,7 +148,7 @@ void wav_write_file(const char *bin_filename, const char *bin_intname, const int
 			wav_write_byte(0xd0, f);
 
 		/* Make a local copy of internal tape name of the program */
-		strcpy(wav_filename, bin_filename);
+		strcpy(wav_intname, bin_intname);
 
 		/* Pad MSX name with spaces at the end until it is 6 characters long */
 		if (6 > strlen(wav_intname))
