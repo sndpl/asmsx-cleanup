@@ -455,7 +455,7 @@ pseudo_instruction: PSEUDO_ORG value
 	{
 		if (conditional[conditional_level])
 		{
-			if ($4 <= 0)
+			if ((int)($4) <= 0)
 				error_message(30);
 			include_binary($2, $4, 0);
 		}
@@ -464,7 +464,7 @@ pseudo_instruction: PSEUDO_ORG value
 	{
 		if (conditional[conditional_level])
 		{
-			if ($4 <= 0)
+			if ((int)($4) <= 0)
 				error_message(30);
 			include_binary($2, 0, $4);
 		}
@@ -473,7 +473,7 @@ pseudo_instruction: PSEUDO_ORG value
 	{
 		if (conditional[conditional_level])
 		{
-			if (($4 <= 0) || ($6 <= 0))
+			if (((int)($4) <= 0) || ((int)($6) <= 0))
 				error_message(30);
 			include_binary($2, $4, $6);
 		}
@@ -482,7 +482,7 @@ pseudo_instruction: PSEUDO_ORG value
 	{
 		if (conditional[conditional_level])
 		{
-			if (($4 <= 0) || ($6 <= 0))
+			if (((int)($4) <= 0) || ((int)($6) <= 0))
 				error_message(30);
 			include_binary($2, $6, $4);
 		}

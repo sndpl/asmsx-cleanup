@@ -14,7 +14,7 @@ flex.exe -i -Pparser3 -oparser3.c parser3.l
 bison.exe core.y -ocore.c -d
 flex.exe -i -olex.c lex.l 
 
-wcc386.exe asmsx.c > asmsx.wc19.err
+wcc386.exe asmsx.c
 echo.
 wcc386.exe core.c
 echo.
