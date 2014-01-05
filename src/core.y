@@ -1030,20 +1030,78 @@ mnemo_load16bit: MNEMO_LD REGISTER_PAR ',' value_16bits
 	}
 ;
 
-mnemo_exchange: MNEMO_EX REGISTER_PAR ',' REGISTER_PAR {if ((($2!=1)||($4!=2))&&(($2!=2)||($4!=1))) error_message(2);if ((zilog)&&($2!=1)) warning_message(5);write_byte(0xeb);}
-              | MNEMO_EX REGISTER_AF ',' REGISTER_AF APOSTROPHE {write_byte(0x08);}
-              | MNEMO_EXX {write_byte(0xd9);}
-              | MNEMO_EX REGISTER_IND_SP ',' REGISTER_PAR {if ($4!=2) error_message(2);write_byte(0xe3);}
-              | MNEMO_EX REGISTER_IND_SP ',' REGISTER_16_IX {write_byte(0xdd);write_byte(0xe3);}
-              | MNEMO_EX REGISTER_IND_SP ',' REGISTER_16_IY {write_byte(0xfd);write_byte(0xe3);}
-              | MNEMO_LDI {write_byte(0xed);write_byte(0xa0);}
-              | MNEMO_LDIR {write_byte(0xed);write_byte(0xb0);}
-              | MNEMO_LDD {write_byte(0xed);write_byte(0xa8);}
-              | MNEMO_LDDR {write_byte(0xed);write_byte(0xb8);}
-              | MNEMO_CPI {write_byte(0xed);write_byte(0xa1);}
-              | MNEMO_CPIR {write_byte(0xed);write_byte(0xb1);}
-              | MNEMO_CPD {write_byte(0xed);write_byte(0xa9);}
-              | MNEMO_CPDR {write_byte(0xed);write_byte(0xb9);}
+mnemo_exchange: MNEMO_EX REGISTER_PAR ',' REGISTER_PAR
+	{
+		if ((($2 != 1) || ($4 != 2)) && (($2 != 2) || ($4 != 1)))
+			error_message(2);
+		if ((zilog) && ($2 != 1))
+			warning_message(5);
+		write_byte(0xeb);
+	}
+	| MNEMO_EX REGISTER_AF ',' REGISTER_AF APOSTROPHE
+	{
+		write_byte(0x08);
+	}
+	| MNEMO_EXX
+	{
+		write_byte(0xd9);
+	}
+	| MNEMO_EX REGISTER_IND_SP ',' REGISTER_PAR
+	{
+		if ($4 != 2)
+			error_message(2);
+		write_byte(0xe3);
+	}
+	| MNEMO_EX REGISTER_IND_SP ',' REGISTER_16_IX
+	{
+		write_byte(0xdd);
+		write_byte(0xe3);
+	}
+	| MNEMO_EX REGISTER_IND_SP ',' REGISTER_16_IY
+	{
+		write_byte(0xfd);
+		write_byte(0xe3);
+	}
+	| MNEMO_LDI
+	{
+		write_byte(0xed);
+		write_byte(0xa0);
+	}
+	| MNEMO_LDIR
+	{
+		write_byte(0xed);
+		write_byte(0xb0);
+	}
+	| MNEMO_LDD
+	{
+		write_byte(0xed);
+		write_byte(0xa8);
+	}
+	| MNEMO_LDDR
+	{
+		write_byte(0xed);
+		write_byte(0xb8);
+	}
+	| MNEMO_CPI
+	{
+		write_byte(0xed);
+		write_byte(0xa1);
+	}
+	| MNEMO_CPIR
+	{
+		write_byte(0xed);
+		write_byte(0xb1);
+	}
+	| MNEMO_CPD
+	{
+		write_byte(0xed);
+		write_byte(0xa9);
+	}
+	| MNEMO_CPDR
+	{
+		write_byte(0xed);
+		write_byte(0xb9);
+	}
 ;
 
 mnemo_arithm8bit: MNEMO_ADD REGISTER ',' REGISTER {if ($2!=7) error_message(4);write_byte(0x80|$4);}
