@@ -31,7 +31,6 @@
 #include "parser2.h"
 #include "parser3.h"
 
-#include "core.c"	/* TODO: change this somehow, C is not supposed to be included */
 #include "lex.c"	/* TODO: it should be compiled and linked together instead */
 
 /* Global variables */
@@ -627,18 +626,6 @@ void save_symbols(void)
 		fclose(f);
 		printf("Symbol file %s saved\n", symbols);
 	}
-}
-
-
-int yywrap(void)	/* TODO: move back to core.y? */
-{
-	return 1;
-}
-
-
-void yyerror(const char *s)	/* TODO: move back to core.y? */
-{
-	error_message(0);
 }
 
 

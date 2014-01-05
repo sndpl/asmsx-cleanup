@@ -86,6 +86,8 @@ extern FILE *foutput;
 
 /* function prototypes */
 extern int yylex(void);
+extern int yyparse(void);
+
 extern void warning_message(int);
 extern void error_message(int);
 extern void msx_bios(void);
