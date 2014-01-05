@@ -19,9 +19,9 @@
 #define YY_NO_UNISTD_H 1
 #endif
 
-FILE *output;
-char *text,*buffer,nested=0,level;
-unsigned int number,lines,i;
+FILE *p2output;
+char *p2text, *p2buf, p2nested = 0, level;
+unsigned int p2number, p2lines, i;
 extern int prompt_error2(char);
 %}
 
@@ -35,46 +35,46 @@ extern int prompt_error2(char);
 
 %%
 
-<INITIAL>"#"line[ \t]*[0-9]+\n strcat(text,yytext);lines=atoi(&yytext[5]);BEGIN(line);
+<INITIAL>"#"line[ \t]*[0-9]+\n strcat(p2text,yytext);p2lines=atoi(&yytext[5]);BEGIN(line);
 <line>.?rept[ \t]+ BEGIN(repnum);
-<line>. strcat(text,yytext);BEGIN(INITIAL);
+<line>. strcat(p2text,yytext);BEGIN(INITIAL);
 <repnum>[0-9]+[ \t]* {
-             number=atoi(yytext);
-             buffer[0]=0;
-             text[0]=0;
+             p2number=atoi(yytext);
+             p2buf[0]=0;
+             p2text[0]=0;
              BEGIN(rept); }
-<rept>.?rept[ \t]+[0-9]+[ \t]* buffer=strcat(buffer,yytext);nested++;level++;
+<rept>.?rept[ \t]+[0-9]+[ \t]* p2buf=strcat(p2buf,yytext);p2nested++;level++;
 <rept>"#"line[ \t]*[0-9]+\n[ \t]*.?endr[ \t]*\n {
-              if (nested)
+              if (p2nested)
                {
-                nested--;
-                buffer=strcat(buffer,yytext);
+                p2nested--;
+                p2buf=strcat(p2buf,yytext);
                } else
               {
-               for (i=0;i<number;i++)
-                fprintf(output,"%s",buffer);
-               buffer[0]=0;
+               for (i=0;i<p2number;i++)
+                fprintf(p2output,"%s",p2buf);
+               p2buf[0]=0;
                BEGIN(INITIAL);
               }
              }
-<rept>. buffer=strcat(text,yytext);
-<rept>\n   buffer=strcat(buffer,yytext);
+<rept>. p2buf=strcat(p2text,yytext);
+<rept>\n   p2buf=strcat(p2buf,yytext);
 <rept><<EOF>> error_message(2);
 <repnum>.     prompt_error2(1);
-<INITIAL>\n   fprintf(output,"%s%s",text,yytext);text[0]=0;
-<INITIAL>.    strcat(text,yytext);
+<INITIAL>\n   fprintf(p2output,"%s%s",p2text,yytext);p2text[0]=0;
+<INITIAL>.    strcat(p2text,yytext);
 
 %%
 
 int prompt_error2(char c)
 {
- printf(", line %d: ",lines);
+ printf(", line %d: ", p2lines);
  switch (c)
  {
   case 1:printf("number expected in REPT");break;
   case 2:printf("REPT without ENDR");break;
  }
- fclose(output);
+ fclose(p2output);
  exit(c);
  return 0;
 }
@@ -90,9 +90,9 @@ int preprocessor2(void)
  char *filename,loop=0;
 
  filename=(char*)malloc(ASMSX_MAX_PATH);
- text=(char*)malloc(0x1000);
- buffer=(char*)malloc(0x4000);
- text[0]=0;
+ p2text=(char*)malloc(0x1000);
+ p2buf=(char*)malloc(0x4000);
+ p2text[0]=0;
 
  printf("Expanding system macros\n");
  do
@@ -111,19 +111,19 @@ int preprocessor2(void)
 
  sprintf(filename,"~tmppre.%i",loop+1);
 
- output=fopen(filename,"w");
+ p2output=fopen(filename,"w");
  level=0;
- nested=0;
+ p2nested=0;
  yylex();
 
  fclose(input);
- fclose(output);
+ fclose(p2output);
 
 } while (level);
 
 // free(filename);
-// free(text);
-// free(buffer);
+// free(p2text);
+// free(p2buf);
 
  return loop+1;
 }

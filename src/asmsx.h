@@ -38,8 +38,54 @@
 
 #define ASMSX_MAX_PATH	(0x100)
 
+/* variables */
+
+extern unsigned char *memory;
+extern unsigned char zilog;
+extern unsigned char pass;
+extern unsigned char size;
+extern unsigned char bios;
+extern unsigned char type;
+extern unsigned char parity;
+
+extern int conditional[16];
+extern int conditional_level;
+extern int cassette;
+extern char *assembler;
+extern char *source;
+extern char *intname;
+extern char *binary;
+extern char *filename;
+extern char *original;
+extern char *outputfname;
+extern char *symbols;
+
+extern int ePC;
+extern int PC;
+extern int subpage;
+extern int pagesize;
+extern int usedpage[256];
+extern int mapper;
+extern int pageinit;
+extern int addr_start;
+extern int addr_end;
+extern int start;
+extern int warnings;
+extern int lines;
+
+extern int maxpage[4];
+
+extern int last_global;
+
+extern FILE *foriginal;
+extern FILE *fmessages;
+extern FILE *foutput;
+
+
 /* function prototypes */
 extern int yylex(void);
+extern int yyparse(void);
+
 extern void warning_message(int);
 extern void error_message(int);
 extern void msx_bios(void);
@@ -48,15 +94,15 @@ extern void register_local(const char *);
 extern void register_symbol(const char *, int, int);
 extern void register_variable(const char *, int);
 extern void output_text(void);
-extern void generate_cassette(void);
+extern void cas_write_file(void);
 extern void write_byte(int);
 extern void write_text(const char *);
-extern void write_word(int);
-extern void conditional_jump(int);
+extern void write_word(const int);
+extern void conditional_jump(const int);
 extern unsigned int read_label(const char *);
 extern unsigned int read_local(const char *);
 extern void yyerror(const char *);
-extern void include_binary(const char *, unsigned int, unsigned int);
+extern void include_binary(const char *, int, int);
 extern void finalize(void);
 extern void type_sinclair(void);
 extern void type_rom(void);
