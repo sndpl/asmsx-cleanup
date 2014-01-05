@@ -76,7 +76,7 @@ extern unsigned int lines;
 
 extern unsigned int maxpage[4];
 
-extern int maximum;
+//extern int maximum;
 extern int last_global;
 
 extern FILE *foriginal;

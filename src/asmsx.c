@@ -453,7 +453,7 @@ void register_label(const char *name)
 		error_message(11);
 
 	id_list[maximum - 1].name = (char*)malloc(strlen(name) + 4);
-	strcpy(id_list[maximum-1].name, name);
+	strcpy(id_list[maximum - 1].name, name);
 	id_list[maximum - 1].value = ePC;
 	id_list[maximum - 1].type = 1;
 	id_list[maximum - 1].page = subpage;
@@ -485,7 +485,7 @@ void register_local(const char *name)
 
 void register_symbol(const char *name,int number,int type)
 {
-	unsigned int i;
+	int i;
 	char *tmpstr;
 
 	if (pass == 2)
@@ -511,7 +511,7 @@ void register_symbol(const char *name,int number,int type)
 
 void register_variable(const char *name, int number)
 {
-	unsigned int i;
+	int i;
 	for (i = 0; i < maximum; i++)
 		if ((!strcmp(name, id_list[i].name)) && (id_list[i].type == 3))
 		{
@@ -531,12 +531,15 @@ void register_variable(const char *name, int number)
 
 unsigned int read_label(const char *name)
 {
-	unsigned int i;
+	int i;
+
 	for (i = 0; i < maximum; i++)
-	if (!strcmp(name, id_list[i].name))
-		return id_list[i].value;
+		if (!strcmp(name, id_list[i].name))
+			return id_list[i].value;
+
 	if ((pass == 1) && (i == maximum))
 		return ePC;
+
 	error_message(12);
 	return 0;	/* suppress compiler warning "not all control paths return a value" */
 }
@@ -544,12 +547,15 @@ unsigned int read_label(const char *name)
 
 unsigned int read_local(const char *name)
 {
-	unsigned int i;
+	int i;
+
 	if (pass==1)
 		return ePC;
+
 	for (i = last_global; i < maximum; i++)
 		if (!strcmp(name, id_list[i].name))
 			return id_list[i].value;
+
 	error_message(13);
 	return 0;	/* suppress compiler warning "not all control paths return a value" */
 }
@@ -573,7 +579,7 @@ void output_text(void)
 
 void save_symbols(void)
 {
-	unsigned int i, j;
+	int i, j;
 	FILE *f;
 
 	j = 0;
