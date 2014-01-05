@@ -3087,35 +3087,130 @@ value:	NUMBER
 	}
 ;
 
-value_real: REAL {$$=$1;}
-     | '-' value_real {$$=-$2;}
-     | value_real '+' value_real {$$=$1+$3;}
-     | value_real '-' value_real {$$=$1-$3;}
-     | value_real '*' value_real {$$=$1*$3;}
-     | value_real '/' value_real {if (!$3) error_message(1); else $$=$1/$3;}
-     | value '+' value_real {$$=(double)$1+$3;}
-     | value '-' value_real {$$=(double)$1-$3;}
-     | value '*' value_real {$$=(double)$1*$3;}
-     | value '/' value_real {if ($3<1e-6) error_message(1); else $$=(double)$1/$3;}
-     | value_real '+' value {$$=$1+(double)$3;}
-     | value_real '-' value {$$=$1-(double)$3;}
-     | value_real '*' value {$$=$1*(double)$3;}
-     | value_real '/' value {if (!$3) error_message(1); else $$=$1/(double)$3;}
-     | PSEUDO_SIN '(' value_real ')' {$$=sin($3);}
-     | PSEUDO_COS '(' value_real ')' {$$=cos($3);}
-     | PSEUDO_TAN '(' value_real ')' {$$=tan($3);}
-     | PSEUDO_SQR '(' value_real ')' {$$=$3*$3;}
-     | PSEUDO_SQRT '(' value_real ')' {$$=sqrt($3);}
-     | PSEUDO_PI {$$=asin(1)*2;}
-     | PSEUDO_ABS '(' value_real ')' {$$=abs($3);}
-     | PSEUDO_ACOS '(' value_real ')' {$$=acos($3);}
-     | PSEUDO_ASIN '(' value_real ')' {$$=asin($3);}
-     | PSEUDO_ATAN '(' value_real ')' {$$=atan($3);}
-     | PSEUDO_EXP '(' value_real ')' {$$=exp($3);}
-     | PSEUDO_LOG '(' value_real ')' {$$=log10($3);}
-     | PSEUDO_LN '(' value_real ')' {$$=log($3);}
-     | PSEUDO_POW '(' value_real ',' value_real ')' {$$=pow($3,$5);}
-     | '(' value_real ')' {$$=$2;}
+value_real: REAL
+	{
+		$$ = $1;
+	}
+	| '-' value_real
+	{
+		$$ = -$2;
+	}
+	| value_real '+' value_real
+	{
+		$$ = $1 + $3;
+	}
+	| value_real '-' value_real
+	{
+		$$ = $1 - $3;
+	}
+	| value_real '*' value_real
+	{
+		$$ = $1 * $3;
+	}
+	| value_real '/' value_real
+	{
+		if (!$3)
+			error_message(1);
+		else $$ = $1 / $3;
+	}
+	| value '+' value_real
+	{
+		$$ = (double)$1 + $3;
+	}
+	| value '-' value_real
+	{
+		$$ = (double)$1 - $3;
+	}
+	| value '*' value_real
+	{
+		$$ = (double)$1 * $3;
+	}
+	| value '/' value_real
+	{
+		if ($3 < 1e-6)
+			error_message(1);
+		else
+			$$ = (double)$1 / $3;
+	}
+	| value_real '+' value
+	{
+		$$ = $1 + (double)$3;
+	}
+	| value_real '-' value
+	{
+		$$ = $1 - (double)$3;
+	}
+	| value_real '*' value
+	{
+		$$ = $1 * (double)$3;
+	}
+	| value_real '/' value
+	{
+		if (!$3)
+			error_message(1);
+		else
+			$$ = $1 / (double)$3;
+	}
+	| PSEUDO_SIN '(' value_real ')'
+	{
+		$$ = sin($3);
+	}
+	| PSEUDO_COS '(' value_real ')'
+	{
+		$$ = cos($3);
+	}
+	| PSEUDO_TAN '(' value_real ')'
+	{
+		$$ = tan($3);
+	}
+	| PSEUDO_SQR '(' value_real ')'
+	{
+		$$ = $3 * $3;
+	}
+	| PSEUDO_SQRT '(' value_real ')'
+	{
+		$$ = sqrt($3);
+	}
+	| PSEUDO_PI
+	{
+		$$ = asin(1) * 2;
+	}
+	| PSEUDO_ABS '(' value_real ')'
+	{
+		$$ = abs($3);
+	}
+	| PSEUDO_ACOS '(' value_real ')'
+	{
+		$$ = acos($3);
+	}
+	| PSEUDO_ASIN '(' value_real ')'
+	{
+		$$ = asin($3);
+	}
+	| PSEUDO_ATAN '(' value_real ')'
+	{
+		$$ = atan($3);
+	}
+	| PSEUDO_EXP '(' value_real ')'
+	{
+		$$ = exp($3);
+	}
+	| PSEUDO_LOG '(' value_real ')'
+	{
+		$$ = log10($3);
+	}
+	| PSEUDO_LN '(' value_real ')'
+	{
+		$$ = log($3);
+	}
+	| PSEUDO_POW '(' value_real ',' value_real ')'
+	{
+		$$ = pow($3, $5);
+	}
+	| '(' value_real ')'
+	{
+		$$ = $2;
+	}
 ;
 
 value_3bits: value {if (((int)$1<0)||((int)$1>7)) warning_message(3);$$=$1&0x07;}
