@@ -1122,18 +1122,20 @@ void select_page_direct(unsigned int n, unsigned int addr)
 
 void select_page_register(unsigned int r, unsigned int addr)
 {
- unsigned int sel;
+	unsigned int sel;
 
- sel=selector(addr);
+	sel = selector(addr);
 
- if (r!=7)
- {
-  write_byte(0xf5); /* PUSH AF */
-  write_byte(0x40|(7<<3)|r); /* LD A,r */
- }
- write_byte(0x32);
- write_word(sel);
- if (r!=7) write_byte(0xf1); /* POP AF */
+	if (r != 7)
+	{
+		write_byte(0xf5);			/* PUSH AF */
+		write_byte(0x40 | (7 << 3) | r);	/* LD A,r */
+	}
+
+	write_byte(0x32);
+	write_word(sel);
+	if (r != 7)
+		write_byte(0xf1);			/* POP AF */
 }
 
 
