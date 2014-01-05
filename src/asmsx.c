@@ -427,18 +427,29 @@ void conditional_jump(const int address)
 
 void register_label(const char *name)
 {
- int i;
- if (pass==2)
-   for (i=0;i<maximum;i++) if (!strcmp(name,id_list[i].name)) {last_global=i;return;}
- for (i=0;i<maximum;i++) if (!strcmp(name,id_list[i].name)) error_message(14);
- if (++maximum==MAX_ID) error_message(11);
- id_list[maximum-1].name=(char*)malloc(strlen(name)+4);
- strcpy(id_list[maximum-1].name,name);
- id_list[maximum-1].value=ePC;
- id_list[maximum-1].type=1;
- id_list[maximum-1].page=subpage;
+	int i;
 
- last_global=maximum-1;
+	if (pass == 2)
+		for (i = 0; i < maximum; i++)
+			if (!strcmp(name, id_list[i].name))
+			{
+				last_global = i;
+				return;
+			}
+
+	for (i = 0; i < maximum; i++)
+		if (!strcmp(name, id_list[i].name))
+			error_message(14);
+
+	if (++maximum == MAX_ID)
+		error_message(11);
+
+	id_list[maximum - 1].name = (char*)malloc(strlen(name) + 4);
+	strcpy(id_list[maximum-1].name, name);
+	id_list[maximum - 1].value = ePC;
+	id_list[maximum - 1].type = 1;
+	id_list[maximum - 1].page = subpage;
+	last_global = maximum - 1;
 }
 
 void register_local(const char *name)
