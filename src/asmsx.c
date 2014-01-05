@@ -665,27 +665,29 @@ void include_binary(const char* name,unsigned int skip,unsigned int n)
 	if (skip && feof(file))
 		error_message(29);
 
- if (n)
- {
-  for (i=0;(i<n)&&(!feof(file));)
-  {
-   k=fgetc(file);
-   if (!feof(file))
-   {
-    write_byte(k);
-    i++;
-   }
-  }
-  if (i<n) error_message(29);
- } else
+	if (n)
+	{
+		for (i = 0; (i < n) && (!feof(file));)
+		{
+			k = fgetc(file);
+			if (!feof(file))
+			{
+				write_byte(k);
+				i++;
+			}
+		}
+		if (i < n)
+			error_message(29);
+	}
+	else
+		for (; !feof(file); i++)
+		{
+			k = fgetc(file);
+			if (!feof(file))
+				write_byte(k);
+		}
 
-  for (;!feof(file);i++)
-  {
-   k=fgetc(file);
-   if (!feof(file)) write_byte(k);
-  }
-
- fclose(file);
+	fclose(file);
 }
 
 
