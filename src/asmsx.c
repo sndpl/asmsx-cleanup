@@ -886,26 +886,37 @@ void write_binary(void)
 
 void finalize(void)
 {
- unsigned int i;
+	unsigned int i;
  
- // Get name of binary output file
- strcpy(binary,filename);
+	/* Get name of binary output file */
+	strcpy(binary, filename);
 
- // Get symbols file name
- strcpy(symbols,filename);
- symbols=strcat(symbols,".sym");
+	/* Get symbols file name */
+	strcpy(symbols, filename);
+	symbols = strcat(symbols, ".sym");
 
- write_binary();
- if (cassette&1) generate_cassette();
- if (cassette&2)
-	wav_write_file((const char *)binary, (const char *)intname, type, addr_start, addr_end, start, memory);
- if (maximum>0) save_symbols();
- printf("Completed in %.2f seconds",(float)clock()/(float)CLOCKS_PER_SEC);
- if (warnings>1) printf(", %i warnings\n",warnings);
-  else if (warnings==1) printf(", 1 warning\n");
-   else printf("\n");
- remove("~tmppre.*");
- exit(0);
+	write_binary();
+
+	if (cassette & 1)
+		generate_cassette();
+
+	if (cassette & 2)
+		wav_write_file(binary, intname, type, addr_start, addr_end, start, memory);
+
+	if (maximum > 0)
+		save_symbols();
+
+	printf("Completed in %.2f seconds", (float)clock() / (float)CLOCKS_PER_SEC);
+
+	if (warnings > 1)
+		printf(", %i warnings\n", warnings);
+	else
+		if (warnings == 1)
+			printf(", 1 warning\n");
+		else
+			printf("\n");
+	remove("~tmppre.*");
+	exit(0);
 }
 
 
