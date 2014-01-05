@@ -60,20 +60,20 @@ extern char *original;
 extern char *outputfname;
 extern char *symbols;
 
-extern unsigned int ePC;
-extern unsigned int PC;
-extern unsigned int subpage;
-extern unsigned int pagesize;
-extern unsigned int usedpage[256];
-extern unsigned int mapper;
-extern unsigned int pageinit;
-extern unsigned int addr_start;
-extern unsigned int addr_end;
-extern unsigned int start;
-extern unsigned int warnings;
-extern unsigned int lines;
+extern int ePC;
+extern int PC;
+extern int subpage;
+extern int pagesize;
+extern int usedpage[256];
+extern int mapper;
+extern int pageinit;
+extern int addr_start;
+extern int addr_end;
+extern int start;
+extern int warnings;
+extern int lines;
 
-extern unsigned int maxpage[4];
+extern int maxpage[4];
 
 extern int last_global;
 
@@ -102,7 +102,7 @@ extern void conditional_jump(const int);
 extern unsigned int read_label(const char *);
 extern unsigned int read_local(const char *);
 extern void yyerror(const char *);
-extern void include_binary(const char *, unsigned int, unsigned int);
+extern void include_binary(const char *, int, int);
 extern void finalize(void);
 extern void type_sinclair(void);
 extern void type_rom(void);

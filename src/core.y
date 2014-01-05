@@ -223,7 +223,7 @@ line:	pseudo_instruction EOL
 	}
 	| PREPRO_LINE value EOL
 	{
-		lines=$2;
+		lines = $2;
 	}
 	| label line
 	| label EOL
@@ -2035,7 +2035,7 @@ mnemo_general: MNEMO_DAA
 	}
 	| MNEMO_IM value_8bits
 	{
-		if (($2 < 0) || ($2 > 2))
+		if (((int)($2) < 0) || ((int)($2) > 2))
 			error_message(3);
 		write_byte(0xed);
 		if ($2 == 0)
@@ -2925,7 +2925,7 @@ mnemo_call: MNEMO_CALL value_16bits
 	}
 	| MNEMO_RST value_8bits
 	{
-		if (($2 % 8 != 0) || ($2 / 8 > 7) || ($2 / 8 < 0))
+		if (((int)($2) % 8 != 0) || ((int)($2) / 8 > 7) || ((int)($2) / 8 < 0))
 			error_message(10);
 		write_byte(0xc7 | (($2 / 8) << 3));
 	}
@@ -3255,5 +3255,6 @@ int yywrap(void)
 
 void yyerror(const char *s)
 {
+	printf("yyerror: %s\n", s);
 	error_message(0);
 }

@@ -40,8 +40,8 @@ unsigned char *memory, zilog = 0, pass = 1, size = 0, bios = 0, type = 0, parity
 int conditional[16], conditional_level = 0, cassette = 0;
 char *source, *intname, *binary, *filename, *original, *outputfname, *symbols, *assembler;
 int lastpage;
-unsigned int ePC = 0, PC = 0, subpage, pagesize, usedpage[256], mapper, pageinit, addr_start = 0xffff, addr_end = 0x0000, start = 0, warnings = 0, lines;
-unsigned int maxpage[4] = {32, 64, 256, 256};
+int ePC = 0, PC = 0, subpage, pagesize, usedpage[256], mapper, pageinit, addr_start = 0xffff, addr_end = 0x0000, start = 0, warnings = 0, lines;
+int maxpage[4] = {32, 64, 256, 256};
 
 int maximum = 0, last_global = 0;
 FILE *foriginal, *fmessages, *foutput;
@@ -644,11 +644,11 @@ void save_symbols(void)
 }
 
 
-void include_binary(const char* name,unsigned int skip,unsigned int n)
+void include_binary(const char* name, int skip, int n)
 {
 	FILE *file;
 	char k;
-	unsigned int i;
+	int i;
 
 	if ((file = fopen(name, "rb")) == NULL)
 		error_message(18);
@@ -929,7 +929,7 @@ void finalize(void)
 
 void initialize_memory(void)
 {
-	unsigned int i;
+	int i;
 	memory = (unsigned char*)malloc(0x1000000);	/* TODO: figure out what does this magic number mean, may be replace it with a definition */
 	for (i = 0; i < 0x1000000; i++)
 		memory[i] = 0;
@@ -976,7 +976,7 @@ void type_rom(void)
 
 void type_megarom(int n)
 {
-	unsigned int i;
+	int i;
 
 	if (pass == 1)
 		for (i = 0; i < 256; i++)
@@ -1072,7 +1072,7 @@ void set_subpage(int n, int addr)
 
 void locate_32k(void)	/* TODO: must be some Z80 code, need to figure out what is it */
 {
-	unsigned int i;
+	int i;
 	unsigned char locate32[31] =
 	{
 		0xCD, 0x38, 0x01, 0x0F, 0x0F, 0xE6, 0x03, 0x4F,
@@ -1151,7 +1151,7 @@ void select_page_register(unsigned int r, unsigned int addr)
 void cas_write_file(void)
 {
 	FILE *f;
-	unsigned int i;
+	int i;
 	unsigned char cas[8] = {0x1F, 0xA6, 0xDE, 0xBA, 0xCC, 0x13, 0x7D, 0x74};
 
 	if ((type == MEGAROM) || ((type == ROM) && (addr_start < 0x8000)))
@@ -1202,7 +1202,7 @@ void cas_write_file(void)
 
 int defined_symbol(const char *name)
 {
-	unsigned int i;
+	int i;
 
 	for (i = 0; i < maximum; i++)
 		if (!strcmp(name, id_list[i].name))
