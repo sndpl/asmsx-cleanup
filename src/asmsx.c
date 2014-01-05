@@ -27,6 +27,10 @@
 
 #include "asmsx.h"
 #include "wav.h"
+#include "parser1.h"
+#include "parser2.h"
+#include "parser3.h"
+
 #include "core.c"	/* TODO: change this somehow, C is not supposed to be included */
 #include "lex.c"	/* TODO: it should be compiled and linked together instead */
 
@@ -34,9 +38,8 @@
 /* TODO: reduce the number of global variables */
 
 unsigned char *memory, zilog = 0, pass = 1, size = 0, bios = 0, type = 0, parity;
-int conditional[16], conditional_level = 0;
-unsigned char *assembler, cassette = 0;
-char *source, *intname, *binary, *filename, *original, *outputfname, *symbols;
+int conditional[16], conditional_level = 0, cassette = 0;
+char *source, *intname, *binary, *filename, *original, *outputfname, *symbols, *assembler;
 unsigned int ePC = 0, PC = 0, subpage, pagesize, usedpage[256], lastpage, mapper, pageinit, addr_start = 0xffff, addr_end = 0x0000, start = 0, warnings = 0, lines;
 unsigned int maxpage[4] = {32, 64, 256, 256};
 
@@ -579,18 +582,20 @@ void save_symbols(void)
 
 		j = 0;
 		for (i = 0; i < maximum; i++)
-			if (1 == (id_list[i].type))
+			if ((id_list[i].type) == 1)
 				j++;
 
 		if (j > 0)
 		{
 			fprintf(f, "; global and local labels\n");
 			for (i = 0; i < maximum; i++)
-				if (1 == (id_list[i].type))
+				if ((id_list[i].type) == 1)
+				{
 					if (type != MEGAROM)
 						fprintf(f, "%4.4Xh %s\n", id_list[i].value, id_list[i].name);
 					else
 						fprintf(f, "%2.2Xh:%4.4Xh %s\n", id_list[i].page & 0xff, id_list[i].value, id_list[i].name);
+				}
 		}
 
 		j = 0;
@@ -863,6 +868,7 @@ void write_binary(void)
 	}
 
 	if (type != SINCLAIR)
+	{
 		if (!size)
 		{
 			if (type != MEGAROM)
@@ -879,6 +885,7 @@ void write_binary(void)
 			else
 				for (i = 0; i < size * 1024; i++)
 					putc(memory[i], foutput);
+	}
 
 	fclose(foutput);
 }
@@ -886,8 +893,6 @@ void write_binary(void)
 
 void finalize(void)
 {
-	unsigned int i;
- 
 	/* Get name of binary output file */
 	strcpy(binary, filename);
 
@@ -1093,10 +1098,12 @@ unsigned int selector(unsigned int addr)
 		addr = 0x6000 + (addr - 0x4000) / 4;
 
 	if (mapper == ASCII16)
+	{
 		if (addr == 0x4000)
 			addr = 0x6000;
 		else
 			addr = 0x7000;
+	}
 
 	return addr;
 }
@@ -1215,9 +1222,9 @@ int main(int argc, char *argv[])
 	}
 	clock();
 	initialize_system();
-	assembler = (unsigned char *)malloc(ASMSX_MAX_PATH);
-	source = (unsigned char *)malloc(ASMSX_MAX_PATH);
-	original = (unsigned char *)malloc(ASMSX_MAX_PATH);
+	assembler = (char *)malloc(ASMSX_MAX_PATH);
+	source = (char *)malloc(ASMSX_MAX_PATH);
+	original = (char *)malloc(ASMSX_MAX_PATH);
 	binary = (char *)malloc(ASMSX_MAX_PATH);
 	symbols = (char *)malloc(ASMSX_MAX_PATH);
 	outputfname = (char *)malloc(ASMSX_MAX_PATH);
