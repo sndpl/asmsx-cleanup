@@ -969,28 +969,38 @@ void type_rom(void)
 
 void type_megarom(int n)
 {
- unsigned int i;
+	unsigned int i;
 
- if (pass==1) for (i=0;i<256;i++) usedpage[i]=0;
+	if (pass == 1)
+		for (i = 0; i < 256; i++)
+			usedpage[i] = 0;
 
- if ((pass==1) && (!addr_start)) error_message(19);
-/* if ((pass==1) && ((!PC) || (!ePC))) error_message(19); */
- if ((type) && (type!=MEGAROM)) error_message(20);
- if ((n<0)||(n>3)) error_message(33);
- type=MEGAROM;
- usedpage[0]=1;
- subpage=0;
- pageinit=0x4000;
- lastpage=0;
- if ((n==0)||(n==1)||(n==2)) pagesize=8; else pagesize=16;
- mapper=n;
- PC=0x4000;
- ePC=0x4000;
- write_byte(65);
- write_byte(66);
- PC+=14;
- ePC+=14;
- if (!start) start=ePC;
+	if ((pass == 1) && (!addr_start))
+		error_message(19);
+	/* if ((pass==1) && ((!PC) || (!ePC)))
+		error_message(19); */
+	if ((type) && (type != MEGAROM))
+		error_message(20);
+	if ((n < 0) || (n > 3))
+		error_message(33);
+	type = MEGAROM;
+	usedpage[0] = 1;
+	subpage = 0;
+	pageinit = 0x4000;
+	lastpage = 0;
+	if ((n == 0) || (n == 1) || (n == 2))
+		pagesize = 8;
+	else
+		pagesize = 16;
+	mapper = n;
+	PC = 0x4000;
+	ePC = 0x4000;
+	write_byte(65);
+	write_byte(66);
+	PC += 14;
+	ePC += 14;
+	if (!start)
+		start = ePC;
 }
 
 
