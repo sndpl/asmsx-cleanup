@@ -509,15 +509,23 @@ void register_symbol(const char *name,int number,int type)
 }
 
 
-void register_variable(const char *name,int number)
+void register_variable(const char *name, int number)
 {
- unsigned int i;
- for (i=0;i<maximum;i++) if ((!strcmp(name,id_list[i].name))&&(id_list[i].type==3)) {id_list[i].value=number;return;}
- if (++maximum==MAX_ID) error_message(11);
- id_list[maximum-1].name=(char*)malloc(strlen(name)+1);
- strcpy(id_list[maximum-1].name,strtok((char *)name," "));
- id_list[maximum-1].value=number;
- id_list[maximum-1].type=3;
+	unsigned int i;
+	for (i = 0; i < maximum; i++)
+		if ((!strcmp(name, id_list[i].name)) && (id_list[i].type == 3))
+		{
+			id_list[i].value=number;
+			return;
+		}
+
+	if (++maximum == MAX_ID)
+		error_message(11);
+
+	id_list[maximum - 1].name = (char*)malloc(strlen(name) + 1);
+	strcpy(id_list[maximum - 1].name, strtok((char *)name, " "));
+	id_list[maximum - 1].value = number;
+	id_list[maximum - 1].type = 3;
 }
 
 
