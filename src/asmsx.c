@@ -416,14 +416,13 @@ void write_word(const int w)
 	write_byte((w >> 8) & 0xff);
 }
 
-void conditional_jump(int address)
+void conditional_jump(const int address)
 {
- int jump;
-
- jump=address-ePC-1;
- if ((jump>127)||(jump<-128)) error_message(8);
- write_byte(address-ePC-1);
-
+	int jump;
+	jump = address - ePC - 1;
+	if ((jump > 127) || (jump <- 128))
+		error_message(8);
+	write_byte(address - ePC - 1);
 }
 
 void register_label(const char *name)

@@ -98,7 +98,7 @@ extern void generate_cassette(void);
 extern void write_byte(int);
 extern void write_text(const char *);
 extern void write_word(const int);
-extern void conditional_jump(int);
+extern void conditional_jump(const int);
 extern unsigned int read_label(const char *);
 extern unsigned int read_local(const char *);
 extern void yyerror(const char *);
