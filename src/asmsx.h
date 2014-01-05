@@ -65,7 +65,6 @@ extern unsigned int PC;
 extern unsigned int subpage;
 extern unsigned int pagesize;
 extern unsigned int usedpage[256];
-extern unsigned int lastpage;
 extern unsigned int mapper;
 extern unsigned int pageinit;
 extern unsigned int addr_start;
@@ -76,7 +75,6 @@ extern unsigned int lines;
 
 extern unsigned int maxpage[4];
 
-//extern int maximum;
 extern int last_global;
 
 extern FILE *foriginal;

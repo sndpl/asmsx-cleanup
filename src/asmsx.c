@@ -39,7 +39,8 @@
 unsigned char *memory, zilog = 0, pass = 1, size = 0, bios = 0, type = 0, parity;
 int conditional[16], conditional_level = 0, cassette = 0;
 char *source, *intname, *binary, *filename, *original, *outputfname, *symbols, *assembler;
-unsigned int ePC = 0, PC = 0, subpage, pagesize, usedpage[256], lastpage, mapper, pageinit, addr_start = 0xffff, addr_end = 0x0000, start = 0, warnings = 0, lines;
+int lastpage;
+unsigned int ePC = 0, PC = 0, subpage, pagesize, usedpage[256], mapper, pageinit, addr_start = 0xffff, addr_end = 0x0000, start = 0, warnings = 0, lines;
 unsigned int maxpage[4] = {32, 64, 256, 256};
 
 int maximum = 0, last_global = 0;
@@ -732,7 +733,7 @@ void write_zx_number(unsigned int i)	/* TODO: move to zx specific unit */
 
 void write_binary(void)
 {
-	unsigned int i, j;
+	int i, j;
 
 	if ((addr_start > addr_end) && (type != MEGAROM))
 		error_message(24);
@@ -800,7 +801,7 @@ void write_binary(void)
 			write_zx_byte(0);
 
 			for (i = 0; i < 10; i++) 
-				if (i < strlen(filename))
+				if (i < (int)strlen(filename))
 					write_zx_byte(filename[i]);
 				else
 					write_zx_byte(32);	/* pad name on tape with spaces */
@@ -849,7 +850,7 @@ void write_binary(void)
 
 		for (i = 0; i < 10; i++) 
 
-		if (i < strlen(filename))
+		if (i < (int)strlen(filename))
 			write_zx_byte(filename[i]);
 		else
 			write_zx_byte(32);	/* pad name on tape with spaces */
