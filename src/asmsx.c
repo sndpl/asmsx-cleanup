@@ -18,14 +18,15 @@
  You should have received a copy of the GNU General Public License
  along with this program.  If not, see <http://www.gnu.org/licenses/>.  */
 
-#include "core.c"
-#include "lex.c"
+
+#include "core.c"	/* TODO: change this somehow, C is not supposed to be included */
+#include "lex.c"	/* TODO: it should be compiled and linked together instead */
 
 int main(int argc, char *argv[])
 {
 	int i;
 
-	printf(" asmsx %s MSX cross assembler [%s]\n", ASMSX_VERSION, __DATE__);
+	printf("asmsx %s - MSX cross assembler %s\n", ASMSX_VERSION, __DATE__);
 	if (2 != argc)
 	{
         	printf("Syntax: asmsx [file.asm]\n");
