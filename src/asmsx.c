@@ -1102,19 +1102,21 @@ unsigned int selector(unsigned int addr)
 }
 
 
-void select_page_direct(unsigned int n,unsigned int addr)
+void select_page_direct(unsigned int n, unsigned int addr)
 {
- unsigned int sel;
+	unsigned int sel;
 
- sel=selector(addr);
+	sel = selector(addr);
 
- if ((pass==2)&&(!usedpage[n])) error_message(39);
- write_byte(0xf5);
- write_byte(0x3e);
- write_byte(n);
- write_byte(0x32);
- write_word(sel);
- write_byte(0xf1);
+	if ((pass == 2) && (!usedpage[n]))
+		error_message(39);
+
+	write_byte(0xf5);
+	write_byte(0x3e);
+	write_byte(n);
+	write_byte(0x32);
+	write_word(sel);
+	write_byte(0xf1);
 }
 
 
