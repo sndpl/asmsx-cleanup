@@ -1440,27 +1440,181 @@ mnemo_arithm8bit: MNEMO_ADD REGISTER ',' REGISTER
 		write_byte(0xb6);
 		write_byte($4);
 	}
-	| MNEMO_XOR REGISTER ',' REGISTER {if ($2!=7) error_message(4);if (zilog) warning_message(5);write_byte(0xa8|$4);}
-	| MNEMO_XOR REGISTER ',' REGISTER_IX {if ($2!=7) error_message(4);if (zilog) warning_message(5);write_byte(0xdd);write_byte(0xa8|$4);}
-	| MNEMO_XOR REGISTER ',' REGISTER_IY {if ($2!=7) error_message(4);if (zilog) warning_message(5);write_byte(0xfd);write_byte(0xa8|$4);}
-	| MNEMO_XOR REGISTER ',' value_8bits {if ($2!=7) error_message(4);if (zilog) warning_message(5);write_byte(0xee);write_byte($4);}
-	| MNEMO_XOR REGISTER ',' REGISTER_IND_HL {if ($2!=7) error_message(4);if (zilog) warning_message(5);write_byte(0xae);}
-	| MNEMO_XOR REGISTER ',' rel_IX {if ($2!=7) error_message(4);if (zilog) warning_message(5);write_byte(0xdd);write_byte(0xae);write_byte($4);}
-	| MNEMO_XOR REGISTER ',' rel_IY {if ($2!=7) error_message(4);if (zilog) warning_message(5);write_byte(0xfd);write_byte(0xae);write_byte($4);}
-	| MNEMO_CP REGISTER ',' REGISTER {if ($2!=7) error_message(4);if (zilog) warning_message(5);write_byte(0xb8|$4);}
-	| MNEMO_CP REGISTER ',' REGISTER_IX {if ($2!=7) error_message(4);if (zilog) warning_message(5);write_byte(0xdd);write_byte(0xb8|$4);}
-	| MNEMO_CP REGISTER ',' REGISTER_IY {if ($2!=7) error_message(4);if (zilog) warning_message(5);write_byte(0xfd);write_byte(0xb8|$4);}
-	| MNEMO_CP REGISTER ',' value_8bits {if ($2!=7) error_message(4);if (zilog) warning_message(5);write_byte(0xfe);write_byte($4);}
-	| MNEMO_CP REGISTER ',' REGISTER_IND_HL {if ($2!=7) error_message(4);if (zilog) warning_message(5);write_byte(0xbe);}
-	| MNEMO_CP REGISTER ',' rel_IX {if ($2!=7) error_message(4);if (zilog) warning_message(5);write_byte(0xdd);write_byte(0xbe);write_byte($4);}
-	| MNEMO_CP REGISTER ',' rel_IY {if ($2!=7) error_message(4);if (zilog) warning_message(5);write_byte(0xfd);write_byte(0xbe);write_byte($4);}
-	| MNEMO_ADD REGISTER {if (zilog) warning_message(5);write_byte(0x80|$2);}
-	| MNEMO_ADD REGISTER_IX {if (zilog) warning_message(5);write_byte(0xdd);write_byte(0x80|$2);}
-	| MNEMO_ADD REGISTER_IY {if (zilog) warning_message(5);write_byte(0xfd);write_byte(0x80|$2);}
-	| MNEMO_ADD value_8bits {if (zilog) warning_message(5);write_byte(0xc6);write_byte($2);}
-	| MNEMO_ADD REGISTER_IND_HL {if (zilog) warning_message(5);write_byte(0x86);}
-	| MNEMO_ADD rel_IX {if (zilog) warning_message(5);write_byte(0xdd);write_byte(0x86);write_byte($2);}
-	| MNEMO_ADD rel_IY {if (zilog) warning_message(5);write_byte(0xfd);write_byte(0x86);write_byte($2);}
+	| MNEMO_XOR REGISTER ',' REGISTER
+	{
+		if ($2 != 7)
+			error_message(4);
+		if (zilog)
+			warning_message(5);
+		write_byte(0xa8 | $4);
+	}
+	| MNEMO_XOR REGISTER ',' REGISTER_IX
+	{
+		if ($2 != 7)
+			error_message(4);
+		if (zilog)
+			warning_message(5);
+		write_byte(0xdd);
+		write_byte(0xa8 | $4);
+	}
+	| MNEMO_XOR REGISTER ',' REGISTER_IY
+	{
+		if ($2 != 7)
+			error_message(4);
+		if (zilog)
+			warning_message(5);
+		write_byte(0xfd);
+		write_byte(0xa8 | $4);
+	}
+	| MNEMO_XOR REGISTER ',' value_8bits
+	{
+		if ($2 != 7)
+			error_message(4);
+		if (zilog)
+			warning_message(5);
+		write_byte(0xee);
+		write_byte($4);
+	}
+	| MNEMO_XOR REGISTER ',' REGISTER_IND_HL
+	{
+		if ($2 != 7)
+			error_message(4);
+		if (zilog)
+			warning_message(5);
+		write_byte(0xae);
+	}
+	| MNEMO_XOR REGISTER ',' rel_IX
+	{
+		if ($2 != 7)
+			error_message(4);
+		if (zilog)
+			warning_message(5);
+		write_byte(0xdd);
+		write_byte(0xae);
+		write_byte($4);
+	}
+	| MNEMO_XOR REGISTER ',' rel_IY
+	{
+		if ($2 != 7)
+			error_message(4);
+		if (zilog)
+			warning_message(5);
+		write_byte(0xfd);
+		write_byte(0xae);
+		write_byte($4);
+	}
+	| MNEMO_CP REGISTER ',' REGISTER
+	{
+		if ($2 != 7)
+			error_message(4);
+		if (zilog)
+			warning_message(5);
+		write_byte(0xb8 | $4);
+	}
+	| MNEMO_CP REGISTER ',' REGISTER_IX
+	{
+		if ($2 != 7)
+			error_message(4);
+		if (zilog)
+			warning_message(5);
+		write_byte(0xdd);
+		write_byte(0xb8 | $4);
+	}
+	| MNEMO_CP REGISTER ',' REGISTER_IY
+	{
+		if ($2 != 7)
+			error_message(4);
+		if (zilog)
+			warning_message(5);
+		write_byte(0xfd);
+		write_byte(0xb8 | $4);
+	}
+	| MNEMO_CP REGISTER ',' value_8bits
+	{
+		if ($2 != 7)
+			error_message(4);
+		if (zilog)
+			warning_message(5);
+		write_byte(0xfe);
+		write_byte($4);
+	}
+	| MNEMO_CP REGISTER ',' REGISTER_IND_HL
+	{
+		if ($2 != 7)
+			error_message(4);
+		if (zilog)
+			warning_message(5);
+		write_byte(0xbe);
+	}
+	| MNEMO_CP REGISTER ',' rel_IX
+	{
+		if ($2 != 7)
+			error_message(4);
+		if (zilog)
+			warning_message(5);
+		write_byte(0xdd);
+		write_byte(0xbe);
+		write_byte($4);
+	}
+	| MNEMO_CP REGISTER ',' rel_IY
+	{
+		if ($2 != 7)
+			error_message(4);
+		if (zilog)
+			warning_message(5);
+		write_byte(0xfd);
+		write_byte(0xbe);
+		write_byte($4);
+	}
+	| MNEMO_ADD REGISTER
+	{
+		if (zilog)
+			warning_message(5);
+		write_byte(0x80 | $2);
+	}
+	| MNEMO_ADD REGISTER_IX
+	{
+		if (zilog)
+			warning_message(5);
+		write_byte(0xdd);
+		write_byte(0x80 | $2);
+	}
+	| MNEMO_ADD REGISTER_IY
+	{
+		if (zilog)
+			warning_message(5);
+		write_byte(0xfd);
+		write_byte(0x80 | $2);
+	}
+	| MNEMO_ADD value_8bits
+	{
+		if (zilog)
+			warning_message(5);
+		write_byte(0xc6);
+		write_byte($2);
+	}
+	| MNEMO_ADD REGISTER_IND_HL
+	{
+		if (zilog)
+			warning_message(5);
+		write_byte(0x86);
+	}
+	| MNEMO_ADD rel_IX
+	{
+		if (zilog)
+			warning_message(5);
+		write_byte(0xdd);
+		write_byte(0x86);
+		write_byte($2);
+	}
+	| MNEMO_ADD rel_IY
+	{
+		if (zilog)
+			warning_message(5);
+		write_byte(0xfd);
+		write_byte(0x86);
+		write_byte($2);
+	}
 	| MNEMO_ADC REGISTER {if (zilog) warning_message(5);write_byte(0x88|$2);}
 	| MNEMO_ADC REGISTER_IX {if (zilog) warning_message(5);write_byte(0xdd);write_byte(0x88|$2);}
 	| MNEMO_ADC REGISTER_IY {if (zilog) warning_message(5);write_byte(0xfd);write_byte(0x88|$2);}
