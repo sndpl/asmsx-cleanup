@@ -2552,32 +2552,142 @@ mnemo_rotate: MNEMO_RLCA
 	}
 ;
 
-mnemo_bits: MNEMO_BIT value_3bits ',' REGISTER {write_byte(0xcb);write_byte(0x40|($2<<3)|($4));}
-          | MNEMO_BIT value_3bits ',' REGISTER_IND_HL {write_byte(0xcb);write_byte(0x46|($2<<3));}
-          | MNEMO_BIT value_3bits ',' rel_IX {write_byte(0xdd);write_byte(0xcb);write_byte($4);write_byte(0x46|($2<<3));}
-          | MNEMO_BIT value_3bits ',' rel_IY {write_byte(0xfd);write_byte(0xcb);write_byte($4);write_byte(0x46|($2<<3));}
-
-          | MNEMO_SET value_3bits ',' REGISTER {write_byte(0xcb);write_byte(0xc0|($2<<3)|($4));}
-          | MNEMO_SET value_3bits ',' REGISTER_IND_HL {write_byte(0xcb);write_byte(0xc6|($2<<3));}
-          | MNEMO_SET value_3bits ',' rel_IX {write_byte(0xdd);write_byte(0xcb);write_byte($4);write_byte(0xc6|($2<<3));}
-          | MNEMO_SET value_3bits ',' rel_IY {write_byte(0xfd);write_byte(0xcb);write_byte($4);write_byte(0xc6|($2<<3));}
-
-          | MNEMO_SET value_3bits ',' rel_IX ',' REGISTER {if ($6==6) error_message(2);write_byte(0xdd);write_byte(0xcb);write_byte($4);write_byte(0xc0|($2<<3)|$6);}
-          | MNEMO_SET value_3bits ',' rel_IY ',' REGISTER {if ($6==6) error_message(2);write_byte(0xfd);write_byte(0xcb);write_byte($4);write_byte(0xc0|($2<<3)|$6);}
-
-          | MNEMO_LD REGISTER ',' MNEMO_SET value_3bits ',' rel_IX {write_byte(0xdd);write_byte(0xcb);write_byte($7);write_byte(0xc0|($5<<3)|$2);}
-          | MNEMO_LD REGISTER ',' MNEMO_SET value_3bits ',' rel_IY {write_byte(0xfd);write_byte(0xcb);write_byte($7);write_byte(0xc0|($5<<3)|$2);}
-
-          | MNEMO_RES value_3bits ',' REGISTER {write_byte(0xcb);write_byte(0x80|($2<<3)|($4));}
-          | MNEMO_RES value_3bits ',' REGISTER_IND_HL {write_byte(0xcb);write_byte(0x86|($2<<3));}
-          | MNEMO_RES value_3bits ',' rel_IX {write_byte(0xdd);write_byte(0xcb);write_byte($4);write_byte(0x86|($2<<3));}
-          | MNEMO_RES value_3bits ',' rel_IY {write_byte(0xfd);write_byte(0xcb);write_byte($4);write_byte(0x86|($2<<3));}
-
-          | MNEMO_RES value_3bits ',' rel_IX ',' REGISTER {if ($6==6) error_message(2);write_byte(0xdd);write_byte(0xcb);write_byte($4);write_byte(0x80|($2<<3)|$6);}
-          | MNEMO_RES value_3bits ',' rel_IY ',' REGISTER {if ($6==6) error_message(2);write_byte(0xfd);write_byte(0xcb);write_byte($4);write_byte(0x80|($2<<3)|$6);}
-
-          | MNEMO_LD REGISTER ',' MNEMO_RES value_3bits ',' rel_IX {write_byte(0xdd);write_byte(0xcb);write_byte($7);write_byte(0x80|($5<<3)|$2);}
-          | MNEMO_LD REGISTER ',' MNEMO_RES value_3bits ',' rel_IY {write_byte(0xfd);write_byte(0xcb);write_byte($7);write_byte(0x80|($5<<3)|$2);}
+mnemo_bits: MNEMO_BIT value_3bits ',' REGISTER
+	{
+		write_byte(0xcb);
+		write_byte(0x40 | ($2 << 3) | ($4));
+	}
+	| MNEMO_BIT value_3bits ',' REGISTER_IND_HL
+	{
+		write_byte(0xcb);
+		write_byte(0x46 | ($2 << 3));
+	}
+	| MNEMO_BIT value_3bits ',' rel_IX
+	{
+		write_byte(0xdd);
+		write_byte(0xcb);
+		write_byte($4);
+		write_byte(0x46 | ($2 << 3));
+	}
+	| MNEMO_BIT value_3bits ',' rel_IY
+	{
+		write_byte(0xfd);
+		write_byte(0xcb);
+		write_byte($4);
+		write_byte(0x46 | ($2 << 3));
+	}
+	| MNEMO_SET value_3bits ',' REGISTER
+	{
+		write_byte(0xcb);
+		write_byte(0xc0 | ($2 << 3) | ($4));
+	}
+	| MNEMO_SET value_3bits ',' REGISTER_IND_HL
+	{
+		write_byte(0xcb);
+		write_byte(0xc6 | ($2 << 3));
+	}
+	| MNEMO_SET value_3bits ',' rel_IX
+	{
+		write_byte(0xdd);
+		write_byte(0xcb);
+		write_byte($4);
+		write_byte(0xc6 | ($2 << 3));
+	}
+	| MNEMO_SET value_3bits ',' rel_IY
+	{
+		write_byte(0xfd);
+		write_byte(0xcb);
+		write_byte($4);
+		write_byte(0xc6 | ($2 << 3));
+	}
+	| MNEMO_SET value_3bits ',' rel_IX ',' REGISTER
+	{
+		if ($6 == 6)
+			error_message(2);
+		write_byte(0xdd);
+		write_byte(0xcb);
+		write_byte($4);
+		write_byte(0xc0 | ($2 << 3) | $6);
+	}
+	| MNEMO_SET value_3bits ',' rel_IY ',' REGISTER
+	{
+		if ($6 == 6)
+			error_message(2);
+		write_byte(0xfd);
+		write_byte(0xcb);
+		write_byte($4);
+		write_byte(0xc0 | ($2 << 3) | $6);
+	}
+	| MNEMO_LD REGISTER ',' MNEMO_SET value_3bits ',' rel_IX
+	{
+		write_byte(0xdd);
+		write_byte(0xcb);
+		write_byte($7);
+		write_byte(0xc0 | ($5 << 3) | $2);
+	}
+	| MNEMO_LD REGISTER ',' MNEMO_SET value_3bits ',' rel_IY
+	{
+		write_byte(0xfd);
+		write_byte(0xcb);
+		write_byte($7);
+		write_byte(0xc0 | ($5 << 3) | $2);
+	}
+	| MNEMO_RES value_3bits ',' REGISTER
+	{
+		write_byte(0xcb);
+		write_byte(0x80 | ($2 << 3) | ($4));
+	}
+	| MNEMO_RES value_3bits ',' REGISTER_IND_HL
+	{
+		write_byte(0xcb);
+		write_byte(0x86 | ($2 << 3));
+	}
+	| MNEMO_RES value_3bits ',' rel_IX
+	{
+		write_byte(0xdd);
+		write_byte(0xcb);
+		write_byte($4);
+		write_byte(0x86 | ($2 << 3));
+	}
+	| MNEMO_RES value_3bits ',' rel_IY
+	{
+		write_byte(0xfd);
+		write_byte(0xcb);
+		write_byte($4);
+		write_byte(0x86 | ($2 << 3));
+	}
+	| MNEMO_RES value_3bits ',' rel_IX ',' REGISTER
+	{
+		if ($6 == 6)
+			error_message(2);
+		write_byte(0xdd);
+		write_byte(0xcb);
+		write_byte($4);
+		write_byte(0x80 | ($2<<3) | $6);
+	}
+	| MNEMO_RES value_3bits ',' rel_IY ',' REGISTER
+	{
+		if ($6 == 6)
+			error_message(2);
+		write_byte(0xfd);
+		write_byte(0xcb);
+		write_byte($4);
+		write_byte(0x80 | ($2 << 3) | $6);
+	}
+	| MNEMO_LD REGISTER ',' MNEMO_RES value_3bits ',' rel_IX
+	{
+		write_byte(0xdd);
+		write_byte(0xcb);
+		write_byte($7);
+		write_byte(0x80 | ($5 << 3) | $2);
+	}
+	| MNEMO_LD REGISTER ',' MNEMO_RES value_3bits ',' rel_IY
+	{
+		write_byte(0xfd);
+		write_byte(0xcb);
+		write_byte($7);
+		write_byte(0x80 | ($5 << 3) | $2);
+	}
 ;
 
 mnemo_io: MNEMO_IN REGISTER ',' '[' value_8bits ']' {if ($2!=7) error_message(4);write_byte(0xdb);write_byte($5);}
@@ -2915,7 +3025,7 @@ void warning_message(int code)
   case 2: printf("8-bit overflow\n");break;
   case 3: printf("3-bit overflow\n");break;
   case 4: printf("output cannot be converted to CAS\n");break;
-  case 5: printf("non official Zilog syntax\n");break;
+  case 5: printf("not official Zilog syntax\n");break;
   case 6: printf("undocumented Zilog instruction\n");break;
  }
  warnings++;
