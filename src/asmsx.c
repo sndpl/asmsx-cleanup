@@ -490,7 +490,7 @@ void register_symbol(const char *name,int number,int type)
 
 	if (pass == 2)
 		return;
-	for (i=0; i < maximum; i++)
+	for (i = 0; i < maximum; i++)
 		if (!strcmp(name, id_list[i].name))
 		{
 			error_message(14);
@@ -619,7 +619,7 @@ void save_symbols(void)
 		}
 
 		j = 0;
-		for (i=0; i < maximum; i++)
+		for (i = 0; i < maximum; i++)
 			if (id_list[i].type == 3)
 				j++;
 
