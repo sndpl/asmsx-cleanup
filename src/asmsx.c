@@ -953,14 +953,17 @@ void type_sinclair(void)
 
 void type_rom(void)
 {
- if ((pass==1) && (!addr_start)) error_message(19);
- if ((type) && (type!=ROM)) error_message(20);
- type=ROM;
- write_byte(65);
- write_byte(66);
- PC+=14;
- ePC+=14;
- if (!start) start=ePC;
+	if ((pass == 1) && (!addr_start))
+		error_message(19);
+	if ((type) && (type != ROM))
+		error_message(20);
+	type = ROM;
+	write_byte(65);
+	write_byte(66);
+	PC += 14;
+	ePC += 14;
+	if (!start)
+		start = ePC;
 }
 
 
