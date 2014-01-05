@@ -16,6 +16,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "asmsx.h"
+
 #define YY_NO_INPUT 1
 #ifdef _MSC_VER
 #define YY_NO_UNISTD_H 1
@@ -56,7 +58,7 @@ extern int prompt_error1(char);
 	for (i=0;i<include_index;i++)
 		if (!strcmp(tmpstr,include_stack[i].name))
 			prompt_error1(4);
-	include_stack[include_index].name=(char*)malloc(0x100);
+	include_stack[include_index].name=(char*)malloc(ASMSX_MAX_PATH);
 	strcpy(include_stack[include_index].name,name);
 	include_stack[include_index].line=yylineno;
 	include_stack[include_index++].buffer=YY_CURRENT_BUFFER;

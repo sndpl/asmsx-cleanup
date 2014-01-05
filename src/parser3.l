@@ -13,6 +13,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "asmsx.h"
+
 #define YY_NO_INPUT 1
 #ifdef _MSC_VER
 #define YY_NO_UNISTD_H 1

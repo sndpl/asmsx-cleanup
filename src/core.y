@@ -1,121 +1,24 @@
-/* asmsx - an MSX / Z80 assembler
-   (C) Eduardo A. Robsy Petrus, 2000-2010
-   Bison grammar file
-         v.0.01a: [10/09/2000] First public version
-
-         v.0.01b: [03/05/2001] Bugfixes. Added PRINTFIX,FIXMUL, FIXDIV
-
-         v.0.10 : [19/08/2004] Overall enhance. Opcodes 100% checked
-
-         v.0.11 : [31/12/2004] IX, IY do accept negative or null offsets
-
-         v.0.12 : [11/09/2005] Recovery version
-         Added REPT/ENDR, variables/constants, RANDOM, DEBUG blueMSX,
-                     BREAKPOINT blueMSX, PHASE/DEPHASE, $ symbol
-
-         v.0.12e: [07/10/2006]
-                     Additional parameters for INCBIN "file" [SKIP num] [SIZE num]
-                     Second page locating macro (32KB ROMs / megaROMs)
-                     Added experimental support for MegaROMs:
-                        * MEGAROM [mapper] - define mapper type
-                        * SUBPAGE [n] AT [address] - define page
-                        * SELECT [n] AT [address] - set page
-
-         v.0.12f: [16/11/2006]
-                     Several binary operators fixed
-                     Conditional assembly
-
-         v.0.12f1:[17/11/2006]
-                     Nested conditional assembly and other conditions
-
-         v.0.12g:[18/03/2007]
-                     PHASE/DEPHASE bug fixed
-                     Initial CAS format support
-                     WAV output added
-                     Enhanced conditional assembly: IFDEF
-
-         v.0.14: [UNRELEASED]
-		     First working Linux version
-		     Somewhat improved stability
-
-         v.0.15: [UNRELEASED]
-                     ADD IX,HL and ADD IY,HL operations removed
-                     Label vs Macro collisions solved
-                     Overall improvement in pointer stability
-		     INCBIN now can SKIP and SIZE upto 32-bit 
-
-         v.0.16: [CANDIDATE]		     First version fully developed in Linux
-		     Fixed bug affecting filename extensions
-		     Removed the weird IM 0/1 - apparently it is just a plain undocumented IM 0 opcode
-		     FILENAME directive to set assembler output filenames
-		     ZILOG directive for using Zilog style indirections and official syntax
-		     ROM/MEGAROM now have a standard 16 byte header
-		     Fixed a really annoying bug regarding $DB data read as pseudo DB
-		     SINCLAIR directive included to support TAP file generation (ouch!) --> STILL TO BE TESTED 
-
-		Pending:
-			- Adjust BIOS for SINCLAIR model?
-			- DISK support
-			- R800/Z80/8080/Gameboy support
-			- Sinclair ZX Spectrum TAP/TZX file format supported
-
-		Eduardo "Pitpan" Robsy sold this version of asmsx along with all copyrights to cjv99.
-		cjv99 released it as free software under GPLv3 license here:
-		https://code.google.com/p/asmsx-license-gpl/
-
-
-         v.0.16.1: [December 17, 2013]
-		This is a new fork of cjv99 release, hosted at https://code.google.com/p/asmsx
-
-		This release is fully translated from Spanish to English
-		Added fix from asmsx-license-gpl project error tracker: https://code.google.com/p/asmsx-license-gpl/issues/detail?id=1
-*/
-
-/* C header files and definitions */
-
 %{
-#include<stdio.h>
-#include<stdlib.h>
-#include<string.h>
-#include<time.h>
-#include<math.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <time.h>
+#include <math.h>
 
-#define VERSION "0.16.1 WIP"
-
-#define Z80 0
-#define ROM 1
-#define BASIC 2
-#define MSXDOS 3
-#define MEGAROM 4
-#define SINCLAIR 5
-
-#define KONAMI 0
-#define KONAMISCC 1
-#define ASCII8 2
-#define ASCII16 3
+#include "asmsx.h"
+#include "wav.h"
 
 #define max_id 32000
 
-#define FREQ_HI 0x7FFF
-#define FREQ_LO 0x8000
-#define SILENCE 0x0000
-
-unsigned char wav_header[44]={
-0x52,0x49,0x46,0x46,0x44,0x00,0x00,0x00,0x57,0x41,0x56,0x45,0x66,0x6D,0x74,0x20,
-0x10,0x00,0x00,0x00,0x01,0x00,0x02,0x00,0x44,0xAC,0x00,0x00,0x10,0xB1,0x02,0x00,
-0x04,0x00,0x10,0x00,0x64,0x61,0x74,0x61,0x20,0x00,0x00,0x00};
-
-FILE *wav;
-
-
-unsigned char *memory,zilog=0,pass=1,size=0,bios=0,type=0,conditional[16],conditional_level=0,parity;
+unsigned char *memory,zilog=0,pass=1,size=0,bios=0,type=0,parity;
+int conditional[16], conditional_level=0;
 unsigned char *filename,*assembler,*binary,*symbols,*outputfname,*source,*original,cassette=0,*intname;
 unsigned int ePC=0,PC=0,subpage,pagesize,usedpage[256],lastpage,mapper,pageinit,addr_start=0xffff,addr_end=0x0000,start=0,warnings=0,lines;
 unsigned int maxpage[4]={32,64,256,256};
 unsigned char locate32[31]={0xCD,0x38,0x1,0xF,0xF,0xE6,0x3,0x4F,0x21,0xC1,0xFC,0x85,0x6F,0x7E,0xE6,0x80,
 0xB1,0x4F,0x2C,0x2C,0x2C,0x2C,0x7E,0xE6,0xC,0xB1,0x26,0x80,0xCD,0x24,0x0};
 
-signed int maximum=0,last_global=0;
+int maximum=0, last_global=0;
 FILE *foriginal,*fmessages,*foutput;
  struct
  {
@@ -356,7 +259,7 @@ pseudo_instruction: PSEUDO_ORG value {if (conditional[conditional_level]) {PC=$2
                   | PSEUDO_MSXDOS {if (conditional[conditional_level]) {type_msxdos();}}
                   | PSEUDO_SINCLAIR {if (conditional[conditional_level]) {type_sinclair();}}
                   | PSEUDO_BIOS {if (conditional[conditional_level]) {if (!bios) msx_bios();}}
-                  | PSEUDO_PAGE value {if (conditional[conditional_level]) {subpage=0x100;if ($2>3) error_message(22); else {PC=0x4000*$2;ePC=PC;}}}
+                  | PSEUDO_PAGE value {if (conditional[conditional_level]) {subpage=ASMSX_MAX_PATH;if ($2>3) error_message(22); else {PC=0x4000*$2;ePC=PC;}}}
                   | PSEUDO_SEARCH {if (conditional[conditional_level]) {if ((type!=MEGAROM)&&(type!=ROM)) error_message(41);locate_32k();}}
                   | PSEUDO_SUBPAGE value PSEUDO_AT value {if (conditional[conditional_level]) {if (type!=MEGAROM) error_message(40);set_subpage($2,$4);}}
                   | PSEUDO_SELECT value PSEUDO_AT value {if (conditional[conditional_level]) {if (type!=MEGAROM) error_message(40);select_page_direct($2,$4);}}
@@ -372,7 +275,7 @@ pseudo_instruction: PSEUDO_ORG value {if (conditional[conditional_level]) {PC=$2
                   | IDENTIFICATOR PSEUDO_EQU value {if (conditional[conditional_level]) {register_symbol(strtok($1,"="),$3,2);}}
                   | IDENTIFICATOR PSEUDO_ASSIGN value {if (conditional[conditional_level]) {register_variable(strtok($1,"="),$3);}}
                   | PSEUDO_INCBIN TEXT {if (conditional[conditional_level]) {include_binary($2,0,0);}}
-                  | PSEUDO_INCBIN TEXT PSEUDO_SKIP value {if (conditional[conditional_level]) {if ($4<=0) error_message(30);include_binary($2,$4,0);}}
+                  | PSEUDO_INCBIN TEXT PSEUDO_SKIP value {if (conditional[conditional_level]) {if ($4<=0) error_message(30); include_binary($2,$4,0);}}
                   | PSEUDO_INCBIN TEXT PSEUDO_SIZE value {if (conditional[conditional_level]) {if ($4<=0) error_message(30);include_binary($2,0,$4);}}
                   | PSEUDO_INCBIN TEXT PSEUDO_SKIP value PSEUDO_SIZE value {if (conditional[conditional_level]) {if (($4<=0)||($6<=0)) error_message(30);include_binary($2,$4,$6);}}
                   | PSEUDO_INCBIN TEXT PSEUDO_SIZE value PSEUDO_SKIP value {if (conditional[conditional_level]) {if (($4<=0)||($6<=0)) error_message(30);include_binary($2,$6,$4);}}
@@ -627,7 +530,7 @@ mnemo_general: MNEMO_DAA {write_byte(0x27);}
              | MNEMO_HALT {write_byte(0x76);}
              | MNEMO_DI {write_byte(0xf3);}
              | MNEMO_EI {write_byte(0xfb);}
-             | MNEMO_IM value_8bits {if (($2<0)||($2>2)) error_message(3);write_byte(0xed);if ($2==0) write_byte(0x46); else if ($2==1) write_byte(0x56); else write_byte(0x5e);}
+             | MNEMO_IM value_8bits {if (($2<0)||($2>2)) error_message(3); write_byte(0xed); if ($2==0) write_byte(0x46); else if ($2==1) write_byte(0x56); else write_byte(0x5e);}
 ;
 
 mnemo_rotate: MNEMO_RLCA {write_byte(0x07);}
@@ -895,7 +798,7 @@ listing_16bits : value_16bits {write_word($1);}
 %%
 
 /* Additional C functions */
-msx_bios()
+void msx_bios(void)
 {
  bios=1;
 /* BIOS routines */
@@ -1025,8 +928,7 @@ msx_bios()
  register_symbol("PCMREC",0x0189,0);
 }
 
-error_message(code)
-//void error_message(int code)
+void error_message(int code)
 {
  printf("%s, line %d: ",strtok(source,"\042"),lines);
  switch (code)
@@ -1085,7 +987,7 @@ error_message(code)
  exit(0);
 }
 
-warning_message(code)
+void warning_message(int code)
 {
  if (pass==2) {
  printf("%s, line %d: Warning: ",strtok(source,"\042"),lines);
@@ -1102,7 +1004,7 @@ warning_message(code)
  }
 }
 
-write_byte(b)
+void write_byte(int b)
 {
 if ((!conditional_level)||(conditional[conditional_level]))
 if (type!=MEGAROM)
@@ -1118,7 +1020,7 @@ if (type!=MEGAROM)
 }
 if (type==MEGAROM)
 {
- if (subpage==0x100) error_message(35);
+ if (subpage==ASMSX_MAX_PATH) error_message(35);
  if (PC>=pageinit+1024*pagesize) error_message(31);
  memory[subpage*pagesize*1024+PC-pageinit]=b;
  PC++;
@@ -1126,19 +1028,20 @@ if (type==MEGAROM)
 }
 }
 
-write_text(char text[])
+void write_text(const char *text)
 {
- unsigned int i;
- for (i=0;i<strlen(text);i++) write_byte(text[i]);
+	size_t i;
+	for (i = 0; i < strlen(text); i++)
+		write_byte(text[i]);
 }
 
-write_word(w)
+void write_word(int w)
 {
  write_byte(w&0xff);
  write_byte((w>>8)&0xff);
 }
 
-conditional_jump(address)
+void conditional_jump(int address)
 {
  int jump;
 
@@ -1148,9 +1051,9 @@ conditional_jump(address)
 
 }
 
-register_label(char *name)
+void register_label(const char *name)
 {
- signed int i;
+ int i;
  if (pass==2)
    for (i=0;i<maximum;i++) if (!strcmp(name,id_list[i].name)) {last_global=i;return;}
  for (i=0;i<maximum;i++) if (!strcmp(name,id_list[i].name)) error_message(14);
@@ -1164,9 +1067,9 @@ register_label(char *name)
  last_global=maximum-1;
 }
 
-register_local(char *name)
+void register_local(const char *name)
 {
- signed int i;
+ int i;
  if (pass==2) return;
  for (i=last_global;i<maximum;i++) if (!strcmp(name,id_list[i].name)) error_message(14);
  if (++maximum==max_id) error_message(11);
@@ -1177,7 +1080,7 @@ register_local(char *name)
  id_list[maximum-1].page=subpage;
 }
 
-register_symbol(char *name,int number,int type)
+void register_symbol(const char *name,int number,int type)
 {
  unsigned int i;
  char *tmpstr;
@@ -1193,19 +1096,19 @@ register_symbol(char *name,int number,int type)
  id_list[maximum-1].type=type;
 }
 
-register_variable(char *name,int number)
+void register_variable(const char *name,int number)
 {
  unsigned int i;
  for (i=0;i<maximum;i++) if ((!strcmp(name,id_list[i].name))&&(id_list[i].type==3)) {id_list[i].value=number;return;}
  if (++maximum==max_id) error_message(11);
  id_list[maximum-1].name=(char*)malloc(strlen(name)+1);
- strcpy(id_list[maximum-1].name,strtok(name," "));
+ strcpy(id_list[maximum-1].name,strtok((char *)name," "));
  id_list[maximum-1].value=number;
  id_list[maximum-1].type=3;
 }
 
 
-read_label(char *name)
+unsigned int read_label(const char *name)
 {
  unsigned int i;
  for (i=0;i<maximum;i++) if (!strcmp(name,id_list[i].name)) return id_list[i].value;
@@ -1213,7 +1116,7 @@ read_label(char *name)
  error_message(12);
 }
 
-read_local(char *name)
+unsigned int read_local(const char *name)
 {
  unsigned int i;
  if (pass==1) return ePC;
@@ -1222,9 +1125,8 @@ read_local(char *name)
  error_message(13);
 }
 
-output_text()
+void output_text(void)
 {
-
  // Get output file name
  strcpy(outputfname,filename);
  outputfname=strcat(outputfname,".txt");
@@ -1232,11 +1134,11 @@ output_text()
  fmessages=fopen(outputfname,"wt");
  if (fmessages==NULL) return;
  fprintf(fmessages,"; Output text file from %s\n",assembler);
- fprintf(fmessages,"; generated by asmsx v.%s\n\n",VERSION);
+ fprintf(fmessages,"; generated by asmsx v.%s\n\n", ASMSX_VERSION);
  printf("Output text file %s saved\n",outputfname);
 }
 
-save_symbols()
+void save_symbols(void)
 {
  unsigned int i,j;
  FILE *file;
@@ -1244,9 +1146,9 @@ save_symbols()
  for (i=0;i<maximum;i++) j+=id_list[i].type;
  if (j>0)
  {
- if ((file=fopen(symbols,"wt"))==NULL) error_message();
+ if ((file=fopen(symbols,"wt"))==NULL) error_message(0);
  fprintf(file,"; Symbol table from %s\n",assembler);
- fprintf(file,"; generated by asmsx v.%s\n\n",VERSION);
+ fprintf(file,"; generated by asmsx v.%s\n\n", ASMSX_VERSION);
  j=0;
  for (i=0;i<maximum;i++) if (id_list[i].type==1) j++;
  if (j>0)
@@ -1287,12 +1189,12 @@ int yywrap(void)
  return 1;
 }
 
-yyerror()
+void yyerror(const char *s)
 {
  error_message(0);
 }
 
-include_binary(char* name,unsigned int skip,unsigned int n)
+void include_binary(const char* name,unsigned int skip,unsigned int n)
 {
  FILE *file;
  char k;
@@ -1332,13 +1234,13 @@ include_binary(char* name,unsigned int skip,unsigned int n)
 }
 
 
-write_zx_byte(unsigned char c)
+void write_zx_byte(unsigned char c)
 {
  putc(c,foutput);
  parity^=c;
 }
 
-write_zx_word(unsigned int c)
+void write_zx_word(unsigned int c)
 {
  write_zx_byte(c&0xff);
  write_zx_byte((c>>8)&0xff);
@@ -1362,7 +1264,7 @@ void write_zx_number(unsigned int i)
         write_zx_byte(i+48);
 }
 
-write_binary()
+void write_binary(void)
 {
   unsigned int i,j;
 
@@ -1500,7 +1402,7 @@ write_binary()
 
 }
 
-finalize()
+void finalize(void)
 {
  unsigned int i;
  
@@ -1513,7 +1415,8 @@ finalize()
 
  write_binary();
  if (cassette&1) generate_cassette();
- if (cassette&2) generate_wav();
+ if (cassette&2)
+	wav_write_file((const char *)binary, (const char *)intname, type, addr_start, addr_end, start, memory);
  if (maximum>0) save_symbols();
  printf("Completed in %.2f seconds",(float)clock()/(float)CLOCKS_PER_SEC);
  if (warnings>1) printf(", %i warnings\n",warnings);
@@ -1523,7 +1426,7 @@ finalize()
  exit(0);
 }
 
-initialize_memory()
+void initialize_memory(void)
 {
  unsigned int i;
  memory=(unsigned char*)malloc(0x1000000);
@@ -1532,26 +1435,26 @@ initialize_memory()
 
 }
 
-initialize_system()
+void initialize_system(void)
 {
 
  initialize_memory();
 
- intname=malloc(0x100);
+ intname=malloc(ASMSX_MAX_PATH);
  intname[0]=0;
 
  register_symbol("Eduardo_A_Robsy_Petrus_2007",0,0);
 
 }
 
-type_sinclair()
+void type_sinclair(void)
 {
  if ((type) && (type!=SINCLAIR)) error_message(46);
  type=SINCLAIR;
  if (!addr_start) {PC=0x8000;ePC=PC;}
 }
 
-type_rom()
+void type_rom(void)
 {
  if ((pass==1) && (!addr_start)) error_message(19);
  if ((type) && (type!=ROM)) error_message(20);
@@ -1563,7 +1466,7 @@ type_rom()
  if (!start) start=ePC;
 }
 
-type_megarom(int n)
+void type_megarom(int n)
 {
  unsigned int i;
 
@@ -1590,14 +1493,14 @@ type_megarom(int n)
 }
 
 
-type_basic()
+void type_basic(void)
 {
  if ((pass==1) && (!addr_start)) error_message(21);
  if ((type) && (type!=BASIC)) error_message(20);
  type=BASIC;
 }
 
-type_msxdos()
+void type_msxdos(void)
 {
  if ((pass==1) && (!addr_start)) error_message(23);
  if ((type) && (type!=MSXDOS)) error_message(20);
@@ -1606,7 +1509,7 @@ type_msxdos()
  ePC=0x0100;
 }
 
-set_subpage(int n, int addr)
+void set_subpage(int n, int addr)
 {
  if (n>lastpage) lastpage=n;
  if (!n) error_message(32);
@@ -1619,7 +1522,7 @@ set_subpage(int n, int addr)
  ePC=PC;
 }
 
-locate_32k()
+void locate_32k(void)
 {
  unsigned int i;
  for (i=0;i<31;i++) write_byte(locate32[i]);
@@ -1635,8 +1538,7 @@ unsigned int selector(unsigned int addr)
  return addr;
 }
 
-
-select_page_direct(unsigned int n,unsigned int addr)
+void select_page_direct(unsigned int n,unsigned int addr)
 {
  unsigned int sel;
 
@@ -1649,10 +1551,9 @@ select_page_direct(unsigned int n,unsigned int addr)
  write_byte(0x32);
  write_word(sel);
  write_byte(0xf1);
-
 }
 
-select_page_register(unsigned int r,unsigned int addr)
+void select_page_register(unsigned int r, unsigned int addr)
 {
  unsigned int sel;
 
@@ -1666,10 +1567,9 @@ select_page_register(unsigned int r,unsigned int addr)
  write_byte(0x32);
  write_word(sel);
  if (r!=7) write_byte(0xf1); /* POP AF */
-
 }
 
-generate_cassette()
+void generate_cassette(void)
 {
 
  unsigned char cas[8]={0x1F,0xA6,0xDE,0xBA,0xCC,0x13,0x7D,0x74};
@@ -1679,7 +1579,7 @@ generate_cassette()
 
  if ((type==MEGAROM)||((type=ROM)&&(addr_start<0x8000)))
  {
-  warning_message();
+  warning_message(0);
   return;
  }
 
@@ -1699,7 +1599,8 @@ generate_cassette()
 
   for (i=0;i<6;i++) fputc(intname[i],fcas);
 
-  for (i=0;i<8;i++) fputc(cas[i],fcas);
+	for (i=0;i<8;i++)
+		fputc(cas[i],fcas);
 
 
   putc(addr_start & 0xff,fcas);
@@ -1708,191 +1609,16 @@ generate_cassette()
   putc((addr_end>>8) & 0xff,fcas);
   putc(start & 0xff,fcas);
   putc((start>>8) & 0xff,fcas);
-
  }
-
 
  for (i=addr_start;i<=addr_end;i++)
    putc(memory[i],fcas);
  fclose(fcas);
 
-
  printf("Cassette file %s saved\n",binary);
-
 }
 
-
-void wav_store(unsigned int value)
-{
- fputc(value&0xff,wav);
- fputc((value>>8)&0xff,wav);
-}
-
-// Write one (high-state)
-
-void wav_write_one()
-{
-  unsigned int l;
-  for (l=0;l<5*2;l++) wav_store(FREQ_LO);
-  for (l=0;l<5*2;l++) wav_store(FREQ_HI);
-  for (l=0;l<5*2;l++) wav_store(FREQ_LO);
-  for (l=0;l<5*2;l++) wav_store(FREQ_HI);
-}
-
-void wav_write_zero()
-{
-  unsigned int l;
-  for (l=0;l<10*2;l++) wav_store(FREQ_LO);
-  for (l=0;l<10*2;l++) wav_store(FREQ_HI);
-}
-
-void wav_write_nothing()
-{
-  unsigned int l;
-  for (l=0;l<18*2;l++) wav_store(SILENCE);
-}
-
-
-// Write full byte
-
-void wav_write_byte(unsigned char m)
-{
- unsigned char l;
- wav_write_zero();
- for (l=0;l<8;l++) 
- {
-  if (m&1) wav_write_one(); else wav_write_zero();
-  m=m>>1;
- }
- wav_write_one();
- wav_write_one();
-}
-
-
-generate_wav()
-{
- int wav_size;
- unsigned int i;
-
- if ((type==MEGAROM)||((type=ROM)&&(addr_start<0x8000)))
- {
-  warning_message();
-  return;
- }
-
- binary[strlen(binary)-3]=0;
- binary=strcat(binary,"wav");
-
- wav=fopen(binary,"wb");
-
- if ((type==BASIC)||(type==ROM))
- {
-
-  wav_size=(3968*2+1500*2+11*(10+6+6+addr_end-addr_start+1))*40;
-
-  wav_size=wav_size<<1;
-
-  wav_header[4]=(wav_size+36)&0xff;
-  wav_header[5]=((wav_size+36)>>8) & 0xff;
-  wav_header[6]=((wav_size+36)>>16) & 0xff;
-  wav_header[7]=((wav_size+36)>>24) & 0xff;
-  wav_header[40]=wav_size & 0xff;
-  wav_header[41]=(wav_size >> 8) & 0xff;
-  wav_header[42]=(wav_size >> 16) & 0xff;
-  wav_header[43]=(wav_size >> 24) & 0xff;
-
-
-// Write WAV header
-
-  for (i=0;i<44;i++) fputc(wav_header[i],wav);
-
-// Write long header
-
- for (i=0;i<3968;i++) wav_write_one();
-
-// Write file identifier
-
- for (i=0;i<10;i++) wav_write_byte(0xd0);
-
-// Write MSX name
-
-  if (strlen(intname)<6)
-   for (i=strlen(intname);i<6;i++) intname[i]=32;
-
-  for (i=0;i<6;i++) wav_write_byte(intname[i]);
-
-// Write blank
-
- for (i=0;i<1500;i++) wav_write_nothing();
-
-// Write short header
-
- for (i=0;i<3968;i++) wav_write_one();
-
-// Write init, end and start addresses
-
-  wav_write_byte(addr_start & 0xff);
-  wav_write_byte((addr_start>>8) & 0xff);
-  wav_write_byte(addr_end & 0xff);
-  wav_write_byte((addr_end>>8) & 0xff);
-  wav_write_byte(start & 0xff);
-  wav_write_byte((start>>8) & 0xff);
-
-
-// Write data
-
-  for (i=addr_start;i<=addr_end;i++)
-   wav_write_byte(memory[i]);
-
- }
-
-
- if (type==Z80)
- {
-
-  wav_size=(3968*1+1500*1+11*(addr_end-addr_start+1))*36;
-
-  wav_size=wav_size<<1;
-
-  wav_header[4]=(wav_size+36)&0xff;
-  wav_header[5]=((wav_size+36)>>8) & 0xff;
-  wav_header[6]=((wav_size+36)>>16) & 0xff;
-  wav_header[7]=((wav_size+36)>>24) & 0xff;
-  wav_header[40]=wav_size & 0xff;
-  wav_header[41]=(wav_size >> 8) & 0xff;
-  wav_header[42]=(wav_size >> 16) & 0xff;
-  wav_header[43]=(wav_size >> 24) & 0xff;
-
-
-// Write WAV header
-
-  for (i=0;i<44;i++) fputc(wav_header[i],wav);
-
-// Write long header
-
- for (i=0;i<3968;i++) wav_write_one();
-
-// Write data
-
-  for (i=addr_start;i<=addr_end;i++)
-   wav_write_byte(memory[i]);
-
- }
-
-// Write blank
-
-  for (i=0;i<1500;i++) wav_write_nothing();
-
-// Close file
-
-  fclose(wav);
-
-  printf("Audio file %s saved [%2.2f sec]\n",binary,(float)wav_size/176400);
-
-}
-
-
-defined_symbol(char *name)
+int defined_symbol(const char *name)
 {
  unsigned int i;
  for (i=0;i<maximum;i++) if (!strcmp(name,id_list[i].name)) return 1;
