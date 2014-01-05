@@ -3213,25 +3213,64 @@ value_real: REAL
 	}
 ;
 
-value_3bits: value {if (((int)$1<0)||((int)$1>7)) warning_message(3);$$=$1&0x07;}
+value_3bits: value
+	{
+		if (((int)$1 < 0) || ((int)$1 > 7))
+			warning_message(3);
+		$$ = $1 & 0x07;
+	}
 ;
 
-value_8bits: value {if (((int)$1>255)||((int)$1<-128)) warning_message(2);$$=$1&0xff;}
+value_8bits: value
+	{
+		if (((int)$1 > 255) || ((int) $1 <- 128))
+			warning_message(2);
+		$$ = $1 & 0xff;
+	}
 ;
 
-value_16bits: value {if (((int)$1>65535)||((int)$1<-32768)) warning_message(1);$$=$1&0xffff;}
+value_16bits: value
+	{
+		if (((int)$1 > 65535) || ((int)$1 < -32768))
+			warning_message(1);
+		$$ = $1 & 0xffff;
+	}
 ;
 
-listing_8bits : value_8bits {write_byte($1);}
-              | TEXT {write_text($1);}
-              | listing_8bits ',' value_8bits {write_byte($3);}
-              | listing_8bits ',' TEXT {write_text($3);}
+listing_8bits: value_8bits
+	{
+		write_byte($1);
+	}
+	| TEXT
+	{
+		write_text($1);
+	}
+	| listing_8bits ',' value_8bits
+	{
+		write_byte($3);
+	}
+	| listing_8bits ',' TEXT
+	{
+		write_text($3);
+	}
 ;
 
-listing_16bits : value_16bits {write_word($1);}
-               | TEXT {write_text($1);}
-               | listing_16bits ',' value_16bits {write_word($3);}
-               | listing_16bits ',' TEXT {write_text($3);}
+listing_16bits : value_16bits
+	{
+		write_word($1);
+	}
+	| TEXT
+	{
+		write_text($1);
+	}
+	| listing_16bits ',' value_16bits
+	{
+		write_word($3);
+	}
+	| listing_16bits ',' TEXT
+	{
+		write_text($3);
+	}
 ;
 
 %%
