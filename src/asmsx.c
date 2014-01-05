@@ -410,10 +410,10 @@ void write_text(const char *text)
 		write_byte(text[i]);
 }
 
-void write_word(int w)
+void write_word(const int w)
 {
- write_byte(w&0xff);
- write_byte((w>>8)&0xff);
+	write_byte(w & 0xff);
+	write_byte((w >> 8) & 0xff);
 }
 
 void conditional_jump(int address)
