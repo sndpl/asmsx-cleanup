@@ -2830,19 +2830,84 @@ mnemo_io: MNEMO_IN REGISTER ',' '[' value_8bits ']'
 	}
 ;
 
-mnemo_jump: MNEMO_JP value_16bits {write_byte(0xc3);write_word($2);}
-          | MNEMO_JP CONDITION ',' value_16bits {write_byte(0xc2|($2<<3));write_word($4);}
-          | MNEMO_JP REGISTER ',' value_16bits {if ($2!=1) error_message(7);write_byte(0xda);write_word($4);}
-          | MNEMO_JR value_16bits {write_byte(0x18);conditional_jump($2);}
-          | MNEMO_JR REGISTER ',' value_16bits {if ($2!=1) error_message(7);write_byte(0x38);conditional_jump($4);}
-          | MNEMO_JR CONDITION ',' value_16bits {if ($2==2) write_byte(0x30); else if ($2==1) write_byte(0x28); else if ($2==0) write_byte(0x20); else error_message(9);conditional_jump($4);}
-          | MNEMO_JP REGISTER_PAR {if ($2!=2) error_message(2);write_byte(0xe9);}
-          | MNEMO_JP REGISTER_IND_HL {write_byte(0xe9);}
-          | MNEMO_JP REGISTER_16_IX {write_byte(0xdd);write_byte(0xe9);}
-          | MNEMO_JP REGISTER_16_IY {write_byte(0xfd);write_byte(0xe9);}
-          | MNEMO_JP '[' REGISTER_16_IX ']' {write_byte(0xdd);write_byte(0xe9);}
-          | MNEMO_JP '[' REGISTER_16_IY ']' {write_byte(0xfd);write_byte(0xe9);}
-          | MNEMO_DJNZ value_16bits {write_byte(0x10);conditional_jump($2);}
+mnemo_jump: MNEMO_JP value_16bits
+	{
+		write_byte(0xc3);
+		write_word($2);
+	}
+	| MNEMO_JP CONDITION ',' value_16bits
+	{
+		write_byte(0xc2 | ($2 << 3));
+		write_word($4);
+	}
+	| MNEMO_JP REGISTER ',' value_16bits
+	{
+		if ($2 != 1)
+			error_message(7);
+		write_byte(0xda);
+		write_word($4);
+	}
+	| MNEMO_JR value_16bits
+	{
+		write_byte(0x18);
+		conditional_jump($2);
+	}
+	| MNEMO_JR REGISTER ',' value_16bits
+	{
+		if ($2 != 1)
+			error_message(7);
+		write_byte(0x38);
+		conditional_jump($4);
+	}
+	| MNEMO_JR CONDITION ',' value_16bits
+	{
+		if ($2 == 2)
+			write_byte(0x30);
+		else
+			if ($2 == 1)
+				write_byte(0x28);
+			else
+				if ($2 == 0)
+					write_byte(0x20);
+				else
+					error_message(9);
+		conditional_jump($4);
+	}
+	| MNEMO_JP REGISTER_PAR
+	{
+		if ($2 != 2)
+			error_message(2);
+		write_byte(0xe9);
+	}
+	| MNEMO_JP REGISTER_IND_HL
+	{
+		write_byte(0xe9);
+	}
+	| MNEMO_JP REGISTER_16_IX
+	{
+		write_byte(0xdd);
+		write_byte(0xe9);
+	}
+	| MNEMO_JP REGISTER_16_IY
+	{
+		write_byte(0xfd);
+		write_byte(0xe9);
+	}
+	| MNEMO_JP '[' REGISTER_16_IX ']'
+	{
+		write_byte(0xdd);
+		write_byte(0xe9);
+	}
+	| MNEMO_JP '[' REGISTER_16_IY ']'
+	{
+		write_byte(0xfd);
+		write_byte(0xe9);
+	}
+	| MNEMO_DJNZ value_16bits
+	{
+		write_byte(0x10);
+		conditional_jump($2);
+	}
 ;
 
 mnemo_call: MNEMO_CALL value_16bits {write_byte(0xcd);write_word($2);}
