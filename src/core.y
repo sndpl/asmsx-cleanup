@@ -2024,16 +2024,56 @@ mnemo_arithm16bit: MNEMO_ADD REGISTER_PAR ',' REGISTER_PAR
 	}
 ;
 
-mnemo_general: MNEMO_DAA {write_byte(0x27);}
-             | MNEMO_CPL {write_byte(0x2f);}
-             | MNEMO_NEG {write_byte(0xed);write_byte(0x44);}
-             | MNEMO_CCF {write_byte(0x3f);}
-             | MNEMO_SCF {write_byte(0x37);}
-             | MNEMO_NOP {write_byte(0x00);}
-             | MNEMO_HALT {write_byte(0x76);}
-             | MNEMO_DI {write_byte(0xf3);}
-             | MNEMO_EI {write_byte(0xfb);}
-             | MNEMO_IM value_8bits {if (($2<0)||($2>2)) error_message(3); write_byte(0xed); if ($2==0) write_byte(0x46); else if ($2==1) write_byte(0x56); else write_byte(0x5e);}
+mnemo_general: MNEMO_DAA
+	{
+		write_byte(0x27);
+	}
+	| MNEMO_CPL
+	{
+		write_byte(0x2f);
+	}
+	| MNEMO_NEG
+	{
+		write_byte(0xed);
+		write_byte(0x44);
+	}
+	| MNEMO_CCF
+	{
+		write_byte(0x3f);
+	}
+	| MNEMO_SCF
+	{
+		write_byte(0x37);
+	}
+	| MNEMO_NOP
+	{
+		write_byte(0x00);
+	}
+	| MNEMO_HALT
+	{
+		write_byte(0x76);
+	}
+	| MNEMO_DI
+	{
+		write_byte(0xf3);
+	}
+	| MNEMO_EI
+	{
+		write_byte(0xfb);
+	}
+	| MNEMO_IM value_8bits
+	{
+		if (($2 < 0) || ($2 > 2))
+			error_message(3);
+		write_byte(0xed);
+		if ($2 == 0)
+			write_byte(0x46);
+		else
+			if ($2 == 1)
+				write_byte(0x56);
+			else
+				write_byte(0x5e);
+	}
 ;
 
 mnemo_rotate: MNEMO_RLCA {write_byte(0x07);}
