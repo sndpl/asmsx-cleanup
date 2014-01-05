@@ -898,7 +898,7 @@ void finalize(void)
 	write_binary();
 
 	if (cassette & 1)
-		generate_cassette();
+		cas_write_file();
 
 	if (cassette & 2)
 		wav_write_file(binary, intname, type, addr_start, addr_end, start, memory);
@@ -1139,53 +1139,55 @@ void select_page_register(unsigned int r, unsigned int addr)
 }
 
 
-void generate_cassette(void)
+void cas_write_file(void)
 {
+	FILE *f;
+	unsigned int i;
+	unsigned char cas[8] = {0x1F, 0xA6, 0xDE, 0xBA, 0xCC, 0x13, 0x7D, 0x74};
 
- unsigned char cas[8]={0x1F,0xA6,0xDE,0xBA,0xCC,0x13,0x7D,0x74};
+	if ((type == MEGAROM) || ((type = ROM) && (addr_start < 0x8000)))
+	{
+		warning_message(0);
+		return;
+	}
 
- FILE *fcas;
- unsigned int i;
+	binary[strlen(binary) - 3] = 0;
+	binary = strcat(binary, "cas");
 
- if ((type==MEGAROM)||((type=ROM)&&(addr_start<0x8000)))
- {
-  warning_message(0);
-  return;
- }
+	f = fopen(binary, "wb");
 
- binary[strlen(binary)-3]=0;
- binary=strcat(binary,"cas");
+	for (i = 0; i < 8; i++)
+		fputc(cas[i], f);
 
- fcas=fopen(binary,"wb");
+	if ((type == BASIC) || (type == ROM))
+	{
+		for (i = 0; i < 10; i++)
+			fputc(0xd0, f);
 
- for (i=0;i<8;i++) fputc(cas[i],fcas);
+		if (strlen(intname) < 6)
+			for (i = strlen(intname); i < 6; i++)
+				intname[i] = 32;
 
- if ((type==BASIC)||(type==ROM))
- {
-  for (i=0;i<10;i++) fputc(0xd0,fcas);
+		for (i = 0; i < 6; i++)
+			fputc(intname[i], f);
 
-  if (strlen(intname)<6)
-   for (i=strlen(intname);i<6;i++) intname[i]=32;
+		for (i = 0; i < 8; i++)
+			fputc(cas[i], f);
 
-  for (i=0;i<6;i++) fputc(intname[i],fcas);
+		putc(addr_start & 0xff, f);
+		putc((addr_start >> 8) & 0xff, f);
+		putc(addr_end & 0xff, f);
+		putc((addr_end >> 8) & 0xff, f);
+		putc(start & 0xff, f);
+		putc((start >> 8) & 0xff, f);
+	}
 
-	for (i=0;i<8;i++)
-		fputc(cas[i],fcas);
+	for (i = addr_start; i <= addr_end; i++)
+		putc(memory[i], f);
 
+	fclose(f);
 
-  putc(addr_start & 0xff,fcas);
-  putc((addr_start>>8) & 0xff,fcas);
-  putc(addr_end & 0xff,fcas);
-  putc((addr_end>>8) & 0xff,fcas);
-  putc(start & 0xff,fcas);
-  putc((start>>8) & 0xff,fcas);
- }
-
- for (i=addr_start;i<=addr_end;i++)
-   putc(memory[i],fcas);
- fclose(fcas);
-
- printf("Cassette file %s saved\n",binary);
+	printf("Cassette file %s saved\n", binary);
 }
 
 
