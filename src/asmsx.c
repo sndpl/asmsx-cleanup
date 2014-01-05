@@ -1063,7 +1063,7 @@ void set_subpage(int n, int addr)
 }
 
 
-void locate_32k(void)
+void locate_32k(void)	/* TODO: must be some Z80 code, need to figure out what is it */
 {
 	unsigned int i;
 	unsigned char locate32[31] =
