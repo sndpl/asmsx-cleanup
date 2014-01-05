@@ -1521,19 +1521,26 @@ void register_variable(const char *name,int number)
 
 unsigned int read_label(const char *name)
 {
- unsigned int i;
- for (i=0;i<maximum;i++) if (!strcmp(name,id_list[i].name)) return id_list[i].value;
- if ((pass==1)&&(i==maximum)) return ePC;
- error_message(12);
+	unsigned int i;
+	for (i = 0; i < maximum; i++)
+	if (!strcmp(name, id_list[i].name))
+		return id_list[i].value;
+	if ((pass == 1) && (i == maximum))
+		return ePC;
+	error_message(12);
+	return 0;	/* suppress compiler warning "not all control paths return a value" */
 }
 
 unsigned int read_local(const char *name)
 {
- unsigned int i;
- if (pass==1) return ePC;
- for (i=last_global;i<maximum;i++)
-   if (!strcmp(name,id_list[i].name)) return id_list[i].value;
- error_message(13);
+	unsigned int i;
+	if (pass==1)
+		return ePC;
+	for (i = last_global; i < maximum; i++)
+		if (!strcmp(name, id_list[i].name))
+			return id_list[i].value;
+	error_message(13);
+	return 0;	/* suppress compiler warning "not all control paths return a value" */
 }
 
 void output_text(void)
