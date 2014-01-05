@@ -1,4 +1,4 @@
-/* Top level entry point of asmsx.
+/* Top level entry point of asmsx plus some temporarily homeless code.
 
  Copyright (C) 2000-2011 Eduardo A. Robsy Petrus
  Copyright (C) 2014 Adrian Oboroc
