@@ -1027,8 +1027,10 @@ void type_msxdos(void)
 {
 	if ((pass == 1) && (!addr_start))
 		error_message(23);
+
 	if ((type) && (type != MSXDOS))
 		error_message(20);
+
 	type = MSXDOS;
 	PC = 0x0100;
 	ePC = 0x0100;
