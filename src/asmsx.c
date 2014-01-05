@@ -18,7 +18,6 @@
  You should have received a copy of the GNU General Public License
  along with this program.  If not, see <http://www.gnu.org/licenses/>.  */
 
-
 #include "core.c"
 #include "lex.c"
 
@@ -26,7 +25,7 @@ int main(int argc, char *argv[])
 {
 	int i;
 
-	printf(" asmsx %s MSX cross assembler [%s]\n", VERSION, __DATE__);
+	printf(" asmsx %s MSX cross assembler [%s]\n", ASMSX_VERSION, __DATE__);
 	if (2 != argc)
 	{
         	printf("Syntax: asmsx [file.asm]\n");
@@ -34,13 +33,13 @@ int main(int argc, char *argv[])
 	}
 	clock();
 	initialize_system();
-	assembler = (unsigned char *)malloc(0x100);
-	source = (unsigned char *)malloc(0x100);
-	original = (unsigned char *)malloc(0x100);
-	binary = (char *)malloc(0x100);
-	symbols = (char *)malloc(0x100);
-	outputfname = (char *)malloc(0x100);
-	filename = (char *)malloc(0x100);
+	assembler = (unsigned char *)malloc(ASMSX_MAX_PATH);
+	source = (unsigned char *)malloc(ASMSX_MAX_PATH);
+	original = (unsigned char *)malloc(ASMSX_MAX_PATH);
+	binary = (char *)malloc(ASMSX_MAX_PATH);
+	symbols = (char *)malloc(ASMSX_MAX_PATH);
+	outputfname = (char *)malloc(ASMSX_MAX_PATH);
+	filename = (char *)malloc(ASMSX_MAX_PATH);
 	strcpy(filename, argv[1]);
 	strcpy(assembler, filename);
 	for (i = strlen(filename) - 1; (filename[i] != '.') && i; i--);

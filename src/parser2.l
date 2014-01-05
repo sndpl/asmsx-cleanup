@@ -12,6 +12,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "asmsx.h"
+
 #define YY_NO_INPUT 1
 #ifdef _MSC_VER
 #define YY_NO_UNISTD_H 1
@@ -21,7 +23,6 @@ FILE *output;
 char *text,*buffer,nested=0,level;
 unsigned int number,lines,i;
 extern int prompt_error2(char);
-extern int error_message(char);
 %}
 
 %option yylineno
@@ -88,7 +89,7 @@ int preprocessor2(void)
  FILE *input;
  char *filename,loop=0;
 
- filename=(char*)malloc(0x100);
+ filename=(char*)malloc(ASMSX_MAX_PATH);
  text=(char*)malloc(0x1000);
  buffer=(char*)malloc(0x4000);
  text[0]=0;

@@ -20,8 +20,10 @@ wcc386.exe parser2.c
 echo.
 wcc386.exe parser3.c
 echo.
+wcc386.exe wav.c 
+echo.
 wcc386.exe asmsx.c > asmsx.wc19.err
 echo.
-link386.exe asmsx.obj parser1.obj parser2.obj parser3.obj
+link386.exe asmsx.obj parser1.obj parser2.obj parser3.obj wav.obj
 
 del core.c core.h lex.c parser?.c *.obj
