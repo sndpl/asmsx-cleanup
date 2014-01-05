@@ -3149,7 +3149,7 @@ value_real: REAL
 	}
 	| PSEUDO_ABS '(' value_real ')'
 	{
-		$$ = abs($3);
+		$$ = (($3) < 0) ? -($3) : ($3);
 	}
 	| PSEUDO_ACOS '(' value_real ')'
 	{
