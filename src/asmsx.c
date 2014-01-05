@@ -639,19 +639,31 @@ void yyerror(const char *s)	/* TODO: move back to core.y? */
 
 void include_binary(const char* name,unsigned int skip,unsigned int n)
 {
- FILE *file;
- char k;
- unsigned int i;
- if ((file=fopen(name,"rb"))==NULL) error_message(18);
+	FILE *file;
+	char k;
+	unsigned int i;
 
- if (pass==1) printf("Including binary file %s",name);
- if ((pass==1)&&(skip)) printf(", skipping %i bytes",skip);
- if ((pass==1)&&(n)) printf(", saving %i bytes",n);
- if (pass==1) printf("\n");
+	if ((file = fopen(name, "rb")) == NULL)
+		error_message(18);
 
- if (skip) for (i=0;(!feof(file))&&(i<skip);i++) k=fgetc(file);
+	if (pass == 1)
+		printf("Including binary file %s", name);
 
- if (skip && feof(file)) error_message(29);
+	if ((pass == 1) && (skip))
+		printf(", skipping %i bytes", skip);
+
+	if ((pass == 1) && (n))
+		printf(", saving %i bytes", n);
+
+	if (pass == 1)
+		printf("\n");
+
+	if (skip)
+		for (i = 0; (!feof(file)) && (i < skip); i++)
+			k = fgetc(file);
+
+	if (skip && feof(file))
+		error_message(29);
 
  if (n)
  {
