@@ -726,53 +726,63 @@ void write_zx_number(unsigned int i)	/* TODO: move to zx specific unit */
 
 void write_binary(void)
 {
-  unsigned int i,j;
+	unsigned int i, j;
 
-  if ((addr_start>addr_end)&&(type!=MEGAROM)) error_message(24);
+	if ((addr_start > addr_end) && (type != MEGAROM))
+		error_message(24);
 
-  if (type==Z80) binary=strcat(binary,".z80");
-   else if (type==ROM)
-    {
-     binary=strcat(binary,".rom");
-     PC=addr_start+2;
-     write_word(start);
-     if (!size) size=8*((addr_end-addr_start+8191)/8192);
-    } else if (type==BASIC) binary=strcat(binary,".bin");
-     else if (type==MSXDOS) binary=strcat(binary,".com");
-       else if (type==MEGAROM)
-       {
-        binary=strcat(binary,".rom");
-        PC=0x4002;
-        subpage=0x00;
-        pageinit=0x4000;
-        write_word(start);
-       }
-	else if (type==SINCLAIR)
+	if (type == Z80)
+		binary = strcat(binary, ".z80");
+
+	if (type == ROM)
 	{
-	 binary=strcat(binary,".tap");
+		binary = strcat(binary, ".rom");
+		PC = addr_start + 2;
+		write_word(start);
+		if (!size)
+			size = 8 * ((addr_end - addr_start + 8191) / 8192);
 	}
 
-  if (type==MEGAROM)
-  {
-   for (i=1,j=0;i<=lastpage;i++) j+=usedpage[i];
-   j>>=1;
-   if (j<lastpage)
-     printf("Warning: %i out of %i megaROM pages are not defined\n",lastpage-j,lastpage);
-  }
+	if (type == BASIC)
+		binary = strcat(binary, ".bin");
 
-  printf("Binary file %s saved\n",binary);
-  foutput=fopen(binary,"wb");
-  if (type==BASIC)
-  {
-   putc(0xfe,foutput);
-   putc(addr_start & 0xff,foutput);
-   putc((addr_start>>8) & 0xff,foutput);
-   putc(addr_end & 0xff,foutput);
-   putc((addr_end>>8) & 0xff,foutput);
-   if (!start) start=addr_start;
-   putc(start & 0xff,foutput);
-   putc((start>>8) & 0xff,foutput);
-  } else
+	if (type == MSXDOS)
+		binary = strcat(binary, ".com");
+
+	if (type == SINCLAIR)
+		binary = strcat(binary, ".tap");
+
+	if (type == MEGAROM)
+	{
+		binary = strcat(binary, ".rom");
+		PC = 0x4002;
+		subpage = 0x00;
+		pageinit = 0x4000;
+		write_word(start);
+
+		for (i = 1, j = 0; i <= lastpage; i++)	/* TODO: wow, can you really do that? "i = 1, j = 0" */
+			j += usedpage[i];
+		j >>= 1;
+		if (j < lastpage)
+			printf("Warning: %i out of %i megaROM pages are not defined\n", lastpage - j, lastpage);
+	}
+
+	printf("Binary file %s saved\n", binary);
+	foutput = fopen(binary, "wb");
+
+	if (type == BASIC)
+	{
+		putc(0xfe, foutput);
+		putc(addr_start & 0xff, foutput);
+		putc((addr_start >> 8) & 0xff, foutput);
+		putc(addr_end & 0xff, foutput);
+		putc((addr_end >> 8) & 0xff, foutput);
+		if (!start)
+			start = addr_start;
+		putc(start & 0xff, foutput);
+		putc((start >> 8) & 0xff, foutput);
+	}
+	else
    if (type==SINCLAIR)
    {
 
