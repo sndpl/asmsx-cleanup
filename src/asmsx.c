@@ -454,15 +454,23 @@ void register_label(const char *name)
 
 void register_local(const char *name)
 {
- int i;
- if (pass==2) return;
- for (i=last_global;i<maximum;i++) if (!strcmp(name,id_list[i].name)) error_message(14);
- if (++maximum==MAX_ID) error_message(11);
- id_list[maximum-1].name=(char*)malloc(strlen(name)+4);
- strcpy(id_list[maximum-1].name,name);
- id_list[maximum-1].value=ePC;
- id_list[maximum-1].type=1;
- id_list[maximum-1].page=subpage;
+	int i;
+
+	if (pass == 2)
+		return;
+
+	for (i = last_global; i < maximum; i++)
+		if (!strcmp(name, id_list[i].name))
+			error_message(14);
+
+	if (++maximum == MAX_ID)
+		error_message(11);
+
+	id_list[maximum - 1].name = (char*)malloc(strlen(name) + 4);
+	strcpy(id_list[maximum - 1].name, name);
+	id_list[maximum - 1].value = ePC;
+	id_list[maximum - 1].type = 1;
+	id_list[maximum - 1].page = subpage;
 }
 
 void register_symbol(const char *name,int number,int type)
