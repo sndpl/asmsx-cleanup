@@ -1152,7 +1152,7 @@ void cas_write_file(void)
 	unsigned int i;
 	unsigned char cas[8] = {0x1F, 0xA6, 0xDE, 0xBA, 0xCC, 0x13, 0x7D, 0x74};
 
-	if ((type == MEGAROM) || ((type = ROM) && (addr_start < 0x8000)))
+	if ((type == MEGAROM) || ((type == ROM) && (addr_start < 0x8000)))
 	{
 		warning_message(0);
 		return;
