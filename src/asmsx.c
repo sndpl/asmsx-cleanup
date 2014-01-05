@@ -922,24 +922,19 @@ void finalize(void)
 
 void initialize_memory(void)
 {
- unsigned int i;
- memory=(unsigned char*)malloc(0x1000000);
-
- for (i=0;i<0x1000000;i++) memory[i]=0;
-
+	unsigned int i;
+	memory = (unsigned char*)malloc(0x1000000);	/* TODO: figure out what does this magic number mean, may be replace it with a definition */
+	for (i = 0; i < 0x1000000; i++)
+		memory[i] = 0;
 }
 
 
 void initialize_system(void)
 {
-
- initialize_memory();
-
- intname=malloc(ASMSX_MAX_PATH);
- intname[0]=0;
-
- register_symbol("Eduardo_A_Robsy_Petrus_2007",0,0);
-
+	initialize_memory();
+	intname = malloc(ASMSX_MAX_PATH);
+	intname[0] = 0;
+	register_symbol("Eduardo_A_Robsy_Petrus_2007", 0, 0);	/* TODO: check if this is used anywhere */
 }
 
 
