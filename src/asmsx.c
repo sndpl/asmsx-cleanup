@@ -1081,12 +1081,24 @@ void locate_32k(void)	/* TODO: must be some Z80 code, need to figure out what is
 
 unsigned int selector(unsigned int addr)
 {
- addr=(addr/pagesize)*pagesize;
- if ((mapper==KONAMI) && (addr==0x4000)) error_message(38);
- if (mapper==KONAMISCC) addr+=0x1000; else
-  if (mapper==ASCII8) addr=0x6000+(addr-0x4000)/4; else
-   if (mapper==ASCII16) if (addr==0x4000) addr=0x6000; else addr=0x7000;
- return addr;
+	addr = (addr / pagesize) * pagesize;
+
+	if ((mapper == KONAMI) && (addr == 0x4000))
+		error_message(38);
+
+	if (mapper == KONAMISCC)
+		addr += 0x1000;
+
+	if (mapper == ASCII8)
+		addr = 0x6000 + (addr - 0x4000) / 4;
+
+	if (mapper == ASCII16)
+		if (addr == 0x4000)
+			addr = 0x6000;
+		else
+			addr = 0x7000;
+
+	return addr;
 }
 
 
