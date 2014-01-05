@@ -940,9 +940,14 @@ void initialize_system(void)
 
 void type_sinclair(void)
 {
- if ((type) && (type!=SINCLAIR)) error_message(46);
- type=SINCLAIR;
- if (!addr_start) {PC=0x8000;ePC=PC;}
+	if ((type) && (type != SINCLAIR))
+		error_message(46);
+	type = SINCLAIR;
+	if (!addr_start)
+	{
+		PC=0x8000;
+		ePC=PC;
+	}
 }
 
 
