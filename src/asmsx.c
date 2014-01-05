@@ -1013,9 +1013,13 @@ void type_megarom(int n)
 
 void type_basic(void)
 {
- if ((pass==1) && (!addr_start)) error_message(21);
- if ((type) && (type!=BASIC)) error_message(20);
- type=BASIC;
+	if ((pass == 1) && (!addr_start))
+		error_message(21);
+
+	if ((type) && (type != BASIC))
+		error_message(20);
+
+	type = BASIC;
 }
 
 
