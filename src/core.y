@@ -2690,27 +2690,144 @@ mnemo_bits: MNEMO_BIT value_3bits ',' REGISTER
 	}
 ;
 
-mnemo_io: MNEMO_IN REGISTER ',' '[' value_8bits ']' {if ($2!=7) error_message(4);write_byte(0xdb);write_byte($5);}
-        | MNEMO_IN REGISTER ',' value_8bits {if ($2!=7) error_message(4);if (zilog) warning_message(5);write_byte(0xdb);write_byte($4);}
-        | MNEMO_IN REGISTER ',' '[' REGISTER ']' {if ($5!=1) error_message(2);write_byte(0xed);write_byte(0x40|($2<<3));}
-        | MNEMO_IN '[' REGISTER ']'{if ($3!=1) error_message(2);if (zilog) warning_message(5);write_byte(0xed);write_byte(0x70);}
-        | MNEMO_IN REGISTER_F ',' '[' REGISTER ']' {if ($5!=1) error_message(2);write_byte(0xed);write_byte(0x70);}
-        | MNEMO_INI {write_byte(0xed);write_byte(0xa2);}
-        | MNEMO_INIR {write_byte(0xed);write_byte(0xb2);}
-        | MNEMO_IND {write_byte(0xed);write_byte(0xaa);}
-        | MNEMO_INDR {write_byte(0xed);write_byte(0xba);}
-        | MNEMO_OUT '[' value_8bits ']' ',' REGISTER {if ($6!=7) error_message(5);write_byte(0xd3);write_byte($3);}
-        | MNEMO_OUT value_8bits ',' REGISTER {if ($4!=7) error_message(5);if (zilog) warning_message(5);write_byte(0xd3);write_byte($2);}
-        | MNEMO_OUT '[' REGISTER ']' ',' REGISTER {if ($3!=1) error_message(2);write_byte(0xed);write_byte(0x41|($6<<3));}
-        | MNEMO_OUT '[' REGISTER ']' ',' value_8bits {if ($3!=1) error_message(2);if ($6!=0) error_message(6);write_byte(0xed);write_byte(0x71);}
-        | MNEMO_OUTI {write_byte(0xed);write_byte(0xa3);}
-        | MNEMO_OTIR {write_byte(0xed);write_byte(0xb3);}
-        | MNEMO_OUTD {write_byte(0xed);write_byte(0xab);}
-        | MNEMO_OTDR {write_byte(0xed);write_byte(0xbb);}
-        | MNEMO_IN '[' value_8bits ']' {if (zilog) warning_message(5);write_byte(0xdb);write_byte($3);}
-        | MNEMO_IN value_8bits {if (zilog) warning_message(5);write_byte(0xdb);write_byte($2);}
-        | MNEMO_OUT '[' value_8bits ']' {if (zilog) warning_message(5);write_byte(0xd3);write_byte($3);}
-        | MNEMO_OUT value_8bits {if (zilog) warning_message(5);write_byte(0xd3);write_byte($2);}
+mnemo_io: MNEMO_IN REGISTER ',' '[' value_8bits ']'
+	{
+		if ($2 != 7)
+			error_message(4);
+		write_byte(0xdb);
+		write_byte($5);
+	}
+        | MNEMO_IN REGISTER ',' value_8bits
+	{
+		if ($2 != 7)
+			error_message(4);
+		if (zilog)
+			warning_message(5);
+		write_byte(0xdb);
+		write_byte($4);
+	}
+        | MNEMO_IN REGISTER ',' '[' REGISTER ']'
+	{
+		if ($5!=1)
+			error_message(2);
+		write_byte(0xed);
+		write_byte(0x40 | ($2 << 3));
+	}
+        | MNEMO_IN '[' REGISTER ']'
+	{
+		if ($3 != 1)
+			error_message(2);
+		if (zilog)
+			warning_message(5);
+		write_byte(0xed);
+		write_byte(0x70);
+	}
+        | MNEMO_IN REGISTER_F ',' '[' REGISTER ']'
+	{
+		if ($5 != 1)
+			error_message(2);
+		write_byte(0xed);
+		write_byte(0x70);
+	}
+        | MNEMO_INI
+	{
+		write_byte(0xed);
+		write_byte(0xa2);
+	}
+        | MNEMO_INIR
+	{
+		write_byte(0xed);
+		write_byte(0xb2);
+	}
+        | MNEMO_IND
+	{
+		write_byte(0xed);
+		write_byte(0xaa);
+	}
+        | MNEMO_INDR
+	{
+		write_byte(0xed);
+		write_byte(0xba);
+	}
+        | MNEMO_OUT '[' value_8bits ']' ',' REGISTER
+	{
+		if ($6 != 7)
+			error_message(5);
+		write_byte(0xd3);
+		write_byte($3);
+	}
+        | MNEMO_OUT value_8bits ',' REGISTER
+	{
+		if ($4 != 7)
+			error_message(5);
+		if (zilog)
+			warning_message(5);
+		write_byte(0xd3);
+		write_byte($2);
+	}
+        | MNEMO_OUT '[' REGISTER ']' ',' REGISTER
+	{
+		if ($3 != 1)
+			error_message(2);
+		write_byte(0xed);
+		write_byte(0x41 | ($6 << 3));
+	}
+        | MNEMO_OUT '[' REGISTER ']' ',' value_8bits
+	{
+		if ($3 != 1)
+			error_message(2);
+		if ($6 != 0)
+			error_message(6);
+		write_byte(0xed);
+		write_byte(0x71);
+	}
+        | MNEMO_OUTI
+	{
+		write_byte(0xed);
+		write_byte(0xa3);
+	}
+        | MNEMO_OTIR
+	{	write_byte(0xed);
+		write_byte(0xb3);
+	}
+        | MNEMO_OUTD
+	{
+		write_byte(0xed);
+		write_byte(0xab);
+	}
+        | MNEMO_OTDR
+	{
+		write_byte(0xed);
+		write_byte(0xbb);
+	}
+        | MNEMO_IN '[' value_8bits ']'
+	{
+		if (zilog)
+			warning_message(5);
+		write_byte(0xdb);
+		write_byte($3);
+	}
+        | MNEMO_IN value_8bits
+	{
+		if (zilog)
+			warning_message(5);
+		write_byte(0xdb);
+		write_byte($2);
+	}
+        | MNEMO_OUT '[' value_8bits ']'
+	{
+		if (zilog)
+			warning_message(5);
+		write_byte(0xd3);
+		write_byte($3);
+	}
+        | MNEMO_OUT value_8bits
+	{
+		if (zilog)
+			warning_message(5);
+		write_byte(0xd3);
+		write_byte($2);
+	}
 ;
 
 mnemo_jump: MNEMO_JP value_16bits {write_byte(0xc3);write_word($2);}
