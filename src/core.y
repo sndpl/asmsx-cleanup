@@ -898,28 +898,136 @@ mnemo_load8bit: MNEMO_LD REGISTER ',' REGISTER
 	}
 ;
 
-mnemo_load16bit: MNEMO_LD REGISTER_PAR ',' value_16bits {write_byte(0x01|($2<<4));write_word($4);}
-               | MNEMO_LD REGISTER_16_IX ',' value_16bits {write_byte(0xdd);write_byte(0x21);write_word($4);}
-               | MNEMO_LD REGISTER_16_IY ',' value_16bits {write_byte(0xfd);write_byte(0x21);write_word($4);}
-               | MNEMO_LD REGISTER_PAR ',' '[' value_16bits ']' {if ($2!=2) {write_byte(0xed);write_byte(0x4b|($2<<4));} else write_byte(0x2a);write_word($5);}
-               | MNEMO_LD REGISTER_16_IX ',' '[' value_16bits ']' {write_byte(0xdd);write_byte(0x2a);write_word($5);}
-               | MNEMO_LD REGISTER_16_IY ',' '[' value_16bits ']' {write_byte(0xfd);write_byte(0x2a);write_word($5);}
-               | MNEMO_LD '[' value_16bits ']' ',' REGISTER_PAR {if ($6!=2) {write_byte(0xed);write_byte(0x43|($6<<4));} else write_byte(0x22);write_word($3);}
-               | MNEMO_LD '[' value_16bits ']' ',' REGISTER_16_IX {write_byte(0xdd);write_byte(0x22);write_word($3);}
-               | MNEMO_LD '[' value_16bits ']' ',' REGISTER_16_IY {write_byte(0xfd);write_byte(0x22);write_word($3);}
-               | MNEMO_LD_SP ',' '[' value_16bits ']' {write_byte(0xed);write_byte(0x7b);write_word($4);}
-               | MNEMO_LD_SP ',' value_16bits {write_byte(0x31);write_word($3);}
-               | MNEMO_LD_SP ',' REGISTER_PAR {if ($3!=2) error_message(2);write_byte(0xf9);}
-               | MNEMO_LD_SP ',' REGISTER_16_IX {write_byte(0xdd);write_byte(0xf9);}
-               | MNEMO_LD_SP ',' REGISTER_16_IY {write_byte(0xfd);write_byte(0xf9);}
-               | MNEMO_PUSH REGISTER_PAR {if ($2==3) error_message(2);write_byte(0xc5|($2<<4));}
-               | MNEMO_PUSH REGISTER_AF {write_byte(0xf5);}
-               | MNEMO_PUSH REGISTER_16_IX {write_byte(0xdd);write_byte(0xe5);}
-               | MNEMO_PUSH REGISTER_16_IY {write_byte(0xfd);write_byte(0xe5);}
-               | MNEMO_POP REGISTER_PAR {if ($2==3) error_message(2);write_byte(0xc1|($2<<4));}
-               | MNEMO_POP REGISTER_AF {write_byte(0xf1);}
-               | MNEMO_POP REGISTER_16_IX {write_byte(0xdd);write_byte(0xe1);}
-               | MNEMO_POP REGISTER_16_IY {write_byte(0xfd);write_byte(0xe1);}
+mnemo_load16bit: MNEMO_LD REGISTER_PAR ',' value_16bits
+	{
+		write_byte(0x01 | ($2 << 4));
+		write_word($4);
+	}
+	| MNEMO_LD REGISTER_16_IX ',' value_16bits
+	{
+		write_byte(0xdd);
+		write_byte(0x21);
+		write_word($4);
+	}
+	| MNEMO_LD REGISTER_16_IY ',' value_16bits
+	{
+		write_byte(0xfd);
+		write_byte(0x21);
+		write_word($4);
+	}
+	| MNEMO_LD REGISTER_PAR ',' '[' value_16bits ']'
+	{
+		if ($2 != 2)
+		{
+			write_byte(0xed);
+			write_byte(0x4b | ($2 << 4));
+		}
+		else
+			write_byte(0x2a);
+		write_word($5);
+	}
+	| MNEMO_LD REGISTER_16_IX ',' '[' value_16bits ']'
+	{
+		write_byte(0xdd);
+		write_byte(0x2a);
+		write_word($5);
+	}
+	| MNEMO_LD REGISTER_16_IY ',' '[' value_16bits ']'
+	{
+		write_byte(0xfd);
+		write_byte(0x2a);
+		write_word($5);
+	}
+	| MNEMO_LD '[' value_16bits ']' ',' REGISTER_PAR
+	{
+		if ($6 != 2)
+		{
+			write_byte(0xed);
+			write_byte(0x43 | ($6 << 4));
+		}
+		else
+			write_byte(0x22);
+		write_word($3);
+	}
+	| MNEMO_LD '[' value_16bits ']' ',' REGISTER_16_IX
+	{
+		write_byte(0xdd);
+		write_byte(0x22);
+		write_word($3);
+	}
+	| MNEMO_LD '[' value_16bits ']' ',' REGISTER_16_IY
+	{
+		write_byte(0xfd);
+		write_byte(0x22);
+		write_word($3);
+	}
+	| MNEMO_LD_SP ',' '[' value_16bits ']'
+	{
+		write_byte(0xed);
+		write_byte(0x7b);
+		write_word($4);
+	}
+	| MNEMO_LD_SP ',' value_16bits
+	{
+		write_byte(0x31);
+		write_word($3);
+	}
+	| MNEMO_LD_SP ',' REGISTER_PAR
+	{
+		if ($3 != 2)
+			error_message(2);
+		write_byte(0xf9);
+	}
+	| MNEMO_LD_SP ',' REGISTER_16_IX
+	{
+		write_byte(0xdd);
+		write_byte(0xf9);
+	}
+	| MNEMO_LD_SP ',' REGISTER_16_IY
+	{
+		write_byte(0xfd);
+		write_byte(0xf9);
+	}
+	| MNEMO_PUSH REGISTER_PAR
+	{
+		if ($2 == 3)
+			error_message(2);
+		write_byte(0xc5 | ($2 << 4));
+	}
+	| MNEMO_PUSH REGISTER_AF
+	{
+		write_byte(0xf5);
+	}
+	| MNEMO_PUSH REGISTER_16_IX
+	{
+		write_byte(0xdd);
+		write_byte(0xe5);
+	}
+	| MNEMO_PUSH REGISTER_16_IY
+	{
+		write_byte(0xfd);
+		write_byte(0xe5);
+	}
+	| MNEMO_POP REGISTER_PAR
+	{
+		if ($2 == 3)
+			error_message(2);
+		write_byte(0xc1 | ($2 << 4));
+	}
+	| MNEMO_POP REGISTER_AF
+	{
+		write_byte(0xf1);
+	}
+	| MNEMO_POP REGISTER_16_IX
+	{
+		write_byte(0xdd);
+		write_byte(0xe1);
+	}
+	| MNEMO_POP REGISTER_16_IY
+	{
+		write_byte(0xfd);
+		write_byte(0xe1);
+	}
 ;
 
 mnemo_exchange: MNEMO_EX REGISTER_PAR ',' REGISTER_PAR {if ((($2!=1)||($4!=2))&&(($2!=2)||($4!=1))) error_message(2);if ((zilog)&&($2!=1)) warning_message(5);write_byte(0xeb);}
