@@ -3223,7 +3223,7 @@ value_3bits: value
 
 value_8bits: value
 	{
-		if (((int)$1 > 255) || ((int) $1 <- 128))
+		if (((int)$1 > 255) || ((int) $1 < -128))
 			warning_message(2);
 		$$ = $1 & 0xff;
 	}
