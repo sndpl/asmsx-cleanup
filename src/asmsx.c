@@ -342,19 +342,32 @@ void error_message(int code)
 
 void warning_message(int code)
 {
- if (pass==2) {
- printf("%s, line %d: Warning: ",strtok(source,"\042"),lines);
- switch (code)
- {
-  case 1: printf("16-bit overflow\n");break;
-  case 2: printf("8-bit overflow\n");break;
-  case 3: printf("3-bit overflow\n");break;
-  case 4: printf("output cannot be converted to CAS\n");break;
-  case 5: printf("not official Zilog syntax\n");break;
-  case 6: printf("undocumented Zilog instruction\n");break;
- }
- warnings++;
- }
+	if (2 != pass)
+		return;
+
+	printf("%s, line %d: Warning: ", strtok(source, "\042"), lines);
+	switch (code)
+	{
+		case 1:
+			printf("16-bit overflow\n");
+			break;
+		case 2:
+			printf("8-bit overflow\n");
+			break;
+		case 3:
+			printf("3-bit overflow\n");
+			break;
+		case 4:
+			printf("output cannot be converted to CAS\n");
+			break;
+		case 5:
+			printf("not official Zilog syntax\n");
+			break;
+		case 6:
+			printf("undocumented Zilog instruction\n");
+			break;
+	}
+	warnings++;
 }
 
 void write_byte(int b)
