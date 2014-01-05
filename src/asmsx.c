@@ -372,26 +372,35 @@ void warning_message(int code)
 
 void write_byte(int b)
 {
-if ((!conditional_level)||(conditional[conditional_level]))
-if (type!=MEGAROM)
-{
- if (PC>=0x10000) error_message(1);
- if ((type==ROM) && (PC>=0xC000)) error_message(28);
- if (addr_start>PC) addr_start=PC;
- if (addr_end<PC) addr_end=PC;
- if ((size)&&(PC>=addr_start+size*1024)&&(pass==2)) error_message(17);
- if ((size)&&(addr_start+size*1024>65536)&&(pass==2)) error_message(1);
- memory[PC++]=b;
- ePC++;
-}
-if (type==MEGAROM)
-{
- if (subpage==ASMSX_MAX_PATH) error_message(35);
- if (PC>=pageinit+1024*pagesize) error_message(31);
- memory[subpage*pagesize*1024+PC-pageinit]=b;
- PC++;
- ePC++;
-}
+	if ((!conditional_level) || (conditional[conditional_level]))
+	if (type != MEGAROM)
+	{
+		if (PC >= 0x10000)
+			error_message(1);
+		if ((type == ROM) && (PC >= 0xC000))
+			error_message(28);
+		if (addr_start > PC)
+			addr_start = PC;
+		if (addr_end < PC)
+			addr_end = PC;
+		if ((size) && (PC >= addr_start + size * 1024) && (pass == 2))
+			error_message(17);
+		if ((size) && (addr_start + size * 1024 > 65536) && (pass == 2))
+			error_message(1);
+		memory[PC++] = b;
+		ePC++;
+	}
+
+	if (type == MEGAROM)
+	{
+		if (subpage == ASMSX_MAX_PATH)
+			error_message(35);
+		if (PC >= pageinit + 1024 * pagesize)
+			error_message(31);
+		memory[subpage * pagesize * 1024 + PC - pageinit] = b;
+		PC++;
+		ePC++;
+	}
 }
 
 void write_text(const char *text)
