@@ -190,61 +190,154 @@ void msx_bios(void)
 
 void error_message(int code)
 {
- printf("%s, line %d: ",strtok(source,"\042"),lines);
- switch (code)
- {
-  case 0: printf("syntax error\n");break;
-  case 1: printf("memory overflow\n");break;
-  case 2: printf("wrong register combination\n");break;
-  case 3: printf("wrong interruption mode\n");break;
-  case 4: printf("destination register should be A\n");break;
-  case 5: printf("source register should be A\n");break;
-  case 6: printf("value should be 0\n");break;
-  case 7: printf("missing condition\n");break;
-  case 8: printf("unreachable address\n");break;
-  case 9: printf("wrong condition\n");break;
-  case 10: printf("wrong restart address\n");break;
-  case 11: printf("symbol table overflow\n");break;
-  case 12: printf("undefined identifier\n");break;
-  case 13: printf("undefined local label\n");break;
-  case 14: printf("symbol redefinition\n");break;
-  case 15: printf("size redefinition\n");break;
-  case 16: printf("reserved word used as identifier\n");break;
-  case 17: printf("code size overflow\n");break;
-  case 18: printf("binary file not found\n");break;
-  case 19: printf("ROM directive should preceed any code\n");break;
-  case 20: printf("previously defined type\n");break;
-  case 21: printf("BASIC directive should preceed any code\n");break;
-  case 22: printf("page out of range\n");break;
-  case 23: printf("MSXDOS directive should preceed any code\n");break;
-  case 24: printf("no code in the whole file\n");break;
-  case 25: printf("only available for MSXDOS\n");break;
-  case 26: printf("machine not defined\n");break;
-  case 27: printf("MegaROM directive should preceed any code\n");break;
-  case 28: printf("cannot write ROM code/data to page 3\n");break;
-  case 29: printf("included binary shorter than expected\n");break;
-  case 30: printf("wrong number of bytes to skip/include\n");break;
-  case 31: printf("megaROM subpage overflow\n");break;
-  case 32: printf("subpage 0 can only be defined by megaROM directive\n");break;
-  case 33: printf("unsupported mapper type\n");break;
-  case 34: printf("megaROM code should be between 4000h and BFFFh\n");break;
-  case 35: printf("code/data without subpage\n");break;
-  case 36: printf("megaROM mapper subpage out of range\n");break;
-  case 37: printf("megaROM subpage already defined\n");break;
-  case 38: printf("Konami megaROM forces page 0 at 4000h\n");break;
-  case 39: printf("megaROM subpage not defined\n");break;
-  case 40: printf("megaROM-only macro used\n");break;
-  case 41: printf("only for ROMs and megaROMs\n");break;
-  case 42: printf("ELSE without IF\n");break;
-  case 43: printf("ENDIF without IF\n");break;
-  case 44: printf("Cannot nest more IFs\n");break;
-  case 45: printf("IF not closed\n");break;
-  case 46: printf("Sinclair directive should preceed any code\n");break;
- }
+	printf("%s, line %d: ", strtok(source, "\042"), lines);
+	switch (code)
+	{
+		case 0:
+			printf("syntax error\n");
+			break;
+		case 1:
+			printf("memory overflow\n");
+			break;
+		case 2:
+			printf("wrong register combination\n");
+			break;
+		case 3:
+			printf("wrong interruption mode\n");
+			break;
+		case 4:
+			printf("destination register should be A\n");
+			break;
+		case 5:
+			printf("source register should be A\n");
+			break;
+		case 6:
+			printf("value should be 0\n");
+			break;
+		case 7:
+			printf("missing condition\n");
+			break;
+		case 8:
+			printf("unreachable address\n");
+			break;
+		case 9:
+			printf("wrong condition\n");
+			break;
+		case 10:
+			printf("wrong restart address\n");
+			break;
+		case 11:
+			printf("symbol table overflow\n");
+			break;
+		case 12:
+			printf("undefined identifier\n");
+			break;
+		case 13:
+			printf("undefined local label\n");
+			break;
+		case 14:
+			printf("symbol redefinition\n");
+			break;
+		case 15:
+			printf("size redefinition\n");
+			break;
+		case 16:
+			printf("reserved word used as identifier\n");
+			break;
+		case 17:
+			printf("code size overflow\n");
+			break;
+		case 18:
+			printf("binary file not found\n");
+			break;
+		case 19:
+			printf("ROM directive should preceed any code\n");
+			break;
+		case 20:
+			printf("previously defined type\n");
+			break;
+		case 21:
+			printf("BASIC directive should preceed any code\n");
+			break;
+		case 22:
+			printf("page out of range\n");
+			break;
+		case 23:
+			printf("MSXDOS directive should preceed any code\n");
+			break;
+		case 24:
+			printf("no code in the whole file\n");
+			break;
+		case 25:
+			printf("only available for MSXDOS\n");
+			break;
+		case 26:
+			printf("machine not defined\n");
+			break;
+		case 27:
+			printf("MegaROM directive should preceed any code\n");
+			break;
+		case 28:
+			printf("cannot write ROM code/data to page 3\n");
+			break;
+		case 29:
+			printf("included binary shorter than expected\n");
+			break;
+		case 30:
+			printf("wrong number of bytes to skip/include\n");
+			break;
+		case 31:
+			printf("megaROM subpage overflow\n");
+			break;
+		case 32:
+			printf("subpage 0 can only be defined by megaROM directive\n");
+			break;
+		case 33:
+			printf("unsupported mapper type\n");
+			break;
+		case 34:
+			printf("megaROM code should be between 4000h and BFFFh\n");
+			break;
+		case 35:
+			printf("code/data without subpage\n");
+			break;
+		case 36:
+			printf("megaROM mapper subpage out of range\n");
+			break;
+		case 37:
+			printf("megaROM subpage already defined\n");
+			break;
+		case 38:
+			printf("Konami megaROM forces page 0 at 4000h\n");
+			break;
+		case 39:
+			printf("megaROM subpage not defined\n");
+			break;
+		case 40:
+			printf("megaROM-only macro used\n");
+			break;
+		case 41:
+			printf("only for ROMs and megaROMs\n");
+			break;
+		case 42:
+			printf("ELSE without IF\n");
+			break;
+		case 43:
+			printf("ENDIF without IF\n");
+			break;
+		case 44:
+			printf("Cannot nest more IFs\n");
+			break;
+		case 45:
+			printf("IF not closed\n");
+			break;
+		case 46:
+			printf("Sinclair directive should preceed any code\n");
+			break;
+	}
 
- remove("~tmppre.?");
-
- exit(0);
+	remove("~tmppre.?");
+	exit(0);
 }
 
 void warning_message(int code)
