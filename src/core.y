@@ -6,7 +6,6 @@
 #include <math.h>
 
 #include "asmsx.h"
-#include "wav.h"
 %}
 
 %union

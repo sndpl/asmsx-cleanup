@@ -50,15 +50,15 @@ extern unsigned char parity;
 
 extern int conditional[16];
 extern int conditional_level;
-extern unsigned char *filename;
 extern unsigned char *assembler;
-extern unsigned char *binary;
-extern unsigned char *symbols;
-extern unsigned char *outputfname;
-extern unsigned char *source;
-extern unsigned char *original;
 extern unsigned char cassette;
-extern unsigned char *intname;
+extern char *source;
+extern char *intname;
+extern char *binary;
+extern char *filename;
+extern char *original;
+extern char *outputfname;
+extern char *symbols;
 
 extern unsigned int ePC;
 extern unsigned int PC;
