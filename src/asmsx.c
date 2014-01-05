@@ -782,94 +782,105 @@ void write_binary(void)
 		putc(start & 0xff, foutput);
 		putc((start >> 8) & 0xff, foutput);
 	}
-	else
-   if (type==SINCLAIR)
-   {
 
-	if (start)
-   {
+	if (type == SINCLAIR)
+	{
+		if (start)
+		{
+			putc(0x13, foutput);
+			putc(0, foutput);
+			putc(0, foutput);
+			parity = 0x20;
+			write_zx_byte(0);
 
-        putc(0x13,foutput);
-        putc(0,foutput);
-        putc(0,foutput);
-        parity=0x20;
-        write_zx_byte(0);
+			for (i = 0; i < 10; i++) 
+				if (i < strlen(filename))
+					write_zx_byte(filename[i]);
+				else
+					write_zx_byte(32);	/* pad name on tape with spaces */
 
-	for (i=0;i<10;i++) 
-		if (i<strlen(filename)) write_zx_byte(filename[i]); else write_zx_byte(0x20);
+			write_zx_byte(0x1e);	/* line length */
+			write_zx_byte(0);
+			write_zx_byte(0x0a);	/* 10 */
+			write_zx_byte(0);
+			write_zx_byte(0x1e);	/* line length */
+			write_zx_byte(0);
+			write_zx_byte(0x1b);
+			write_zx_byte(0x20);
+			write_zx_byte(0);
+			write_zx_byte(0xff);
+			write_zx_byte(0);
+			write_zx_byte(0x0a);
+			write_zx_byte(0x1a);
+			write_zx_byte(0);
+			write_zx_byte(0xfd);	/* CLEAR */
+			write_zx_byte(0xb0);	/* VAL */
+			write_zx_byte('\"');	/* TODO: why escape? Isn't '"' the same? */
+			write_zx_number(addr_start - 1);
+			write_zx_byte('\"');
+			write_zx_byte(':');
+			write_zx_byte(0xef);	/* LOAD */
+			write_zx_byte('\"');
+			write_zx_byte('\"');
+			write_zx_byte(0xaf);	/* CODE */
+			write_zx_byte(':');
+			write_zx_byte(0xf9);	/* RANDOMIZE */
+			write_zx_byte(0xc0);	/* USR */
+			write_zx_byte(0xb0);	/* VAL */
+			write_zx_byte('\"');
+			write_zx_number(start);
+			write_zx_byte('\"');
+			write_zx_byte(0x0d);
+			write_zx_byte(parity);
+		}
 
-        write_zx_byte(0x1e);      /* line length */
-        write_zx_byte(0);
-        write_zx_byte(0x0a);      /* 10 */
-        write_zx_byte(0);
-        write_zx_byte(0x1e);      /* line length */
-        write_zx_byte(0);
-        write_zx_byte(0x1b);
-        write_zx_byte(0x20);
-        write_zx_byte(0);
-        write_zx_byte(0xff);
-        write_zx_byte(0);
-        write_zx_byte(0x0a);
-        write_zx_byte(0x1a);
-        write_zx_byte(0);
-        write_zx_byte(0xfd);      /* CLEAR */
-        write_zx_byte(0xb0);      /* VAL */
-        write_zx_byte('\"');
-        write_zx_number(addr_start-1);
-        write_zx_byte('\"');
-        write_zx_byte(':');
-        write_zx_byte(0xef);      /* LOAD */
-        write_zx_byte('\"');
-        write_zx_byte('\"');
-        write_zx_byte(0xaf);      /* CODE */
-        write_zx_byte(':');
-        write_zx_byte(0xf9);      /* RANDOMIZE */
-        write_zx_byte(0xc0);      /* USR */
-        write_zx_byte(0xb0);      /* VAL */
-        write_zx_byte('\"');
-        write_zx_number(start);
-        write_zx_byte('\"');
-        write_zx_byte(0x0d);
-        write_zx_byte(parity);
+		putc(19, foutput);	/* Header len */
+		putc(0, foutput);	/* MSB of len */
+		putc(0, foutput);	/* Header is 0 */
+		parity = 0;
+
+		write_zx_byte(3);	/* Filetype (Code) */
+
+		for (i = 0; i < 10; i++) 
+
+		if (i < strlen(filename))
+			write_zx_byte(filename[i]);
+		else
+			write_zx_byte(32);	/* pad name on tape with spaces */
+
+		write_zx_word(addr_end - addr_start + 1);
+		write_zx_word(addr_start);	/* load address */
+		write_zx_word(0);		/* offset */
+		write_zx_byte(parity);
+
+		write_zx_word(addr_end - addr_start + 3);	/* Length of next block */
+		parity = 0;
+		write_zx_byte(255);		/* Data... */
+
+		for (i = addr_start; i <= addr_end; i++)
+			write_zx_byte(memory[i]);
+		write_zx_byte(parity);
 	}
 
+	if (type != SINCLAIR)
+		if (!size)
+		{
+			if (type != MEGAROM)
+				for (i = addr_start; i <= addr_end; i++)
+					putc(memory[i], foutput);
+			else
+				for (i = 0; i < (lastpage + 1) * pagesize * 1024; i++)
+					putc(memory[i], foutput);
+		}
+		else
+			if (type != MEGAROM)
+				for (i=addr_start; i < addr_start + size * 1024; i++)
+					putc(memory[i], foutput);
+			else
+				for (i = 0; i < size * 1024; i++)
+					putc(memory[i], foutput);
 
-	putc(19,foutput);	/* Header len */
-	putc(0,foutput);		/* MSB of len */
-	putc(0,foutput);		/* Header is 0 */
-	parity=0;
-	
-	write_zx_byte(3);	/* Filetype (Code) */
-
-	for (i=0;i<10;i++) 
-		if (i<strlen(filename)) write_zx_byte(filename[i]); else write_zx_byte(0x20);
-
-	write_zx_word(addr_end-addr_start+1);
-        write_zx_word(addr_start); /* load address */
-	write_zx_word(0);	/* offset */
-	write_zx_byte(parity);
-	
-	write_zx_word(addr_end-addr_start+3);	/* Length of next block */
-	parity=0;
-	write_zx_byte(255);	/* Data... */
-	for (i=addr_start; i<=addr_end;i++) {
-		write_zx_byte(memory[i]);
-	}
-	write_zx_byte(parity);
-	
-	
-   }
-
-  if (type!=SINCLAIR) if (!size)
-  {
-   if (type!=MEGAROM) for (i=addr_start;i<=addr_end;i++) putc(memory[i],foutput);
-    else for (i=0;i<(lastpage+1)*pagesize*1024;i++) putc(memory[i],foutput);
-  } else if (type!=MEGAROM) for (i=addr_start;i<addr_start+size*1024;i++) putc(memory[i],foutput);
-    else for (i=0;i<size*1024;i++) putc(memory[i],foutput);
-
-  fclose(foutput);
-
-
+	fclose(foutput);
 }
 
 
