@@ -1193,9 +1193,13 @@ void cas_write_file(void)
 
 int defined_symbol(const char *name)
 {
- unsigned int i;
- for (i=0;i<maximum;i++) if (!strcmp(name,id_list[i].name)) return 1;
- return 0;
+	unsigned int i;
+
+	for (i = 0; i < maximum; i++)
+		if (!strcmp(name, id_list[i].name))
+			return 1;
+
+	return 0;
 }
 
 
