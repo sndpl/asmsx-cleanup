@@ -625,13 +625,13 @@ void save_symbols(void)
 }
 
 
-int yywrap(void)
+int yywrap(void)	/* TODO: move back to core.y? */
 {
 	return 1;
 }
 
 
-void yyerror(const char *s)
+void yyerror(const char *s)	/* TODO: move back to core.y? */
 {
 	error_message(0);
 }
