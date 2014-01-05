@@ -1039,15 +1039,27 @@ void type_msxdos(void)
 
 void set_subpage(int n, int addr)
 {
- if (n>lastpage) lastpage=n;
- if (!n) error_message(32);
- if (usedpage[n]==pass) error_message(37); else usedpage[n]=pass;
- if ((addr<0x4000) || (addr>0xbfff)) error_message(35);
- if (n>maxpage[mapper]) error_message(36);
- subpage=n;
- pageinit=(addr/pagesize)*pagesize;
- PC=pageinit;
- ePC=PC;
+	if (n > lastpage)
+		lastpage = n;
+
+	if (!n)
+		error_message(32);
+
+	if (usedpage[n] == pass)
+		error_message(37);
+	else
+		usedpage[n] = pass;
+
+	if ((addr < 0x4000) || (addr > 0xbfff))
+		error_message(35);
+
+	if (n > maxpage[mapper])
+		error_message(36);
+
+	subpage = n;
+	pageinit = (addr / pagesize) * pagesize;
+	PC = pageinit;
+	ePC = PC;
 }
 
 
