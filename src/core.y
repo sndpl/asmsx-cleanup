@@ -1615,67 +1615,339 @@ mnemo_arithm8bit: MNEMO_ADD REGISTER ',' REGISTER
 		write_byte(0x86);
 		write_byte($2);
 	}
-	| MNEMO_ADC REGISTER {if (zilog) warning_message(5);write_byte(0x88|$2);}
-	| MNEMO_ADC REGISTER_IX {if (zilog) warning_message(5);write_byte(0xdd);write_byte(0x88|$2);}
-	| MNEMO_ADC REGISTER_IY {if (zilog) warning_message(5);write_byte(0xfd);write_byte(0x88|$2);}
-	| MNEMO_ADC value_8bits {if (zilog) warning_message(5);write_byte(0xce);write_byte($2);}
-	| MNEMO_ADC REGISTER_IND_HL {if (zilog) warning_message(5);write_byte(0x8e);}
-	| MNEMO_ADC rel_IX {if (zilog) warning_message(5);write_byte(0xdd);write_byte(0x8e);write_byte($2);}
-	| MNEMO_ADC rel_IY {if (zilog) warning_message(5);write_byte(0xfd);write_byte(0x8e);write_byte($2);}
-	| MNEMO_SUB REGISTER {write_byte(0x90|$2);}
-	| MNEMO_SUB REGISTER_IX {write_byte(0xdd);write_byte(0x90|$2);}
-	| MNEMO_SUB REGISTER_IY {write_byte(0xfd);write_byte(0x90|$2);}
-	| MNEMO_SUB value_8bits {write_byte(0xd6);write_byte($2);}
-	| MNEMO_SUB REGISTER_IND_HL {write_byte(0x96);}
-	| MNEMO_SUB rel_IX {write_byte(0xdd);write_byte(0x96);write_byte($2);}
-	| MNEMO_SUB rel_IY {write_byte(0xfd);write_byte(0x96);write_byte($2);}
-	| MNEMO_SBC REGISTER {if (zilog) warning_message(5);write_byte(0x98|$2);}
-	| MNEMO_SBC REGISTER_IX {if (zilog) warning_message(5);write_byte(0xdd);write_byte(0x98|$2);}
-	| MNEMO_SBC REGISTER_IY {if (zilog) warning_message(5);write_byte(0xfd);write_byte(0x98|$2);}
-	| MNEMO_SBC value_8bits {if (zilog) warning_message(5);write_byte(0xde);write_byte($2);}
-	| MNEMO_SBC REGISTER_IND_HL {if (zilog) warning_message(5);write_byte(0x9e);}
-	| MNEMO_SBC rel_IX {if (zilog) warning_message(5);write_byte(0xdd);write_byte(0x9e);write_byte($2);}
-	| MNEMO_SBC rel_IY {if (zilog) warning_message(5);write_byte(0xfd);write_byte(0x9e);write_byte($2);}
-	| MNEMO_AND REGISTER {write_byte(0xa0|$2);}
-	| MNEMO_AND REGISTER_IX {write_byte(0xdd);write_byte(0xa0|$2);}
-	| MNEMO_AND REGISTER_IY {write_byte(0xfd);write_byte(0xa0|$2);}
-	| MNEMO_AND value_8bits {write_byte(0xe6);write_byte($2);}
-	| MNEMO_AND REGISTER_IND_HL {write_byte(0xa6);}
-	| MNEMO_AND rel_IX {write_byte(0xdd);write_byte(0xa6);write_byte($2);}
-	| MNEMO_AND rel_IY {write_byte(0xfd);write_byte(0xa6);write_byte($2);}
-	| MNEMO_OR REGISTER {write_byte(0xb0|$2);}
-	| MNEMO_OR REGISTER_IX {write_byte(0xdd);write_byte(0xb0|$2);}
-	| MNEMO_OR REGISTER_IY {write_byte(0xfd);write_byte(0xb0|$2);}
-	| MNEMO_OR value_8bits {write_byte(0xf6);write_byte($2);}
-	| MNEMO_OR REGISTER_IND_HL {write_byte(0xb6);}
-	| MNEMO_OR rel_IX {write_byte(0xdd);write_byte(0xb6);write_byte($2);}
-	| MNEMO_OR rel_IY {write_byte(0xfd);write_byte(0xb6);write_byte($2);}
-	| MNEMO_XOR REGISTER {write_byte(0xa8|$2);}
-	| MNEMO_XOR REGISTER_IX {write_byte(0xdd);write_byte(0xa8|$2);}
-	| MNEMO_XOR REGISTER_IY {write_byte(0xfd);write_byte(0xa8|$2);}
-	| MNEMO_XOR value_8bits {write_byte(0xee);write_byte($2);}
-	| MNEMO_XOR REGISTER_IND_HL {write_byte(0xae);}
-	| MNEMO_XOR rel_IX {write_byte(0xdd);write_byte(0xae);write_byte($2);}
-	| MNEMO_XOR rel_IY {write_byte(0xfd);write_byte(0xae);write_byte($2);}
-	| MNEMO_CP REGISTER {write_byte(0xb8|$2);}
-	| MNEMO_CP REGISTER_IX {write_byte(0xdd);write_byte(0xb8|$2);}
-	| MNEMO_CP REGISTER_IY {write_byte(0xfd);write_byte(0xb8|$2);}
-	| MNEMO_CP value_8bits {write_byte(0xfe);write_byte($2);}
-	| MNEMO_CP REGISTER_IND_HL {write_byte(0xbe);}
-	| MNEMO_CP rel_IX {write_byte(0xdd);write_byte(0xbe);write_byte($2);}
-	| MNEMO_CP rel_IY {write_byte(0xfd);write_byte(0xbe);write_byte($2);}
-	| MNEMO_INC REGISTER {write_byte(0x04|($2<<3));}
-	| MNEMO_INC REGISTER_IX {write_byte(0xdd);write_byte(0x04|($2<<3));}
-	| MNEMO_INC REGISTER_IY {write_byte(0xfd);write_byte(0x04|($2<<3));}
-	| MNEMO_INC REGISTER_IND_HL {write_byte(0x34);}
-	| MNEMO_INC rel_IX {write_byte(0xdd);write_byte(0x34);write_byte($2);}
-	| MNEMO_INC rel_IY {write_byte(0xfd);write_byte(0x34);write_byte($2);}
-	| MNEMO_DEC REGISTER {write_byte(0x05|($2<<3));}
-	| MNEMO_DEC REGISTER_IX {write_byte(0xdd);write_byte(0x05|($2<<3));}
-	| MNEMO_DEC REGISTER_IY {write_byte(0xfd);write_byte(0x05|($2<<3));}
-	| MNEMO_DEC REGISTER_IND_HL {write_byte(0x35);}
-	| MNEMO_DEC rel_IX {write_byte(0xdd);write_byte(0x35);write_byte($2);}
-	| MNEMO_DEC rel_IY {write_byte(0xfd);write_byte(0x35);write_byte($2);}
+	| MNEMO_ADC REGISTER
+	{
+		if (zilog)
+			warning_message(5);
+		write_byte(0x88 | $2);
+	}
+	| MNEMO_ADC REGISTER_IX
+	{
+		if (zilog)
+			warning_message(5);
+		write_byte(0xdd);
+		write_byte(0x88 | $2);
+	}
+	| MNEMO_ADC REGISTER_IY
+	{
+		if (zilog)
+			warning_message(5);
+		write_byte(0xfd);
+		write_byte(0x88 | $2);
+	}
+	| MNEMO_ADC value_8bits
+	{
+		if (zilog)
+			warning_message(5);
+		write_byte(0xce);
+		write_byte($2);
+	}
+	| MNEMO_ADC REGISTER_IND_HL
+	{
+		if (zilog)
+			warning_message(5);
+		write_byte(0x8e);
+	}
+	| MNEMO_ADC rel_IX
+	{
+		if (zilog)
+			warning_message(5);
+		write_byte(0xdd);
+		write_byte(0x8e);
+		write_byte($2);
+	}
+	| MNEMO_ADC rel_IY
+	{
+		if (zilog)
+			warning_message(5);
+		write_byte(0xfd);
+		write_byte(0x8e);
+		write_byte($2);
+	}
+	| MNEMO_SUB REGISTER
+	{
+		write_byte(0x90 | $2);
+	}
+	| MNEMO_SUB REGISTER_IX
+	{
+		write_byte(0xdd);
+		write_byte(0x90 | $2);
+	}
+	| MNEMO_SUB REGISTER_IY
+	{
+		write_byte(0xfd);
+		write_byte(0x90 | $2);
+	}
+	| MNEMO_SUB value_8bits
+	{
+		write_byte(0xd6);
+		write_byte($2);
+	}
+	| MNEMO_SUB REGISTER_IND_HL
+	{
+		write_byte(0x96);
+	}
+	| MNEMO_SUB rel_IX
+	{
+		write_byte(0xdd);
+		write_byte(0x96);
+		write_byte($2);
+	}
+	| MNEMO_SUB rel_IY
+	{
+		write_byte(0xfd);
+		write_byte(0x96);
+		write_byte($2);
+	}
+	| MNEMO_SBC REGISTER
+	{
+		if (zilog)
+			warning_message(5);
+		write_byte(0x98 | $2);
+	}
+	| MNEMO_SBC REGISTER_IX
+	{
+		if (zilog)
+			warning_message(5);
+		write_byte(0xdd);
+		write_byte(0x98 | $2);
+	}
+	| MNEMO_SBC REGISTER_IY
+	{
+		if (zilog)
+			warning_message(5);
+		write_byte(0xfd);
+		write_byte(0x98 | $2);
+	}
+	| MNEMO_SBC value_8bits
+	{
+		if (zilog)
+			warning_message(5);
+		write_byte(0xde);
+		write_byte($2);
+	}
+	| MNEMO_SBC REGISTER_IND_HL
+	{
+		if (zilog)
+			warning_message(5);
+		write_byte(0x9e);
+	}
+	| MNEMO_SBC rel_IX
+	{
+		if (zilog)
+			warning_message(5);
+		write_byte(0xdd);
+		write_byte(0x9e);
+		write_byte($2);
+	}
+	| MNEMO_SBC rel_IY
+	{
+		if (zilog)
+			warning_message(5);
+		write_byte(0xfd);
+		write_byte(0x9e);
+		write_byte($2);
+	}
+	| MNEMO_AND REGISTER
+	{
+		write_byte(0xa0 | $2);
+	}
+	| MNEMO_AND REGISTER_IX
+	{
+		write_byte(0xdd);
+		write_byte(0xa0 | $2);
+	}
+	| MNEMO_AND REGISTER_IY
+	{
+		write_byte(0xfd);
+		write_byte(0xa0 | $2);
+	}
+	| MNEMO_AND value_8bits
+	{
+		write_byte(0xe6);
+		write_byte($2);
+	}
+	| MNEMO_AND REGISTER_IND_HL
+	{
+		write_byte(0xa6);
+	}
+	| MNEMO_AND rel_IX
+	{
+		write_byte(0xdd);
+		write_byte(0xa6);
+		write_byte($2);
+	}
+	| MNEMO_AND rel_IY
+	{
+		write_byte(0xfd);
+		write_byte(0xa6);
+		write_byte($2);
+	}
+	| MNEMO_OR REGISTER
+	{
+		write_byte(0xb0 | $2);
+	}
+	| MNEMO_OR REGISTER_IX
+	{
+		write_byte(0xdd);
+		write_byte(0xb0 | $2);
+	}
+	| MNEMO_OR REGISTER_IY
+	{
+		write_byte(0xfd);
+		write_byte(0xb0 | $2);
+	}
+	| MNEMO_OR value_8bits
+	{
+		write_byte(0xf6);
+		write_byte($2);
+	}
+	| MNEMO_OR REGISTER_IND_HL
+	{
+		write_byte(0xb6);
+	}
+	| MNEMO_OR rel_IX
+	{
+		write_byte(0xdd);
+		write_byte(0xb6);
+		write_byte($2);
+	}
+	| MNEMO_OR rel_IY
+	{
+		write_byte(0xfd);
+		write_byte(0xb6);
+		write_byte($2);
+	}
+	| MNEMO_XOR REGISTER
+	{
+		write_byte(0xa8 | $2);
+	}
+	| MNEMO_XOR REGISTER_IX
+	{
+		write_byte(0xdd);
+		write_byte(0xa8 | $2);
+	}
+	| MNEMO_XOR REGISTER_IY
+	{
+		write_byte(0xfd);
+		write_byte(0xa8 | $2);
+	}
+	| MNEMO_XOR value_8bits
+	{
+		write_byte(0xee);
+		write_byte($2);
+	}
+	| MNEMO_XOR REGISTER_IND_HL
+	{
+		write_byte(0xae);
+	}
+	| MNEMO_XOR rel_IX
+	{
+		write_byte(0xdd);
+		write_byte(0xae);
+		write_byte($2);
+	}
+	| MNEMO_XOR rel_IY
+	{
+		write_byte(0xfd);
+		write_byte(0xae);
+		write_byte($2);
+	}
+	| MNEMO_CP REGISTER
+	{
+		write_byte(0xb8 | $2);
+	}
+	| MNEMO_CP REGISTER_IX
+	{
+		write_byte(0xdd);
+		write_byte(0xb8 | $2);
+	}
+	| MNEMO_CP REGISTER_IY
+	{
+		write_byte(0xfd);
+		write_byte(0xb8 | $2);
+	}
+	| MNEMO_CP value_8bits
+	{
+		write_byte(0xfe);
+		write_byte($2);
+	}
+	| MNEMO_CP REGISTER_IND_HL
+	{
+		write_byte(0xbe);
+	}
+	| MNEMO_CP rel_IX
+	{
+		write_byte(0xdd);
+		write_byte(0xbe);
+		write_byte($2);
+	}
+	| MNEMO_CP rel_IY
+	{
+		write_byte(0xfd);
+		write_byte(0xbe);
+		write_byte($2);
+	}
+	| MNEMO_INC REGISTER
+	{
+		write_byte(0x04 | ($2 << 3));
+	}
+	| MNEMO_INC REGISTER_IX
+	{
+		write_byte(0xdd);
+		write_byte(0x04 | ($2 << 3));
+	}
+	| MNEMO_INC REGISTER_IY
+	{
+		write_byte(0xfd);
+		write_byte(0x04 | ($2 << 3));
+	}
+	| MNEMO_INC REGISTER_IND_HL
+	{
+		write_byte(0x34);
+	}
+	| MNEMO_INC rel_IX
+	{
+		write_byte(0xdd);
+		write_byte(0x34);
+		write_byte($2);
+	}
+	| MNEMO_INC rel_IY
+	{
+		write_byte(0xfd);
+		write_byte(0x34);
+		write_byte($2);
+	}
+	| MNEMO_DEC REGISTER
+	{
+		write_byte(0x05 | ($2 << 3));
+	}
+	| MNEMO_DEC REGISTER_IX
+	{
+		write_byte(0xdd);
+		write_byte(0x05 | ($2 << 3));
+	}
+	| MNEMO_DEC REGISTER_IY
+	{
+		write_byte(0xfd);
+		write_byte(0x05 | ($2 << 3));
+	}
+	| MNEMO_DEC REGISTER_IND_HL
+	{
+		write_byte(0x35);
+	}
+	| MNEMO_DEC rel_IX
+	{
+		write_byte(0xdd);
+		write_byte(0x35);
+		write_byte($2);
+	}
+	| MNEMO_DEC rel_IY
+	{
+		write_byte(0xfd);
+		write_byte(0x35);
+		write_byte($2);
+	}
 ;
 
 mnemo_arithm16bit: MNEMO_ADD REGISTER_PAR ',' REGISTER_PAR {if ($2!=2) error_message(2);write_byte(0x09|($4<<4));}
