@@ -44,7 +44,7 @@ void conditional_jump(int);
 unsigned int read_label(const char *);
 unsigned int read_local(const char *);
 void yyerror(const char *);
-void include_binary(const char *,unsigned int,unsigned int);
+void include_binary(const char *, unsigned int, unsigned int);
 void finalize(void);
 void type_sinclair(void);
 void type_rom(void);
@@ -55,7 +55,7 @@ void set_subpage(int, int);
 void locate_32k(void);
 void select_page_direct(unsigned int, unsigned int);
 void select_page_register(unsigned int, unsigned int);
-int defined_symbol(const char *name);
+int defined_symbol(const char *);
 
 
 
@@ -1184,7 +1184,6 @@ unsigned int read_local(const char *name)
 
 void output_text(void)
 {
-
  // Get output file name
  strcpy(outputfname,filename);
  outputfname=strcat(outputfname,".txt");
