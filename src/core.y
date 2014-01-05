@@ -2910,15 +2910,53 @@ mnemo_jump: MNEMO_JP value_16bits
 	}
 ;
 
-mnemo_call: MNEMO_CALL value_16bits {write_byte(0xcd);write_word($2);}
-          | MNEMO_CALL CONDITION ',' value_16bits {write_byte(0xc4|($2<<3));write_word($4);}
-          | MNEMO_CALL REGISTER ',' value_16bits {if ($2!=1) error_message(7);write_byte(0xdc);write_word($4);}
-          | MNEMO_RET {write_byte(0xc9);}
-          | MNEMO_RET CONDITION {write_byte(0xc0|($2<<3));}
-          | MNEMO_RET REGISTER {if ($2!=1) error_message(7);write_byte(0xd8);}
-          | MNEMO_RETI {write_byte(0xed);write_byte(0x4d);}
-          | MNEMO_RETN {write_byte(0xed);write_byte(0x45);}
-          | MNEMO_RST value_8bits {if (($2%8!=0)||($2/8>7)||($2/8<0)) error_message(10);write_byte(0xc7|(($2/8)<<3));}
+mnemo_call: MNEMO_CALL value_16bits
+	{
+		write_byte(0xcd);
+		write_word($2);
+	}
+	| MNEMO_CALL CONDITION ',' value_16bits
+	{
+		write_byte(0xc4 | ($2 << 3));
+		write_word($4);
+	}
+	| MNEMO_CALL REGISTER ',' value_16bits
+	{
+		if ($2 != 1)
+			error_message(7);
+		write_byte(0xdc);
+		write_word($4);
+	}
+	| MNEMO_RET
+	{
+		write_byte(0xc9);
+	}
+	| MNEMO_RET CONDITION
+	{
+		write_byte(0xc0 | ($2 << 3));
+	}
+	| MNEMO_RET REGISTER
+	{
+		if ($2 != 1)
+			error_message(7);
+		write_byte(0xd8);
+	}
+	| MNEMO_RETI
+	{
+		write_byte(0xed);
+		write_byte(0x4d);
+	}
+	| MNEMO_RETN
+	{
+		write_byte(0xed);
+		write_byte(0x45);
+	}
+	| MNEMO_RST value_8bits
+	{
+		if (($2 % 8 != 0) || ($2 / 8 > 7) || ($2 / 8 < 0))
+			error_message(10);
+		write_byte(0xc7 | (($2 / 8) << 3));
+	}
 ;
 
 value: NUMBER {$$=$1;}
