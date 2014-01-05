@@ -691,36 +691,36 @@ void include_binary(const char* name,unsigned int skip,unsigned int n)
 }
 
 
-void write_zx_byte(unsigned char c)
+void write_zx_byte(unsigned char c)	/* TODO: move to zx specific unit */
 {
- putc(c,foutput);
- parity^=c;
+	putc(c, foutput);
+	parity ^= c;
 }
 
 
-void write_zx_word(unsigned int c)
+void write_zx_word(unsigned int c)	/* TODO: move to zx specific unit */
 {
- write_zx_byte(c&0xff);
- write_zx_byte((c>>8)&0xff);
+	write_zx_byte(c & 0xff);
+	write_zx_byte((c >> 8) & 0xff);
 }
 
 
-void write_zx_number(unsigned int i)
+void write_zx_number(unsigned int i)	/* TODO: move to zx specific unit */
 {
-int c;
-c=i/10000;
-i-=c*10000;
-write_zx_byte(c+48);
-c=i/1000;
-i-=c*1000;
-write_zx_byte(c+48);
-c=i/100;
-i-=c*100;
-write_zx_byte(c+48);
-c=i/10;
-write_zx_byte(c+48);
-i%=10;
-write_zx_byte(i+48);
+	int c;
+	c = i / 10000;
+	i -= c * 10000;
+	write_zx_byte(c + 48);
+	c = i / 1000;
+	i -= c * 1000;
+	write_zx_byte(c + 48);
+	c = i / 100;
+	i -= c * 100;
+	write_zx_byte(c + 48);
+	c = i / 10;
+	write_zx_byte(c + 48);
+	i %= 10;
+	write_zx_byte(i + 48);
 }
 
 
