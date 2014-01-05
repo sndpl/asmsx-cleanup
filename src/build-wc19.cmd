@@ -16,7 +16,7 @@ flex.exe -i -olex.c lex.l
 
 wcc386.exe asmsx.c > asmsx.wc19.err
 echo.
-wcc386.exe core.c 
+wcc386.exe core.c
 echo.
 wcc386.exe parser1.c
 echo.
@@ -26,6 +26,6 @@ wcc386.exe parser3.c
 echo.
 wcc386.exe wav.c 
 echo.
-link386.exe asmsx.obj parser1.obj parser2.obj parser3.obj wav.obj
+link386.exe asmsx.obj core.obj parser1.obj parser2.obj parser3.obj wav.obj
 
 del core.c core.h lex.c parser?.c *.obj
