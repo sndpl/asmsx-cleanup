@@ -674,7 +674,7 @@ rel_IX: '[' REGISTER_16_IX ']'
 	}
 	| '[' REGISTER_16_IX '-' value_8bits ']'
 	{
-		$$ = -$4;
+		$$ = -((int)($4));
 	}
 ;
 	
@@ -688,7 +688,7 @@ rel_IY: '[' REGISTER_16_IY ']'
 	}
 	| '[' REGISTER_16_IY '-' value_8bits ']'
 	{
-		$$ = -$4;
+		$$ = -((int)($4));
 	}
 ;
 	
@@ -2945,7 +2945,7 @@ value:	NUMBER
 	}
 	| '-' value %prec NEGATIVE
 	{
-		$$ = -$2;
+		$$ = -((int)($2));
 	}
 	| value OP_EQUAL value
 	{
