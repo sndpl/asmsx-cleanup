@@ -38,6 +38,52 @@
 
 #define ASMSX_MAX_PATH	(0x100)
 
+/* variables */
+
+extern unsigned char *memory;
+extern unsigned char zilog;
+extern unsigned char pass;
+extern unsigned char size;
+extern unsigned char bios;
+extern unsigned char type;
+extern unsigned char parity;
+
+extern int conditional[16];
+extern int conditional_level;
+extern unsigned char *filename;
+extern unsigned char *assembler;
+extern unsigned char *binary;
+extern unsigned char *symbols;
+extern unsigned char *outputfname;
+extern unsigned char *source;
+extern unsigned char *original;
+extern unsigned char cassette;
+extern unsigned char *intname;
+
+extern unsigned int ePC;
+extern unsigned int PC;
+extern unsigned int subpage;
+extern unsigned int pagesize;
+extern unsigned int usedpage[256];
+extern unsigned int lastpage;
+extern unsigned int mapper;
+extern unsigned int pageinit;
+extern unsigned int addr_start;
+extern unsigned int addr_end;
+extern unsigned int start;
+extern unsigned int warnings;
+extern unsigned int lines;
+
+extern unsigned int maxpage[4];
+
+extern int maximum;
+extern int last_global;
+
+extern FILE *foriginal;
+extern FILE *fmessages;
+extern FILE *foutput;
+
+
 /* function prototypes */
 extern int yylex(void);
 extern void warning_message(int);

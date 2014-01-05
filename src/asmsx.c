@@ -19,10 +19,37 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.  */
 
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <time.h>
+#include <math.h>
+
 #include "asmsx.h"
 #include "core.c"	/* TODO: change this somehow, C is not supposed to be included */
 #include "lex.c"	/* TODO: it should be compiled and linked together instead */
 
+/* Global variables */
+/* TODO: reduce the number of global variables */
+
+unsigned char *memory, zilog = 0, pass = 1, size = 0, bios = 0, type = 0, parity;
+int conditional[16], conditional_level = 0;
+unsigned char *filename, *assembler, *binary, *symbols, *outputfname, *source, *original, cassette = 0, *intname;
+unsigned int ePC = 0, PC = 0, subpage, pagesize, usedpage[256], lastpage, mapper, pageinit, addr_start = 0xffff, addr_end = 0x0000, start = 0, warnings = 0, lines;
+unsigned int maxpage[4] = {32, 64, 256, 256};
+
+int maximum = 0, last_global = 0;
+FILE *foriginal, *fmessages, *foutput;
+
+#define MAX_ID 32000
+
+struct
+{
+	char *name;
+	unsigned int value;
+	unsigned char type;
+	unsigned int page;
+} id_list[MAX_ID];
 
 /* TODO: compartmentalize all functions that got moved from core.y into their own units */
 
@@ -762,8 +789,17 @@ void set_subpage(int n, int addr)
 
 void locate_32k(void)
 {
- unsigned int i;
- for (i=0;i<31;i++) write_byte(locate32[i]);
+	unsigned int i;
+	unsigned char locate32[31] =
+	{
+		0xCD, 0x38, 0x01, 0x0F, 0x0F, 0xE6, 0x03, 0x4F,
+		0x21, 0xC1, 0xFC, 0x85, 0x6F, 0x7E, 0xE6, 0x80,
+		0xB1, 0x4F, 0x2C, 0x2C, 0x2C, 0x2C, 0x7E, 0xE6,
+		0x0C, 0xB1, 0x26, 0x80, 0xCD, 0x24, 0x00
+	};
+
+	for (i = 0; i < 31; i++)
+		write_byte(locate32[i]);
 }
 
 unsigned int selector(unsigned int addr)
