@@ -2204,30 +2204,174 @@ mnemo_rotate: MNEMO_RLCA
 		write_byte($5);
 		write_byte(0x10 | $2);
 	}
-	| MNEMO_RRC REGISTER {write_byte(0xcb);write_byte(0x08|$2);}
-	| MNEMO_RRC REGISTER_IND_HL {write_byte(0xcb);write_byte(0x0e);}
-	| MNEMO_RRC rel_IX ',' REGISTER {if ($4==6) error_message(2);write_byte(0xdd);write_byte(0xcb);write_byte($2);write_byte($4 | 0x08);}
-	| MNEMO_RRC rel_IY ',' REGISTER {if ($4==6) error_message(2);write_byte(0xfd);write_byte(0xcb);write_byte($2);write_byte($4 | 0x08);}
-	| MNEMO_RRC rel_IX {write_byte(0xdd);write_byte(0xcb);write_byte($2);write_byte(0x0e);}
-	| MNEMO_RRC rel_IY {write_byte(0xfd);write_byte(0xcb);write_byte($2);write_byte(0x0e);}
-	| MNEMO_LD REGISTER ',' MNEMO_RRC rel_IX {write_byte(0xdd);write_byte(0xcb);write_byte($5);write_byte(0x08|$2);}
-	| MNEMO_LD REGISTER ',' MNEMO_RRC rel_IY {write_byte(0xfd);write_byte(0xcb);write_byte($5);write_byte(0x08|$2);}
-	| MNEMO_RR REGISTER {write_byte(0xcb);write_byte(0x18|$2);}
-	| MNEMO_RR REGISTER_IND_HL {write_byte(0xcb);write_byte(0x1e);}
-	| MNEMO_RR rel_IX ',' REGISTER {if ($4==6) error_message(2);write_byte(0xdd);write_byte(0xcb);write_byte($2);write_byte($4 | 0x18);}
-	| MNEMO_RR rel_IY ',' REGISTER {if ($4==6) error_message(2);write_byte(0xfd);write_byte(0xcb);write_byte($2);write_byte($4 | 0x18);}
-	| MNEMO_RR rel_IX {write_byte(0xdd);write_byte(0xcb);write_byte($2);write_byte(0x1e);}
-	| MNEMO_RR rel_IY {write_byte(0xfd);write_byte(0xcb);write_byte($2);write_byte(0x1e);}
-	| MNEMO_LD REGISTER ',' MNEMO_RR rel_IX {write_byte(0xdd);write_byte(0xcb);write_byte($5);write_byte(0x18|$2);}
-	| MNEMO_LD REGISTER ',' MNEMO_RR rel_IY {write_byte(0xfd);write_byte(0xcb);write_byte($5);write_byte(0x18|$2);}
-	| MNEMO_SLA REGISTER {write_byte(0xcb);write_byte(0x20|$2);}
-	| MNEMO_SLA REGISTER_IND_HL {write_byte(0xcb);write_byte(0x26);}
-	| MNEMO_SLA rel_IX ',' REGISTER {if ($4==6) error_message(2);write_byte(0xdd);write_byte(0xcb);write_byte($2);write_byte($4 | 0x20);}
-	| MNEMO_SLA rel_IY ',' REGISTER {if ($4==6) error_message(2);write_byte(0xfd);write_byte(0xcb);write_byte($2);write_byte($4 | 0x20);}
-	| MNEMO_SLA rel_IX {write_byte(0xdd);write_byte(0xcb);write_byte($2);write_byte(0x26);}
-	| MNEMO_SLA rel_IY {write_byte(0xfd);write_byte(0xcb);write_byte($2);write_byte(0x26);}
-	| MNEMO_LD REGISTER ',' MNEMO_SLA rel_IX {write_byte(0xdd);write_byte(0xcb);write_byte($5);write_byte(0x20|$2);}
-	| MNEMO_LD REGISTER ',' MNEMO_SLA rel_IY {write_byte(0xfd);write_byte(0xcb);write_byte($5);write_byte(0x20|$2);}
+	| MNEMO_RRC REGISTER
+	{
+		write_byte(0xcb);
+		write_byte(0x08 | $2);
+	}
+	| MNEMO_RRC REGISTER_IND_HL
+	{
+		write_byte(0xcb);
+		write_byte(0x0e);
+	}
+	| MNEMO_RRC rel_IX ',' REGISTER
+	{
+		if ($4 == 6)
+			error_message(2);
+		write_byte(0xdd);
+		write_byte(0xcb);
+		write_byte($2);
+		write_byte($4 | 0x08);
+	}
+	| MNEMO_RRC rel_IY ',' REGISTER
+	{
+		if ($4 == 6)
+			error_message(2);
+		write_byte(0xfd);
+		write_byte(0xcb);
+		write_byte($2);
+		write_byte($4 | 0x08);
+	}
+	| MNEMO_RRC rel_IX
+	{
+		write_byte(0xdd);
+		write_byte(0xcb);
+		write_byte($2);
+		write_byte(0x0e);
+	}
+	| MNEMO_RRC rel_IY
+	{
+		write_byte(0xfd);
+		write_byte(0xcb);
+		write_byte($2);
+		write_byte(0x0e);
+	}
+	| MNEMO_LD REGISTER ',' MNEMO_RRC rel_IX
+	{
+		write_byte(0xdd);
+		write_byte(0xcb);
+		write_byte($5);
+		write_byte(0x08 | $2);
+	}
+	| MNEMO_LD REGISTER ',' MNEMO_RRC rel_IY
+	{
+		write_byte(0xfd);
+		write_byte(0xcb);
+		write_byte($5);
+		write_byte(0x08 | $2);
+	}
+	| MNEMO_RR REGISTER
+	{
+		write_byte(0xcb);
+		write_byte(0x18 | $2);
+	}
+	| MNEMO_RR REGISTER_IND_HL
+	{
+		write_byte(0xcb);
+		write_byte(0x1e);
+	}
+	| MNEMO_RR rel_IX ',' REGISTER
+	{
+		if ($4 == 6)
+			error_message(2);
+		write_byte(0xdd);
+		write_byte(0xcb);
+		write_byte($2);
+		write_byte($4 | 0x18);
+	}
+	| MNEMO_RR rel_IY ',' REGISTER
+	{
+		if ($4 == 6)
+			error_message(2);
+		write_byte(0xfd);
+		write_byte(0xcb);
+		write_byte($2);
+		write_byte($4 | 0x18);
+	}
+	| MNEMO_RR rel_IX
+	{
+		write_byte(0xdd);
+		write_byte(0xcb);
+		write_byte($2);
+		write_byte(0x1e);
+	}
+	| MNEMO_RR rel_IY
+	{
+		write_byte(0xfd);
+		write_byte(0xcb);
+		write_byte($2);
+		write_byte(0x1e);
+	}
+	| MNEMO_LD REGISTER ',' MNEMO_RR rel_IX
+	{
+		write_byte(0xdd);
+		write_byte(0xcb);
+		write_byte($5);
+		write_byte($2 | 0x18);
+	}
+	| MNEMO_LD REGISTER ',' MNEMO_RR rel_IY
+	{
+		write_byte(0xfd);
+		write_byte(0xcb);
+		write_byte($5);
+		write_byte($2 | 0x18);
+	}
+	| MNEMO_SLA REGISTER
+	{
+		write_byte(0xcb);
+		write_byte($2 | 0x20);
+	}
+	| MNEMO_SLA REGISTER_IND_HL
+	{
+		write_byte(0xcb);
+		write_byte(0x26);
+	}
+	| MNEMO_SLA rel_IX ',' REGISTER
+	{
+		if ($4 == 6)
+			error_message(2);
+		write_byte(0xdd);
+		write_byte(0xcb);
+		write_byte($2);
+		write_byte($4 | 0x20);
+	}
+	| MNEMO_SLA rel_IY ',' REGISTER
+	{
+		if ($4 == 6)
+			error_message(2);
+		write_byte(0xfd);
+		write_byte(0xcb);
+		write_byte($2);
+		write_byte($4 | 0x20);
+	}
+	| MNEMO_SLA rel_IX
+	{
+		write_byte(0xdd);
+		write_byte(0xcb);
+		write_byte($2);
+		write_byte(0x26);
+	}
+	| MNEMO_SLA rel_IY
+	{
+		write_byte(0xfd);
+		write_byte(0xcb);
+		write_byte($2);
+		write_byte(0x26);
+	}
+	| MNEMO_LD REGISTER ',' MNEMO_SLA rel_IX
+	{
+		write_byte(0xdd);
+		write_byte(0xcb);
+		write_byte($5);
+		write_byte($2 | 0x20);
+	}
+	| MNEMO_LD REGISTER ',' MNEMO_SLA rel_IY
+	{
+		write_byte(0xfd);
+		write_byte(0xcb);
+		write_byte($5);
+		write_byte($2 | 0x20);
+	}
 	| MNEMO_SLL REGISTER {write_byte(0xcb);write_byte(0x30|$2);}
 	| MNEMO_SLL REGISTER_IND_HL {write_byte(0xcb);write_byte(0x36);}
 	| MNEMO_SLL rel_IX ',' REGISTER {if ($4==6) error_message(2);write_byte(0xdd);write_byte(0xcb);write_byte($2);write_byte($4 | 0x30);}
