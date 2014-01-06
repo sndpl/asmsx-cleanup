@@ -1215,7 +1215,7 @@ int main(int argc, char *argv[])
 {
 	int i;
 
-	printf("asmsx %s - MSX cross assembler %s\n", ASMSX_VERSION, __DATE__);
+	printf("asmsx %s MSX cross assembler (%s)\n", ASMSX_VERSION, __DATE__);
 	if (2 != argc)
 	{
         	printf("Syntax: asmsx [file.asm]\n");
