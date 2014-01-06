@@ -8,6 +8,7 @@
 #define YY_NO_UNISTD_H 1
 #endif
 #include "core.h"
+#include "asmsx.h"
 %}
 
 %%
@@ -249,4 +250,3 @@ random return PSEUDO_RANDOM;
 [^\n^|]           return yytext[0];
 [\n]+             return EOL;
 %%
-

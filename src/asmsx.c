@@ -31,7 +31,6 @@
 #include "parser2.h"
 #include "parser3.h"
 
-#include "lex.c"	/* TODO: it should be compiled and linked together instead */
 
 /* Global variables */
 /* TODO: reduce the number of global variables */
@@ -503,7 +502,7 @@ void register_symbol(const char *name,int number,int type)
 
 	id_list[maximum - 1].name = (char*)malloc(strlen(name) + 1);
 
-	tmpstr = strdup(name);
+	tmpstr = _strdup(name);
 	strcpy(id_list[maximum - 1].name, strtok(tmpstr, " "));
 	id_list[maximum - 1].value = number;
 	id_list[maximum - 1].type = type;
@@ -1216,7 +1215,7 @@ int main(int argc, char *argv[])
 {
 	int i;
 
-	printf("asmsx %s - MSX cross assembler %s\n", ASMSX_VERSION, __DATE__);
+	printf("asmsx %s MSX cross assembler (%s)\n", ASMSX_VERSION, __DATE__);
 	if (2 != argc)
 	{
         	printf("Syntax: asmsx [file.asm]\n");
