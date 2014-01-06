@@ -1,7 +1,7 @@
 asmsx:	asmsx.c core.y lex.l parser1.c parser2.c parser3.c wav.c
 	bison core.y -ocore.c -d
 	flex -i -olex.c lex.l 
-	gcc asmsx.c core.c parser1.c parser2.c parser3.c wav.c -oasmsx.exe -s -lm -Wall -Wextra 2>asmsx.mingw.err
+	gcc asmsx.c core.c parser1.c parser2.c parser3.c wav.c -oasmsx.exe -s -lm -Wall -Wextra
 parser1.c: parser1.l
 	flex -i -Pparser1 -oparser1.c parser1.l
 parser2.c: parser2.l

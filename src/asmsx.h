@@ -72,20 +72,13 @@ extern int addr_end;
 extern int start;
 extern int warnings;
 extern int lines;
-
 extern int maxpage[4];
-
 extern int last_global;
-
 extern FILE *foriginal;
 extern FILE *fmessages;
 extern FILE *foutput;
 
-
-/* function prototypes */
-extern int yylex(void);
-extern int yyparse(void);
-
+/* Function prototypes */
 extern void warning_message(int);
 extern void error_message(int);
 extern void msx_bios(void);
@@ -114,5 +107,12 @@ extern void locate_32k(void);
 extern void select_page_direct(unsigned int, unsigned int);
 extern void select_page_register(unsigned int, unsigned int);
 extern int defined_symbol(const char *);
+
+/* bison / flex */
+extern FILE *yyin, *yyout;
+
+extern int yylex(void);
+extern int yyparse(void);
+
 
 #endif	/* ASMSX_ASMSX_H */
