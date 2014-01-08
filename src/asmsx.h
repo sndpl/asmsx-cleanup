@@ -22,7 +22,7 @@
 #ifndef ASMSX_ASMSX_H
 #define ASMSX_ASMSX_H
 
-#define ASMSX_VERSION "0.16.1 WIP"
+#define ASMSX_VERSION "0.16.1"
 
 #define Z80 0
 #define ROM 1

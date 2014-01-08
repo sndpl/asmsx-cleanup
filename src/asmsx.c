@@ -1215,12 +1215,14 @@ int main(int argc, char *argv[])
 {
 	int i;
 
-	printf("asmsx %s MSX cross assembler (%s)\n", ASMSX_VERSION, __DATE__);
+	printf("asmsx %s MSX cross assembler https://github.com/asmsx/asmsx/ (%s)\n", ASMSX_VERSION, __DATE__);
+
 	if (2 != argc)
 	{
         	printf("Syntax: asmsx [file.asm]\n");
 		exit(0);
 	}
+
 	clock();
 	initialize_system();
 	assembler = (char *)malloc(ASMSX_MAX_PATH);
@@ -1230,13 +1232,16 @@ int main(int argc, char *argv[])
 	symbols = (char *)malloc(ASMSX_MAX_PATH);
 	outputfname = (char *)malloc(ASMSX_MAX_PATH);
 	filename = (char *)malloc(ASMSX_MAX_PATH);
+
 	strcpy(filename, argv[1]);
 	strcpy(assembler, filename);
+
 	for (i = strlen(filename) - 1; (filename[i] != '.') && i; i--);
 	if (i)
 		filename[i]=0;
 	else
 		strcat(assembler, ".asm");
+
 	preprocessor1(assembler);
 	preprocessor3();
 	sprintf(original, "~tmppre.%i", preprocessor2());
