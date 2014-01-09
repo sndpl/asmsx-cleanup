@@ -21,7 +21,7 @@
 #endif
 
 FILE *p2output;
-char *p2text, *p2buf, p2nested = 0, level;
+char *p2text, *p2buf, p2nested = 0, p2lvl;
 unsigned int p2number, p2lines, i;
 extern int prompt_error2(char);
 %}
@@ -44,7 +44,7 @@ extern int prompt_error2(char);
              p2buf[0]=0;
              p2text[0]=0;
              BEGIN(rept); }
-<rept>.?rept[ \t]+[0-9]+[ \t]* p2buf=strcat(p2buf,yytext);p2nested++;level++;
+<rept>.?rept[ \t]+[0-9]+[ \t]* p2buf=strcat(p2buf,yytext);p2nested++;p2lvl++;
 <rept>"#"line[ \t]*[0-9]+\n[ \t]*.?endr[ \t]*\n {
               if (p2nested)
                {
@@ -113,14 +113,14 @@ int preprocessor2(void)
  sprintf_s(filename,"~tmppre.%i",loop+1);
 
  p2output=fopen(filename,"w");
- level=0;
+ p2lvl=0;
  p2nested=0;
  yylex();
 
  fclose(input);
  fclose(p2output);
 
-} while (level);
+} while (p2lvl);
 
 // free(filename);
 // free(p2text);
