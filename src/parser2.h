@@ -3,7 +3,7 @@
  Copyright (C) 2000-2011 Eduardo A. Robsy Petrus
  Copyright (C) 2014 Adrian Oboroc
  
- This file is part of as-ng, rewrite of asmsx.
+ This file is part of asmsx project <https://github.com/asmsx/asmsx/>.
  
  This program is free software: you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by

@@ -12,6 +12,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "compat.h"
 #include "asmsx.h"
 
 #define YY_NO_INPUT 1
@@ -52,7 +53,7 @@ extern int prompt_error2(char);
                } else
               {
                for (i=0;i<p2number;i++)
-                fprintf(p2output,"%s",p2buf);
+                fprintf_s(p2output,"%s",p2buf);
                p2buf[0]=0;
                BEGIN(INITIAL);
               }
@@ -61,18 +62,18 @@ extern int prompt_error2(char);
 <rept>\n   p2buf=strcat(p2buf,yytext);
 <rept><<EOF>> error_message(2);
 <repnum>.     prompt_error2(1);
-<INITIAL>\n   fprintf(p2output,"%s%s",p2text,yytext);p2text[0]=0;
+<INITIAL>\n   fprintf_s(p2output,"%s%s",p2text,yytext);p2text[0]=0;
 <INITIAL>.    strcat(p2text,yytext);
 
 %%
 
 int prompt_error2(char c)
 {
- printf(", line %d: ", p2lines);
+ printf_s(", line %d: ", p2lines);
  switch (c)
  {
-  case 1:printf("number expected in REPT");break;
-  case 2:printf("REPT without ENDR");break;
+  case 1:printf_s("number expected in REPT");break;
+  case 2:printf_s("REPT without ENDR");break;
  }
  fclose(p2output);
  exit(c);
@@ -94,14 +95,14 @@ int preprocessor2(void)
  p2buf=(char*)malloc(0x4000);
  p2text[0]=0;
 
- printf("Expanding system macros\n");
+ printf_s("Expanding system macros\n");
  do
 {
- sprintf(filename,"~tmppre.%i",loop+1);
+ sprintf_s(filename,"~tmppre.%i",loop+1);
 
  if ((input=fopen(filename,"r"))==NULL)
  {
-  printf("Fatal: cannot process file");
+  printf_s("Fatal: cannot process file");
   exit(1);
  }
 
@@ -109,7 +110,7 @@ int preprocessor2(void)
  
  loop++;
 
- sprintf(filename,"~tmppre.%i",loop+1);
+ sprintf_s(filename,"~tmppre.%i",loop+1);
 
  p2output=fopen(filename,"w");
  level=0;

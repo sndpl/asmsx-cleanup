@@ -13,6 +13,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "compat.h"
 #include "asmsx.h"
 
 #define YY_NO_INPUT 1
@@ -34,7 +35,7 @@ char *text;
 %%
 
 <INITIAL>"#"line[ \t]*[0-9]+\n strcat(text,yytext);BEGIN(line);
-<INITIAL>\n   fprintf(output,"%s%s",text,yytext);text[0]=0;
+<INITIAL>\n   fprintf_s(output,"%s%s",text,yytext);text[0]=0;
 <INITIAL>.    strcat(text,yytext);
 <line>.?zilog[ \t]*\n strcat(text,yytext);BEGIN(zilog);
 <line>. strcat(text,yytext);BEGIN(INITIAL);
@@ -44,7 +45,7 @@ char *text;
 <zilog>"[" strcat(text,"(");
 <zilog>"]" strcat(text,")");
 <zilog>. strcat(text,yytext);
-<zilog>\n fprintf(output,"%s%s",text,yytext);text[0]=0;
+<zilog>\n fprintf_s(output,"%s%s",text,yytext);text[0]=0;
 
 %%
 
@@ -62,7 +63,7 @@ int preprocessor3(void)
 
  if ((input=fopen("~tmppre.0","r"))==NULL)
  {
-  printf("Fatal: cannot process file");
+  printf_s("Fatal: cannot process file");
   exit(1);
  }
 

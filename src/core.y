@@ -5,6 +5,7 @@
 #include <time.h>
 #include <math.h>
 
+#include "compat.h"
 #include "asmsx.h"
 %}
 
@@ -536,7 +537,7 @@ pseudo_instruction: PSEUDO_ORG value
 			{
 				if (fmessages == NULL)
 					output_text();
-				fprintf(fmessages, "%s\n", $2);
+				fprintf_s(fmessages, "%s\n", $2);
 			}
 		}
 	}
@@ -548,7 +549,7 @@ pseudo_instruction: PSEUDO_ORG value
 			{
 				if (fmessages == NULL)
 					output_text();
-				fprintf(fmessages, "%d\n", (short)$2 & 0xffff);
+				fprintf_s(fmessages, "%d\n", (short)$2 & 0xffff);
 			}
 		}
 	}
@@ -560,7 +561,7 @@ pseudo_instruction: PSEUDO_ORG value
 			{
 				if (fmessages==NULL)
 					output_text();
-				fprintf(fmessages, "%.4f\n", $2);
+				fprintf_s(fmessages, "%.4f\n", $2);
 			}
 		}
 	}
@@ -572,7 +573,7 @@ pseudo_instruction: PSEUDO_ORG value
 			{
 				if (fmessages == NULL)
 					output_text();
-				fprintf(fmessages, "$%4.4x\n", (short)$2 & 0xffff);
+				fprintf_s(fmessages, "$%4.4x\n", (short)$2 & 0xffff);
 			}
 		}
 	}
@@ -584,7 +585,7 @@ pseudo_instruction: PSEUDO_ORG value
 			{
 				if (fmessages == NULL)
 					output_text();
-				fprintf(fmessages, "%.4f\n", ((float)($2 & 0xffff)) / 256);
+				fprintf_s(fmessages, "%.4f\n", ((float)($2 & 0xffff)) / 256);
 			}
 		}
 	}
@@ -3255,6 +3256,6 @@ int yywrap(void)
 
 void yyerror(const char *s)
 {
-	printf("yyerror: %s\n", s);
+	printf_s("yyerror: %s\n", s);
 	error_message(0);
 }

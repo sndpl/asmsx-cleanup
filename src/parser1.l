@@ -16,6 +16,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "compat.h"
 #include "asmsx.h"
 
 #define YY_NO_INPUT 1
@@ -64,10 +65,10 @@ extern int prompt_error1(char);
 	include_stack[include_index++].buffer=YY_CURRENT_BUFFER;
 	yyin=fopen(tmpstr,"r");
 	if (!yyin) prompt_error1(3);
-	printf("Including file %s\n",tmpstr);
+	printf_s("Including file %s\n",tmpstr);
 	yylineno=1;
 	strcpy(name,tmpstr);
-	fprintf(output_file,"#file \042%s\042\n",name);
+	fprintf_s(output_file,"#file \042%s\042\n",name);
 	yy_switch_to_buffer(yy_create_buffer(yyin,YY_BUF_SIZE));
 	BEGIN(INITIAL);
 	}
@@ -80,13 +81,13 @@ extern int prompt_error1(char);
 		yy_switch_to_buffer(include_stack[include_index].buffer);
 		yylineno=include_stack[include_index].line;
 		strcpy(name,include_stack[include_index].name);
-		fprintf(output_file,"#file \042%s\042\n",name);
+		fprintf_s(output_file,"#file \042%s\042\n",name);
 		free(include_stack[include_index].name);
 	}
 	else
         {
-		if (strlen(text)>0) fprintf(output_file,"#line %d\n%s\n",yylineno,text);
-		fprintf(output_file,"%s",yytext);
+		if (strlen(text)>0) fprintf_s(output_file,"#line %d\n%s\n",yylineno,text);
+		fprintf_s(output_file,"%s",yytext);
 		return 0;
 	}
 	}
@@ -111,7 +112,7 @@ extern int prompt_error1(char);
 <chain>[^\42\n] strcat(text,yytext);
 
 <INITIAL>[ \t]+ if (strlen(text)>0) strcat(text," "); // Should be 0 for Windows
-<INITIAL>\n     { if (strlen(text)>0) fprintf(output_file,"#line %d\n%s\n",yylineno-1,text);  // Should be 0 for Windows?
+<INITIAL>\n     { if (strlen(text)>0) fprintf_s(output_file,"#line %d\n%s\n",yylineno-1,text);  // Should be 0 for Windows?
          text[0]=0;
        }
 <INITIAL>.      strcat(text,yytext);
@@ -121,14 +122,14 @@ extern int prompt_error1(char);
 
 int prompt_error1(char c)
 {
- printf("%s, line %d: ",name,yylineno-1);
+ printf_s("%s, line %d: ",name,yylineno-1);
  switch (c)
  {
-  case 1:printf("Unterminated string");break;
-  case 2:printf("Nested include level overflow");break;
-  case 3:printf("Include file not found");break;
-  case 4:printf("Recursive include");break;
-  case 5:printf("Wrong file name");break;
+  case 1:printf_s("Unterminated string");break;
+  case 2:printf_s("Nested include level overflow");break;
+  case 3:printf_s("Include file not found");break;
+  case 4:printf_s("Recursive include");break;
+  case 5:printf_s("Wrong file name");break;
  }
  fclose(output_file);
  exit(c);
@@ -158,16 +159,16 @@ int preprocessor1(char *input_name)
 // Open original source file
  if ((input_file=fopen(name,"r"))==NULL)
  {
-  printf("Fatal: cannot open %s",input_name);
+  printf_s("Fatal: cannot open %s",input_name);
   exit(1);
  }
 
 // Print parsing message
- printf("Parsing file %s\n",input_name);
+ printf_s("Parsing file %s\n",input_name);
 
 // Create output_file file
  output_file=fopen("~tmppre.0","w");
- fprintf(output_file,"#file \042%s\042\n",name);
+ fprintf_s(output_file,"#file \042%s\042\n",name);
  
 // Start lexical scanner
  yyin=input_file;

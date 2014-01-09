@@ -1,6 +1,5 @@
-/* Wav writer declaration file.
+/* Backwards compatibility macros for outdated compilers.
 
- Copyright (C) 2000-2011 Eduardo A. Robsy Petrus
  Copyright (C) 2014 Adrian Oboroc
  
  This file is part of asmsx project <https://github.com/asmsx/asmsx/>.
@@ -19,11 +18,23 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.  */
 
 
-#ifndef ASMSX_WAV_H
-#define ASMSX_WAV_H
+#ifndef COMPAT_H
+#define COMPAT_H
 
+#if ((_MSC_VER < 1400) || (__WATCOMC__))	/* Check if compiler is Visual C++ version is below 2005 or any version of Watcom C/C++ */
 
-extern void wav_write_file(const char *bin_filename, const char *bin_intname, const int type, const unsigned int addr_start, const unsigned int addr_end, const unsigned int start, const unsigned char *memory);
+#define fopen_s(FPP, FNAME, FMODE)	((int)((void *)(NULL) == (void *)((*FPP = fopen(FNAME, FMODE)))))
 
+#define strcpy_s(DESTSTR, MAXLEN, SRCSTR)	(strcpy(DESTSTR, SRCSTR))
 
-#endif	/* ASMSX_WAV_H */
+#define strncpy_s(DESTSTR, MAXLEN, SRCSTR, NUM)	(strncpy(DESTSTR, SRCSTR, NUM))
+
+#define strcat_s(DESTSTR, MAXLEN, SRCSTR)	(strcat(DESTSTR, SRCSTR))
+
+#define fprintf_s	fprintf
+#define printf_s	printf
+#define sprintf_s	sprintf
+
+#endif	/* ((_MSC_VER < 1400) || (__WATCOMC__)) */
+
+#endif	/* COMPAT_H */

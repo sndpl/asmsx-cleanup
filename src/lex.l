@@ -8,6 +8,7 @@
 #define YY_NO_UNISTD_H 1
 #endif
 #include "core.h"
+#include "compat.h"
 #include "asmsx.h"
 %}
 
@@ -242,7 +243,7 @@ random return PSEUDO_RANDOM;
 ">>"            return SHIFT_R;
 "<<"            return SHIFT_L;
 
-<<EOF>> {unput('\n');pass++;if (pass==2) printf("Assembling labels, calls and jumps\n");yyin=fopen(original,"r");return PSEUDO_END;}           
+<<EOF>> {unput('\n');pass++;if (pass==2) printf_s("Assembling labels, calls and jumps\n");yyin=fopen(original,"r");return PSEUDO_END;}           
 \42[^\42\n]+\42 yylval.tex=strtok(yytext,"\42");yylval.tex=strtok(yytext,"\42");return TEXT;
 [a-z_]+[a-z0-9_]* yylval.tex=yytext;return IDENTIFICATOR;
 "@@"[a-z0-9_]+ yylval.tex=yytext;return LOCAL_IDENTIFICATOR;

@@ -3,7 +3,7 @@
  Copyright (C) 2000-2011 Eduardo A. Robsy Petrus
  Copyright (C) 2014 Adrian Oboroc
  
- This file is part of as-ng, rewrite of asmsx.
+ This file is part of asmsx project <https://github.com/asmsx/asmsx/>.
  
  This program is free software: you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
@@ -21,8 +21,8 @@
 #include <stdio.h>
 #include <string.h>
 
+#include "compat.h"
 #include "asmsx.h"
-//#include "wav.h"
 
 
 #define FREQ_HI 0x7FFF
@@ -215,5 +215,5 @@ void wav_write_file(const char *bin_filename, const char *bin_intname, const int
 	/* Close file */
 	fclose(f);
 
-	printf("Audio file %s saved [%2.2f sec]\n", wav_filename, (float) wav_size / 176400);	/* TODO: try to externalize logging to caller */
+	printf_s("Audio file %s saved [%2.2f sec]\n", wav_filename, (float) wav_size / 176400);	/* TODO: try to externalize logging to caller */
 }
