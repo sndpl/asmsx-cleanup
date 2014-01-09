@@ -25,9 +25,9 @@
 #endif
 #define MAX_INCLUDE_LEVEL 16
 
-char *text,*tmpstr,*name;//,i,include_index=0;
-int i,include_index=0;
-FILE *output_file,*input_file;
+char *p1text,*tmpstr,*p1name;
+int p1i,p1incl_idx=0;
+FILE *p1output_file,*input_file;
 struct
 {
 	YY_BUFFER_STATE buffer;
@@ -48,46 +48,46 @@ extern int prompt_error1(char);
 
 %%
 
-<INITIAL>\42[^\42]*\42 strcat(text,yytext);
+<INITIAL>\42[^\42]*\42 strcat(p1text,yytext);
 <INITIAL>.?include/[ \042\t]+ tmpstr=NULL;BEGIN(inclusion);
 <inclusion>[ \t]*      /* strip spaces */
 <inclusion>[^ \t\n]+   tmpstr=strtok(yytext,"\42");
 <inclusion>\n {
 	if (tmpstr==NULL) prompt_error1(5);
 	if (tmpstr[strlen(tmpstr)-1]<=32) prompt_error1(1);
-	if (include_index>=MAX_INCLUDE_LEVEL) prompt_error1(2);
-	for (i=0;i<include_index;i++)
-		if (!strcmp(tmpstr,include_stack[i].name))
+	if (p1incl_idx>=MAX_INCLUDE_LEVEL) prompt_error1(2);
+	for (p1i=0;p1i<p1incl_idx;p1i++)
+		if (!strcmp(tmpstr,include_stack[p1i].name))
 			prompt_error1(4);
-	include_stack[include_index].name=(char*)malloc(ASMSX_MAX_PATH);
-	strcpy(include_stack[include_index].name,name);
-	include_stack[include_index].line=yylineno;
-	include_stack[include_index++].buffer=YY_CURRENT_BUFFER;
+	include_stack[p1incl_idx].name=(char*)malloc(ASMSX_MAX_PATH);
+	strcpy(include_stack[p1incl_idx].name,p1name);
+	include_stack[p1incl_idx].line=yylineno;
+	include_stack[p1incl_idx++].buffer=YY_CURRENT_BUFFER;
 	yyin=fopen(tmpstr,"r");
 	if (!yyin) prompt_error1(3);
 	printf_s("Including file %s\n",tmpstr);
 	yylineno=1;
-	strcpy(name,tmpstr);
-	fprintf_s(output_file,"#file \042%s\042\n",name);
+	strcpy(p1name,tmpstr);
+	fprintf_s(p1output_file,"#file \042%s\042\n",p1name);
 	yy_switch_to_buffer(yy_create_buffer(yyin,YY_BUF_SIZE));
 	BEGIN(INITIAL);
 	}
 
 <<EOF>> {
 	fclose(yyin);
-	if (--include_index>=0)
+	if (--p1incl_idx>=0)
 	{
 		yy_delete_buffer(YY_CURRENT_BUFFER);
-		yy_switch_to_buffer(include_stack[include_index].buffer);
-		yylineno=include_stack[include_index].line;
-		strcpy(name,include_stack[include_index].name);
-		fprintf_s(output_file,"#file \042%s\042\n",name);
-		free(include_stack[include_index].name);
+		yy_switch_to_buffer(include_stack[p1incl_idx].buffer);
+		yylineno=include_stack[p1incl_idx].line;
+		strcpy(p1name,include_stack[p1incl_idx].name);
+		fprintf_s(p1output_file,"#file \042%s\042\n",p1name);
+		free(include_stack[p1incl_idx].name);
 	}
 	else
         {
-		if (strlen(text)>0) fprintf_s(output_file,"#line %d\n%s\n",yylineno,text);
-		fprintf_s(output_file,"%s",yytext);
+		if (strlen(p1text)>0) fprintf_s(p1output_file,"#line %d\n%s\n",yylineno,p1text);
+		fprintf_s(p1output_file,"%s",yytext);
 		return 0;
 	}
 	}
@@ -106,23 +106,23 @@ extern int prompt_error1(char);
 <pascal_comment>[^}]* /* Skip all within */
 <pascal_comment>"}" BEGIN(INITIAL);
 
-<INITIAL>\42 strcat(text,yytext);BEGIN(chain);
-<chain>\42 strcat(text,yytext);BEGIN(INITIAL);
+<INITIAL>\42 strcat(p1text,yytext);BEGIN(chain);
+<chain>\42 strcat(p1text,yytext);BEGIN(INITIAL);
 <chain>\n prompt_error1(1);
-<chain>[^\42\n] strcat(text,yytext);
+<chain>[^\42\n] strcat(p1text,yytext);
 
-<INITIAL>[ \t]+ if (strlen(text)>0) strcat(text," "); // Should be 0 for Windows
-<INITIAL>\n     { if (strlen(text)>0) fprintf_s(output_file,"#line %d\n%s\n",yylineno-1,text);  // Should be 0 for Windows?
-         text[0]=0;
+<INITIAL>[ \t]+ if (strlen(p1text)>0) strcat(p1text," "); // Should be 0 for Windows
+<INITIAL>\n     { if (strlen(p1text)>0) fprintf_s(p1output_file,"#line %d\n%s\n",yylineno-1,p1text);  // Should be 0 for Windows?
+         p1text[0]=0;
        }
-<INITIAL>.      strcat(text,yytext);
+<INITIAL>.      strcat(p1text,yytext);
 
 %%
 #define VERSION 
 
 int prompt_error1(char c)
 {
- printf_s("%s, line %d: ",name,yylineno-1);
+ printf_s("%s, line %d: ",p1name,yylineno-1);
  switch (c)
  {
   case 1:printf_s("Unterminated string");break;
@@ -131,7 +131,7 @@ int prompt_error1(char c)
   case 4:printf_s("Recursive include");break;
   case 5:printf_s("Wrong file name");break;
  }
- fclose(output_file);
+ fclose(p1output_file);
  exit(c);
  return 0;
 }
@@ -145,19 +145,19 @@ int preprocessor1(char *input_name)
 {
 // Memory allocation for strings
  char *tmpstr_;
- text=(char*)malloc(256);
- name=(char*)malloc(256);
+ p1text=(char*)malloc(256);
+ p1name=(char*)malloc(256);
  tmpstr=(char*)malloc(256);
  tmpstr_=tmpstr;
 
 // Strings initialization
- text[0]=0;
+ p1text[0]=0;
 
 // Get source code name
- strcpy(name,input_name);
+ strcpy(p1name,input_name);
 
 // Open original source file
- if ((input_file=fopen(name,"r"))==NULL)
+ if ((input_file=fopen(p1name,"r"))==NULL)
  {
   printf_s("Fatal: cannot open %s",input_name);
   exit(1);
@@ -166,20 +166,20 @@ int preprocessor1(char *input_name)
 // Print parsing message
  printf_s("Parsing file %s\n",input_name);
 
-// Create output_file file
- output_file=fopen("~tmppre.0","w");
- fprintf_s(output_file,"#file \042%s\042\n",name);
+// Create p1output_file file
+ p1output_file=fopen("~tmppre.0","w");
+ fprintf_s(p1output_file,"#file \042%s\042\n",p1name);
  
 // Start lexical scanner
  yyin=input_file;
  yylex();
  
-// Close output_file file
- fclose(output_file);
+// Close p1output_file file
+ fclose(p1output_file);
 
 // Free string pointers
- free(text);
- free(name);
+ free(p1text);
+ free(p1name);
  free(tmpstr_);
 
 // Done
