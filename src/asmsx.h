@@ -36,7 +36,10 @@
 #define ASCII8 2
 #define ASCII16 3
 
-#define ASMSX_MAX_PATH	(0x100)
+#define ASMSX_MAX_PATH 0x100
+
+#define MAX_INCLUDE_LEVEL 16
+
 
 /* variables */
 

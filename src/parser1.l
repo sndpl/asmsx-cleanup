@@ -20,10 +20,10 @@
 #include "asmsx.h"
 
 #define YY_NO_INPUT 1
+
 #ifdef _MSC_VER
 #define YY_NO_UNISTD_H 1
 #endif
-#define MAX_INCLUDE_LEVEL 16
 
 char *p1text,*p1tmp,*p1name;
 int p1i,p1incl_idx=0;

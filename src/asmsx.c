@@ -37,7 +37,7 @@
 /* TODO: reduce the number of global variables */
 
 unsigned char *memory, zilog = 0, pass = 1, size = 0, bios = 0, type = 0, parity;
-int conditional[16], conditional_level = 0, cassette = 0;
+int conditional[MAX_INCLUDE_LEVEL], conditional_level = 0, cassette = 0;
 char *source, *intname, *binary, *filename, *original, *outputfname, *symbols, *assembler;
 int lastpage;
 int ePC = 0, PC = 0, subpage, pagesize, usedpage[256], mapper, pageinit, addr_start = 0xffff, addr_end = 0x0000, start = 0, warnings = 0, lines;
