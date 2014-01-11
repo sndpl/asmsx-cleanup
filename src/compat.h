@@ -23,6 +23,8 @@
 
 #if ((_MSC_VER && (_MSC_VER < 1400)) || (__WATCOMC__))	/* Check if compiler is Visual C++ version is below 2005 or any version of Watcom C/C++ */
 
+#define COMPAT_S	1
+
 #define fopen_s(FPP, FNAME, FMODE)	((int)((void *)(NULL) == (void *)((*FPP = fopen(FNAME, FMODE)))))
 
 #define strcpy_s(DESTSTR, MAXLEN, SRCSTR)	(strcpy(DESTSTR, SRCSTR))
@@ -34,6 +36,8 @@
 #define fprintf_s	fprintf
 #define printf_s	printf
 #define sprintf_s	sprintf
+
+#define strtok_s(TOK, DELIM, NEXT)	(strtok(TOK, DELIM))
 
 #endif	/* ((_MSC_VER < 1400) || (__WATCOMC__)) */
 

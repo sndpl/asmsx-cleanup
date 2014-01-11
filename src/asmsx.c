@@ -193,7 +193,9 @@ void msx_bios(void)
 
 void error_message(int code)
 {
+	#ifndef COMPAT_S
 	char *next_token = NULL;
+	#endif /*  COMPAT_S */
 
 	printf_s("%s, line %d: ", strtok_s(source, "\042", &next_token), lines);
 	switch (code)
@@ -348,7 +350,9 @@ void error_message(int code)
 
 void warning_message(int code)
 {
+	#ifndef COMPAT_S
 	char *next_token = NULL;
+	#endif /*  COMPAT_S */
 
 	if (2 != pass)
 		return;
@@ -490,9 +494,12 @@ void register_local(const char *name)
 
 void register_symbol(const char *name, int number, int type)
 {
+	#ifndef COMPAT_S
+	char *next_token = NULL;
+	#endif /*  COMPAT_S */
+
 	int i;
 	char *tmpstr;
-	char *next_token = NULL;
 
 	if (2 == pass)
 		return;
@@ -517,8 +524,12 @@ void register_symbol(const char *name, int number, int type)
 
 void register_variable(const char *name, int number)
 {
-	int i;
+	#ifndef COMPAT_S
 	char *next_token = NULL;
+	#endif /*  COMPAT_S */
+
+	int i;
+
 	for (i = 0; i < maximum; i++)
 		if ((!strcmp(name, id_list[i].name)) && (id_list[i].type == 3))
 		{

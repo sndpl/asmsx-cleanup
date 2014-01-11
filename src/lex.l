@@ -11,8 +11,9 @@
 #include "compat.h"
 #include "asmsx.h"
 
+#ifndef COMPAT_S
 char *l_next_token = NULL;
-
+#endif /*  COMPAT_S */
 %}
 
 %%

@@ -28,7 +28,10 @@
 char *p1text, *p1tmp, *p1name;
 int p1i, p1incidx = 0;
 FILE *p1fout, *p1fin;
+
+#ifndef COMPAT_S
 char *p1next_token = NULL;
+#endif /*  COMPAT_S */
 
 struct
 {
