@@ -1263,7 +1263,7 @@ int main(int argc, char *argv[])
 
 	preprocessor1(assembler);
 	preprocessor3();
-	sprintf_s(original, "~tmppre.%i", preprocessor2());
+	sprintf_s(original, ASMSX_MAX_PATH, "~tmppre.%i", preprocessor2());
 	printf_s("Assembling source file %s\n", assembler);
 	conditional[0] = 1;
 	if (0 != fopen_s(&foriginal, original, "r"))

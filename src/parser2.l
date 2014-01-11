@@ -98,7 +98,7 @@ int preprocessor2(void)
  printf_s("Expanding system macros\n");
  do
 {
- sprintf_s(filename,"~tmppre.%i",loop+1);
+ sprintf_s(filename, ASMSX_MAX_PATH, "~tmppre.%i", loop + 1);
 
  if (0 != fopen_s(&input, filename, "r"))
  {
@@ -110,7 +110,7 @@ int preprocessor2(void)
  
  loop++;
 
- sprintf_s(filename,"~tmppre.%i",loop+1);
+ sprintf_s(filename, ASMSX_MAX_PATH, "~tmppre.%i", loop + 1);
 
  if (0 != fopen_s(&p2output, filename, "w"))
  {
