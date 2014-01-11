@@ -14,20 +14,13 @@ flex.exe -i -Pparser3 -oparser3.c parser3.l
 bison.exe core.y -ocore.c -d
 flex.exe -i -olex.c lex.l
 
-wcc386.exe asmsx.c
-echo.
-wcc386.exe core.c
-echo.
-wcc386.exe lex.c 
-echo.
-wcc386.exe parser1.c
-echo.
-wcc386.exe parser2.c
-echo.
-wcc386.exe parser3.c
-echo.
-wcc386.exe wav.c 
-echo.
+wcc386.exe /W4 asmsx.c
+wcc386.exe /W4 core.c
+wcc386.exe /W4 lex.c
+wcc386.exe /W4 parser1.c
+wcc386.exe /W4 parser2.c
+wcc386.exe /W4 parser3.c
+wcc386.exe /W4 wav.c
 link386.exe asmsx.obj core.obj lex.obj parser1.obj parser2.obj parser3.obj wav.obj
 
 del core.c core.h lex.c parser?.c *.obj
