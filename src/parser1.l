@@ -64,9 +64,9 @@ extern int prompt_error1(char);
 	strcpy(p1inc_stack[p1incidx].name,p1name);
 	p1inc_stack[p1incidx].line=yylineno;
 	p1inc_stack[p1incidx++].buffer=YY_CURRENT_BUFFER;
-	yyin=fopen(p1tmp,"r");
-	if (!yyin) prompt_error1(3);
-	printf_s("Including file %s\n",p1tmp);
+	if (0 != fopen_s(&yyin, p1tmp, "r"))
+		prompt_error1(3);
+	printf_s("Including file %s\n", p1tmp);
 	yylineno=1;
 	strcpy(p1name,p1tmp);
 	fprintf_s(p1fout,"#file \042%s\042\n",p1name);
@@ -156,9 +156,9 @@ int preprocessor1(char *input_name)
  strcpy(p1name,input_name);
 
 // Open original source file
- if ((p1fin=fopen(p1name,"r"))==NULL)
+ if (0 != fopen_s(&p1fin, p1name, "r"))
  {
-  printf_s("Fatal: cannot open %s",input_name);
+  printf_s("Fatal: cannot open %s\n", input_name);
   exit(1);
  }
 
@@ -166,8 +166,13 @@ int preprocessor1(char *input_name)
  printf_s("Parsing file %s\n",input_name);
 
 // Create p1fout file
- p1fout=fopen("~tmppre.0","w");
- fprintf_s(p1fout,"#file \042%s\042\n",p1name);
+ if (0 != fopen_s(&p1fout, "~tmppre.0", "w"))
+ {
+  printf_s("Fatal: cannot create temp file in preprocessor1()\n");
+  exit(1);
+ }
+	
+ fprintf_s(p1fout, "#file \042%s\042\n", p1name);
  
 // Start lexical scanner
  yyin=p1fin;

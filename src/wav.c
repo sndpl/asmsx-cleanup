@@ -119,7 +119,11 @@ void wav_write_file(const char *bin_filename, const char *bin_intname, const int
 	wav_filename[strlen(wav_filename) - 3] = 0;	/* drop supplied extension */
 	strcat(wav_filename, "wav");	/* make "wav" new extension */
 
-	f = fopen(wav_filename, "wb");
+	if (0 != fopen_s(&f, wav_filename, "wb"))
+	{
+		warning_message(0);	/* TODO: figure out if 0 is ok */
+		return;
+	}
 
 	if ((BASIC == type) || (ROM == type))
 	{

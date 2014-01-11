@@ -61,15 +61,19 @@ int preprocessor3(void)
  p3text=(char*)malloc(0x1000);
  p3text[0]=0;
 
- if ((input=fopen("~tmppre.0","r"))==NULL)
+ if (0 != fopen_s(&input, "~tmppre.0", "r"))
  {
-  printf_s("Fatal: cannot process file");
+  printf_s("Fatal: cannot process file\n");
   exit(1);
  }
 
  yyin=input;
  
- p3fout=fopen("~tmppre.1","w");
+ if (0 != fopen_s(&p3fout, "~tmppre.1", "w"))
+ {
+  printf_s("Fatal: cannot create temporary file in preprocessor3()\n");
+  exit(1);
+ }
 
  yylex();
 

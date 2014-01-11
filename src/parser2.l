@@ -100,9 +100,9 @@ int preprocessor2(void)
 {
  sprintf_s(filename,"~tmppre.%i",loop+1);
 
- if ((input=fopen(filename,"r"))==NULL)
+ if (0 != fopen_s(&input, filename, "r"))
  {
-  printf_s("Fatal: cannot process file");
+  printf_s("Fatal: cannot process file\n");
   exit(1);
  }
 
@@ -112,7 +112,12 @@ int preprocessor2(void)
 
  sprintf_s(filename,"~tmppre.%i",loop+1);
 
- p2output=fopen(filename,"w");
+ if (0 != fopen_s(&p2output, filename, "w"))
+ {
+  printf_s("Fatal: cannot create file %s\n", filename);
+  exit(1);
+ }
+	
  p2level=0;
  p2nested=0;
  yylex();
