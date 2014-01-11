@@ -21,8 +21,8 @@
 #endif
 
 FILE *p2output;
-char *p2text, *p2buf, p2nested = 0, p2lvl;
-unsigned int p2number, p2lines, i;
+char *p2text, *p2buf, p2nested = 0, p2level;
+unsigned int p2no, p2lines, i;
 extern int prompt_error2(char);
 %}
 
@@ -40,11 +40,11 @@ extern int prompt_error2(char);
 <line>.?rept[ \t]+ BEGIN(repnum);
 <line>. strcat(p2text,yytext);BEGIN(INITIAL);
 <repnum>[0-9]+[ \t]* {
-             p2number=atoi(yytext);
+             p2no=atoi(yytext);
              p2buf[0]=0;
              p2text[0]=0;
              BEGIN(rept); }
-<rept>.?rept[ \t]+[0-9]+[ \t]* p2buf=strcat(p2buf,yytext);p2nested++;p2lvl++;
+<rept>.?rept[ \t]+[0-9]+[ \t]* p2buf=strcat(p2buf,yytext);p2nested++;p2level++;
 <rept>"#"line[ \t]*[0-9]+\n[ \t]*.?endr[ \t]*\n {
               if (p2nested)
                {
@@ -52,7 +52,7 @@ extern int prompt_error2(char);
                 p2buf=strcat(p2buf,yytext);
                } else
               {
-               for (i=0;i<p2number;i++)
+               for (i=0;i<p2no;i++)
                 fprintf_s(p2output,"%s",p2buf);
                p2buf[0]=0;
                BEGIN(INITIAL);
@@ -113,14 +113,14 @@ int preprocessor2(void)
  sprintf_s(filename,"~tmppre.%i",loop+1);
 
  p2output=fopen(filename,"w");
- p2lvl=0;
+ p2level=0;
  p2nested=0;
  yylex();
 
  fclose(input);
  fclose(p2output);
 
-} while (p2lvl);
+} while (p2level);
 
 // free(filename);
 // free(p2text);

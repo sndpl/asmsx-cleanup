@@ -17,12 +17,12 @@
 #include "asmsx.h"
 
 #define YY_NO_INPUT 1
+
 #ifdef _MSC_VER
 #define YY_NO_UNISTD_H 1
 #endif
 
-
-FILE *p3outf;
+FILE *p3fout;
 char *p3text;
 %}
 
@@ -35,7 +35,7 @@ char *p3text;
 %%
 
 <INITIAL>"#"line[ \t]*[0-9]+\n strcat(p3text,yytext);BEGIN(line);
-<INITIAL>\n   fprintf_s(p3outf,"%s%s",p3text,yytext);p3text[0]=0;
+<INITIAL>\n   fprintf_s(p3fout,"%s%s",p3text,yytext);p3text[0]=0;
 <INITIAL>.    strcat(p3text,yytext);
 <line>.?zilog[ \t]*\n strcat(p3text,yytext);BEGIN(zilog);
 <line>. strcat(p3text,yytext);BEGIN(INITIAL);
@@ -45,7 +45,7 @@ char *p3text;
 <zilog>"[" strcat(p3text,"(");
 <zilog>"]" strcat(p3text,")");
 <zilog>. strcat(p3text,yytext);
-<zilog>\n fprintf_s(p3outf,"%s%s",p3text,yytext);p3text[0]=0;
+<zilog>\n fprintf_s(p3fout,"%s%s",p3text,yytext);p3text[0]=0;
 
 %%
 
@@ -69,15 +69,14 @@ int preprocessor3(void)
 
  yyin=input;
  
- p3outf=fopen("~tmppre.1","w");
+ p3fout=fopen("~tmppre.1","w");
 
  yylex();
 
  fclose(input);
- fclose(p3outf);
+ fclose(p3fout);
 
  free(p3text);
  
  return 0;
 }
-
