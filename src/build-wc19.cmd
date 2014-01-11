@@ -2,7 +2,7 @@
 echo Compile asmsx with Open Watcom C32 1.9
 
 SET PATH=C:\WATCOM\BINW;C:\WATCOM\BINNT;%PATH%
-SET INCLUDE=C:\WATCOM\H;C:\WATCOM\H\NT
+SET INCLUDE=C:\WATCOM\H;C:\WATCOM\H\NT;..\..\compat_s\src
 SET WATCOM=C:\WATCOM
 
 set mingw=C:\MinGW

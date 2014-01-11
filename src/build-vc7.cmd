@@ -2,7 +2,7 @@
 echo Compile asmsx with Visual C++ .NET 2002 (7.0)
 
 set VCDIR=C:\Program Files\Microsoft Visual Studio .NET
-set INCLUDE=%VCDIR%\VC7\INCLUDE
+set INCLUDE=%VCDIR%\VC7\INCLUDE;..\..\compat_s\src
 set LIB=%VCDIR%\VC7\LIB
 set PATH=%VCDIR%\Common7\IDE;%VCDIR%\VC7\BIN;%PATH%
 

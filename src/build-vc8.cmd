@@ -2,7 +2,7 @@
 echo Compile asmsx with Visual C++ 2005 (8.0)
 
 set VCDIR=C:\Program Files\Microsoft Visual Studio 8
-set INCLUDE=%VCDIR%\VC\INCLUDE
+set INCLUDE=%VCDIR%\VC\INCLUDE;..\..\compat_s\src
 set LIB=%VCDIR%\VC\LIB
 set PATH=%VCDIR%\Common7\IDE;%VCDIR%\VC\BIN;%PATH%
 

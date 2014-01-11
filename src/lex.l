@@ -8,7 +8,7 @@
 #define YY_NO_UNISTD_H 1
 #endif
 #include "core.h"
-#include "compat.h"
+#include "compat_s.h"
 #include "asmsx.h"
 
 #ifndef COMPAT_S

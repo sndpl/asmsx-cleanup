@@ -3,7 +3,7 @@ echo Compile asmsx with Visual C++ 2008 (9.0)
 
 set VCDIR=C:\Program Files\Microsoft Visual Studio 9.0
 set PSDK=C:\Program Files\Microsoft SDKs\Windows\v6.0A
-set INCLUDE=%VCDIR%\VC\INCLUDE;%PSDK%\INCLUDE
+set INCLUDE=%VCDIR%\VC\INCLUDE;%PSDK%\INCLUDE;..\..\compat_s\src
 set LIB=%VCDIR%\VC\LIB;%PSDK%\LIB
 set PATH=%VCDIR%\Common7\IDE;%VCDIR%\VC\BIN;%PATH%
 

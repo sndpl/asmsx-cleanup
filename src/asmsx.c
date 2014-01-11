@@ -25,7 +25,7 @@
 #include <time.h>
 #include <math.h>
 
-#include "compat.h"
+#include "compat_s.h"
 #include "asmsx.h"
 #include "wav.h"
 #include "parser1.h"
