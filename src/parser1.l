@@ -25,9 +25,10 @@
 #define YY_NO_UNISTD_H 1
 #endif
 
-char *p1text,*p1tmp,*p1name;
-int p1i,p1incl_idx=0;
-FILE *p1fout,*p1fin;
+char *p1text, *p1tmp, *p1name;
+int p1i, p1incidx = 0;
+FILE *p1fout, *p1fin;
+
 struct
 {
 	YY_BUFFER_STATE buffer;
@@ -55,14 +56,14 @@ extern int prompt_error1(char);
 <inclusion>\n {
 	if (p1tmp==NULL) prompt_error1(5);
 	if (p1tmp[strlen(p1tmp)-1]<=32) prompt_error1(1);
-	if (p1incl_idx>=MAX_INCLUDE_LEVEL) prompt_error1(2);
-	for (p1i=0;p1i<p1incl_idx;p1i++)
+	if (p1incidx>=MAX_INCLUDE_LEVEL) prompt_error1(2);
+	for (p1i=0;p1i<p1incidx;p1i++)
 		if (!strcmp(p1tmp,p1inc_stack[p1i].name))
 			prompt_error1(4);
-	p1inc_stack[p1incl_idx].name=(char*)malloc(ASMSX_MAX_PATH);
-	strcpy(p1inc_stack[p1incl_idx].name,p1name);
-	p1inc_stack[p1incl_idx].line=yylineno;
-	p1inc_stack[p1incl_idx++].buffer=YY_CURRENT_BUFFER;
+	p1inc_stack[p1incidx].name=(char*)malloc(ASMSX_MAX_PATH);
+	strcpy(p1inc_stack[p1incidx].name,p1name);
+	p1inc_stack[p1incidx].line=yylineno;
+	p1inc_stack[p1incidx++].buffer=YY_CURRENT_BUFFER;
 	yyin=fopen(p1tmp,"r");
 	if (!yyin) prompt_error1(3);
 	printf_s("Including file %s\n",p1tmp);
@@ -75,14 +76,14 @@ extern int prompt_error1(char);
 
 <<EOF>> {
 	fclose(yyin);
-	if (--p1incl_idx>=0)
+	if (--p1incidx>=0)
 	{
 		yy_delete_buffer(YY_CURRENT_BUFFER);
-		yy_switch_to_buffer(p1inc_stack[p1incl_idx].buffer);
-		yylineno=p1inc_stack[p1incl_idx].line;
-		strcpy(p1name,p1inc_stack[p1incl_idx].name);
+		yy_switch_to_buffer(p1inc_stack[p1incidx].buffer);
+		yylineno=p1inc_stack[p1incidx].line;
+		strcpy(p1name,p1inc_stack[p1incidx].name);
 		fprintf_s(p1fout,"#file \042%s\042\n",p1name);
-		free(p1inc_stack[p1incl_idx].name);
+		free(p1inc_stack[p1incidx].name);
 	}
 	else
         {
