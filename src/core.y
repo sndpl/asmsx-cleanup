@@ -7,6 +7,9 @@
 
 #include "compat.h"
 #include "asmsx.h"
+
+char *y_next_token = NULL;
+
 %}
 
 %union
@@ -232,11 +235,11 @@ line:	pseudo_instruction EOL
 
 label:	IDENTIFICATOR ':'
 	{
-		register_label(strtok($1, ":"));
+		register_label(strtok_s($1, ":", &y_next_token));
 	}
 	| LOCAL_IDENTIFICATOR ':'
 	{
-		register_local(strtok($1, ":"));
+		register_local(strtok_s($1, ":", &y_next_token));
 	}
 ;
 
@@ -435,14 +438,14 @@ pseudo_instruction: PSEUDO_ORG value
 	{
 		if (conditional[conditional_level])
 		{
-			register_symbol(strtok($1, "="), $3, 2);
+			register_symbol(strtok_s($1, "=", &y_next_token), $3, 2);
 		}
 	}
 	| IDENTIFICATOR PSEUDO_ASSIGN value
 	{
 		if (conditional[conditional_level])
 		{
-			register_variable(strtok($1, "="), $3);
+			register_variable(strtok_s($1, "=", &y_next_token), $3);
 		}
 	}
 	| PSEUDO_INCBIN TEXT

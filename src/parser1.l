@@ -28,6 +28,7 @@
 char *p1text, *p1tmp, *p1name;
 int p1i, p1incidx = 0;
 FILE *p1fout, *p1fin;
+char *p1next_token = NULL;
 
 struct
 {
@@ -52,7 +53,7 @@ extern int prompt_error1(char);
 <INITIAL>\42[^\42]*\42 strcat(p1text,yytext);
 <INITIAL>.?include/[ \042\t]+ p1tmp=NULL;BEGIN(inclusion);
 <inclusion>[ \t]*      /* strip spaces */
-<inclusion>[^ \t\n]+   p1tmp=strtok(yytext,"\42");
+<inclusion>[^ \t\n]+   p1tmp = strtok_s(yytext, "\42", &p1next_token);
 <inclusion>\n {
 	if (p1tmp==NULL) prompt_error1(5);
 	if (p1tmp[strlen(p1tmp)-1]<=32) prompt_error1(1);

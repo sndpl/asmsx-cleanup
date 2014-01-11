@@ -193,7 +193,9 @@ void msx_bios(void)
 
 void error_message(int code)
 {
-	printf_s("%s, line %d: ", strtok(source, "\042"), lines);
+	char *next_token = NULL;
+
+	printf_s("%s, line %d: ", strtok_s(source, "\042", &next_token), lines);
 	switch (code)
 	{
 		case 0:
@@ -346,10 +348,12 @@ void error_message(int code)
 
 void warning_message(int code)
 {
+	char *next_token = NULL;
+
 	if (2 != pass)
 		return;
 
-	printf_s("%s, line %d: Warning: ", strtok(source, "\042"), lines);
+	printf_s("%s, line %d: Warning: ", strtok_s(source, "\042", &next_token), lines);
 	switch (code)
 	{
 		case 1:
@@ -484,12 +488,13 @@ void register_local(const char *name)
 }
 
 
-void register_symbol(const char *name,int number,int type)
+void register_symbol(const char *name, int number, int type)
 {
 	int i;
 	char *tmpstr;
+	char *next_token = NULL;
 
-	if (pass == 2)
+	if (2 == pass)
 		return;
 	for (i = 0; i < maximum; i++)
 		if (!strcmp(name, id_list[i].name))
@@ -504,7 +509,7 @@ void register_symbol(const char *name,int number,int type)
 	id_list[maximum - 1].name = (char*)malloc(strlen(name) + 1);
 
 	tmpstr = _strdup(name);
-	strcpy(id_list[maximum - 1].name, strtok(tmpstr, " "));
+	strcpy(id_list[maximum - 1].name, strtok_s(tmpstr, " ", &next_token));
 	id_list[maximum - 1].value = number;
 	id_list[maximum - 1].type = type;
 }
@@ -513,6 +518,7 @@ void register_symbol(const char *name,int number,int type)
 void register_variable(const char *name, int number)
 {
 	int i;
+	char *next_token = NULL;
 	for (i = 0; i < maximum; i++)
 		if ((!strcmp(name, id_list[i].name)) && (id_list[i].type == 3))
 		{
@@ -524,7 +530,7 @@ void register_variable(const char *name, int number)
 		error_message(11);
 
 	id_list[maximum - 1].name = (char*)malloc(strlen(name) + 1);
-	strcpy(id_list[maximum - 1].name, strtok((char *)name, " "));
+	strcpy(id_list[maximum - 1].name, strtok_s((char *)name, " ", &next_token));
 	id_list[maximum - 1].value = number;
 	id_list[maximum - 1].type = 3;
 }
