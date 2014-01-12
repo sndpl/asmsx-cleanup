@@ -719,7 +719,7 @@ void include_binary(const char* name, int skip, int n)
 }
 
 
-void write_zx_byte(const char b)	/* TODO: move to zx specific unit */
+void write_zx_byte(const int b)	/* TODO: move to zx specific unit */
 {
 	fputc(b, foutput);
 	parity ^= b;
@@ -1092,10 +1092,12 @@ void set_subpage(int n, int addr)
 }
 
 
-void locate_32k(void)	/* TODO: must be some Z80 code, need to figure out what is it */
+void locate_32k(void)
 {
 	int i;
-	char locate32[31] =
+
+	/* TODO: this is probably Z80 binary code, need to figure out what is it */
+	unsigned char locate32[31] =
 	{
 		0xCD, 0x38, 0x01, 0x0F, 0x0F, 0xE6, 0x03, 0x4F,
 		0x21, 0xC1, 0xFC, 0x85, 0x6F, 0x7E, 0xE6, 0x80,
@@ -1174,7 +1176,7 @@ void cas_write_file(void)
 {
 	FILE *f;
 	int i;
-	char cas[8] = {0x1F, 0xA6, 0xDE, 0xBA, 0xCC, 0x13, 0x7D, 0x74};
+	unsigned char cas[8] = {0x1F, 0xA6, 0xDE, 0xBA, 0xCC, 0x13, 0x7D, 0x74};
 
 	if ((type == MEGAROM) || ((type == ROM) && (addr_start < 0x8000)))
 	{
