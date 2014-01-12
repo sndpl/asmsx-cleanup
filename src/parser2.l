@@ -7,6 +7,10 @@
 		2.-Manage nested REPT/ENDR
 */
 
+%option noyywrap
+%option yylineno
+%option nounput
+
 %{
 #include <stdio.h>
 #include <stdlib.h>
@@ -28,9 +32,6 @@ char *p2text, *p2buf, p2nested = 0, p2level;
 unsigned int p2no, p2lines, i;
 extern void prompt_error2(int);
 %}
-
-%option yylineno
-%option nounput
 
 %s rept
 %s repnum
@@ -80,11 +81,6 @@ void prompt_error2(int c)
  }
  fclose(p2output);
  exit(c);
-}
-
-int yywrap(void)
-{
- return 1;
 }
 
 int preprocessor2(void)

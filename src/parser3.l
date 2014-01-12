@@ -8,6 +8,10 @@
 		
 */
 
+%option noyywrap
+%option yylineno
+%option nounput
+
 %{
 #include <stdio.h>
 #include <stdlib.h>
@@ -29,9 +33,6 @@ FILE *p3fout;
 char *p3text;
 %}
 
-%option yylineno
-%option nounput
-
 %s line
 %s zilog
 
@@ -51,11 +52,6 @@ char *p3text;
 <zilog>\n fprintf_s(p3fout,"%s%s",p3text,yytext);p3text[0]=0;
 
 %%
-
-int yywrap(void)
-{
- return 1;
-}
 
 int preprocessor3(void)
 {

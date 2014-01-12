@@ -11,6 +11,10 @@
 		6.-Supports MS-DOS, Windows, Linux and Mac text source files
 */
 
+%option noyywrap
+%option yylineno
+%option nounput
+
 %{
 #include <stdio.h>
 #include <stdlib.h>
@@ -42,9 +46,6 @@ struct
 
 extern void prompt_error1(int);
 %}
-
-%option yylineno
-%option nounput
 
 %s comment
 %s pascal_comment
@@ -138,11 +139,6 @@ void prompt_error1(int c)
  }
  fclose(p1fout);
  exit(c);
-}
-
-int yywrap(void)
-{
- return 1;
 }
 
 int preprocessor1(char *input_name)

@@ -1,3 +1,6 @@
+%option noyywrap
+%option yylineno
+
 %{
 #include <stdio.h>
 #include <stdlib.h>

@@ -3255,12 +3255,6 @@ listing_16bits : value_16bits
 
 %%
 
-int yywrap(void)
-{
-	return 1;
-}
-
-
 void yyerror(const char *s)
 {
 	printf_s("yyerror: %s\n", s);
