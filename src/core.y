@@ -224,7 +224,7 @@ line:	pseudo_instruction EOL
 	| mnemo_call EOL
 	| PREPRO_FILE TEXT EOL
 	{
-		strcpy(source, $2);
+		strcpy_s(source, ASMSX_MAX_PATH, $2);
 	}
 	| PREPRO_LINE value EOL
 	{
@@ -643,7 +643,7 @@ pseudo_instruction: PSEUDO_ORG value
 		if (conditional[conditional_level])
 		{
 			if (!intname[0])
-				strcpy(intname, $2);
+				strcpy_s(intname, ASMSX_MAX_PATH, $2);
 			cassette |= $1;
 		}
 	}
@@ -653,7 +653,7 @@ pseudo_instruction: PSEUDO_ORG value
 		{
 			if (!intname[0])
 			{
-				strcpy(intname, binary);
+				strcpy_s(intname, ASMSX_MAX_PATH, binary);
 				intname[strlen(intname) - 1] = 0;
 			}
 			cassette |= $1;
@@ -665,7 +665,7 @@ pseudo_instruction: PSEUDO_ORG value
 	}
 	| PSEUDO_FILENAME TEXT
 	{
-		strcpy(filename, $2);
+		strcpy_s(filename, ASMSX_MAX_PATH, $2);
 	}
 ;
 

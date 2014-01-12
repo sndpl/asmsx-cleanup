@@ -65,14 +65,14 @@ extern int prompt_error1(char);
 		if (!strcmp(p1tmp,p1inc_stack[p1i].name))
 			prompt_error1(4);
 	p1inc_stack[p1incidx].name=(char*)malloc(ASMSX_MAX_PATH);
-	strcpy(p1inc_stack[p1incidx].name,p1name);
+	strcpy_s(p1inc_stack[p1incidx].name, ASMSX_MAX_PATH, p1name);
 	p1inc_stack[p1incidx].line=yylineno;
 	p1inc_stack[p1incidx++].buffer=YY_CURRENT_BUFFER;
 	if (0 != fopen_s(&yyin, p1tmp, "r"))
 		prompt_error1(3);
 	printf_s("Including file %s\n", p1tmp);
 	yylineno=1;
-	strcpy(p1name,p1tmp);
+	strcpy_s(p1name, ASMSX_MAX_PATH, p1tmp);
 	fprintf_s(p1fout,"#file \042%s\042\n",p1name);
 	yy_switch_to_buffer(yy_create_buffer(yyin,YY_BUF_SIZE));
 	BEGIN(INITIAL);
@@ -85,7 +85,7 @@ extern int prompt_error1(char);
 		yy_delete_buffer(YY_CURRENT_BUFFER);
 		yy_switch_to_buffer(p1inc_stack[p1incidx].buffer);
 		yylineno=p1inc_stack[p1incidx].line;
-		strcpy(p1name,p1inc_stack[p1incidx].name);
+		strcpy_s(p1name, ASMSX_MAX_PATH, p1inc_stack[p1incidx].name);
 		fprintf_s(p1fout,"#file \042%s\042\n",p1name);
 		free(p1inc_stack[p1incidx].name);
 	}
@@ -157,7 +157,7 @@ int preprocessor1(char *input_name)
  p1text[0]=0;
 
 // Get source code name
- strcpy(p1name,input_name);
+ strcpy_s(p1name, ASMSX_MAX_PATH, input_name);
 
 // Open original source file
  if (0 != fopen_s(&p1fin, p1name, "r"))

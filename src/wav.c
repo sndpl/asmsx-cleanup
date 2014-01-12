@@ -115,7 +115,7 @@ void wav_write_file(const char *bin_filename, const char *bin_intname, const int
 		return;
 	}
 
-	strcpy(wav_filename, bin_filename);
+	strcpy_s(wav_filename, ASMSX_MAX_PATH, bin_filename);
 	wav_filename[strlen(wav_filename) - 3] = 0;	/* drop supplied extension */
 	strcat(wav_filename, "wav");	/* make "wav" new extension */
 
@@ -152,7 +152,7 @@ void wav_write_file(const char *bin_filename, const char *bin_intname, const int
 			wav_write_byte(0xd0, f);
 
 		/* Make a local copy of internal tape name of the program */
-		strcpy(wav_intname, bin_intname);
+		strcpy_s(wav_intname, ASMSX_MAX_PATH, bin_intname);
 
 		/* Pad MSX name with spaces at the end until it is 6 characters long */
 		if (6 > strlen(wav_intname))

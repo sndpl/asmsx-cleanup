@@ -444,7 +444,7 @@ void conditional_jump(const int address)
 
 void register_label(const char *name)
 {
-	int i;
+	int i, name_len;
 
 	if (pass == 2)
 		for (i = 0; i < maximum; i++)
@@ -461,8 +461,9 @@ void register_label(const char *name)
 	if (++maximum == MAX_ID)
 		error_message(11);
 
-	id_list[maximum - 1].name = (char*)malloc(strlen(name) + 4);
-	strcpy(id_list[maximum - 1].name, name);
+	name_len = strlen(name) + 4;
+	id_list[maximum - 1].name = (char*)malloc(name_len);
+	strcpy_s(id_list[maximum - 1].name, name_len, name);
 	id_list[maximum - 1].value = ePC;
 	id_list[maximum - 1].type = 1;
 	id_list[maximum - 1].page = subpage;
@@ -472,7 +473,7 @@ void register_label(const char *name)
 
 void register_local(const char *name)
 {
-	int i;
+	int i, name_len;
 
 	if (pass == 2)
 		return;
@@ -484,8 +485,9 @@ void register_local(const char *name)
 	if (++maximum == MAX_ID)
 		error_message(11);
 
-	id_list[maximum - 1].name = (char*)malloc(strlen(name) + 4);
-	strcpy(id_list[maximum - 1].name, name);
+	name_len = strlen(name) + 4;
+	id_list[maximum - 1].name = (char*)malloc(name_len);
+	strcpy_s(id_list[maximum - 1].name, name_len, name);
 	id_list[maximum - 1].value = ePC;
 	id_list[maximum - 1].type = 1;
 	id_list[maximum - 1].page = subpage;
@@ -498,7 +500,7 @@ void register_symbol(const char *name, int number, int type)
 	char *next_token = NULL;
 	#endif /*  COMPAT_S */
 
-	int i;
+	int i, name_len;
 	char *tmpstr;
 
 	if (2 == pass)
@@ -513,10 +515,11 @@ void register_symbol(const char *name, int number, int type)
 	if (++maximum == MAX_ID)
 		error_message(11);
 
-	id_list[maximum - 1].name = (char*)malloc(strlen(name) + 1);
+	name_len = strlen(name) + 1;
+	id_list[maximum - 1].name = (char*)malloc(name_len);
 
 	tmpstr = _strdup(name);
-	strcpy(id_list[maximum - 1].name, strtok_s(tmpstr, " ", &next_token));
+	strcpy_s(id_list[maximum - 1].name, name_len, strtok_s(tmpstr, " ", &next_token));
 	id_list[maximum - 1].value = number;
 	id_list[maximum - 1].type = type;
 }
@@ -528,7 +531,7 @@ void register_variable(const char *name, int number)
 	char *next_token = NULL;
 	#endif /*  COMPAT_S */
 
-	int i;
+	int i, name_len;
 
 	for (i = 0; i < maximum; i++)
 		if ((!strcmp(name, id_list[i].name)) && (id_list[i].type == 3))
@@ -540,8 +543,9 @@ void register_variable(const char *name, int number)
 	if (++maximum == MAX_ID)
 		error_message(11);
 
-	id_list[maximum - 1].name = (char*)malloc(strlen(name) + 1);
-	strcpy(id_list[maximum - 1].name, strtok_s((char *)name, " ", &next_token));
+	name_len = strlen(name) + 1;
+	id_list[maximum - 1].name = (char*)malloc(name_len);
+	strcpy_s(id_list[maximum - 1].name, name_len, strtok_s((char *)name, " ", &next_token));
 	id_list[maximum - 1].value = number;
 	id_list[maximum - 1].type = 3;
 }
@@ -581,7 +585,7 @@ unsigned int read_local(const char *name)
 
 void output_text(void)
 {
-	strcpy(outputfname, filename);	/* Get output file name */
+	strcpy_s(outputfname, ASMSX_MAX_PATH, filename);	/* Get output file name */
 	outputfname = strcat(outputfname, ".txt");
 
 	if (0 != fopen_s(&fmessages, outputfname, "wt"))
@@ -913,10 +917,10 @@ void write_binary(void)
 void finalize(void)
 {
 	/* Get name of binary output file */
-	strcpy(binary, filename);
+	strcpy_s(binary, ASMSX_MAX_PATH, filename);
 
 	/* Get symbols file name */
-	strcpy(symbols, filename);
+	strcpy_s(symbols, ASMSX_MAX_PATH, filename);
 	symbols = strcat(symbols, ".sym");
 
 	write_binary();
@@ -1252,8 +1256,8 @@ int main(int argc, char *argv[])
 	outputfname = (char *)malloc(ASMSX_MAX_PATH);
 	filename = (char *)malloc(ASMSX_MAX_PATH);
 
-	strcpy(filename, argv[1]);
-	strcpy(assembler, filename);
+	strcpy_s(filename, ASMSX_MAX_PATH, argv[1]);
+	strcpy_s(assembler, ASMSX_MAX_PATH, filename);
 
 	for (i = strlen(filename) - 1; (filename[i] != '.') && i; i--);
 	if (i)
