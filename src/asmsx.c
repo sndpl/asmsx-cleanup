@@ -522,7 +522,7 @@ void register_symbol(const char *name, int value, char type)
 	name_len = strlen(name) + 1;
 	id_list[maximum - 1].name = (char*)malloc(name_len);
 
-	tmpstr = _strdup(name);
+	tmpstr = (char *)_strdup(name);
 	strcpy_s(id_list[maximum - 1].name, name_len, strtok_s(tmpstr, " ", &next_token));
 	id_list[maximum - 1].value = value;
 	id_list[maximum - 1].type = type;
