@@ -708,7 +708,7 @@ void include_binary(const char* name, int skip, int n)
 			error_message(29);
 	}
 	else
-		for (; !feof(file); i++)
+		for (i = 0; !feof(file); i++)	/* TODO: check if this works as expected - originally i wasn't initialized */
 		{
 			k = (char)fgetc(file);
 			if (!feof(file))
@@ -1237,7 +1237,7 @@ int defined_symbol(const char *name)
 
 int main(int argc, char *argv[])
 {
-	int i;
+	int i = 0;
 
 	printf_s("asmsx %s MSX cross assembler https://github.com/asmsx/asmsx/ (%s)\n", ASMSX_VERSION, __DATE__);
 
