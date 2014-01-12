@@ -36,11 +36,10 @@
 /* Global variables */
 /* TODO: reduce the number of global variables */
 
-char parity;
 char *memory, *source, *intname, *binary, *filename, *original, *outputfname, *symbols, *assembler;
 int zilog = 0, pass = 1, size = 0, bios = 0, type = 0;
 int conditional[MAX_INCLUDE_LEVEL], conditional_level = 0, cassette = 0;
-int lastpage;
+int lastpage, parity;
 int ePC = 0, PC = 0, subpage, pagesize, usedpage[256], mapper, pageinit, addr_start = 0xffff, addr_end = 0x0000, start = 0, warnings = 0, lines;
 int maxpage[4] = {32, 64, 256, 256};
 
@@ -445,7 +444,8 @@ void conditional_jump(const int address)
 
 void register_label(const char *name)
 {
-	int i, name_len;
+	int i;
+	size_t name_len;
 
 	if (pass == 2)
 		for (i = 0; i < maximum; i++)
@@ -474,7 +474,8 @@ void register_label(const char *name)
 
 void register_local(const char *name)
 {
-	int i, name_len;
+	int i;
+	size_t name_len;
 
 	if (pass == 2)
 		return;
@@ -501,7 +502,8 @@ void register_symbol(const char *name, int value, char type)
 	char *next_token = NULL;
 	#endif /*  COMPAT_S */
 
-	int i, name_len;
+	int i;
+	size_t name_len;
 	char *tmpstr;
 
 	if (2 == pass)
@@ -532,7 +534,8 @@ void register_variable(const char *name, int value)
 	char *next_token = NULL;
 	#endif /*  COMPAT_S */
 
-	int i, name_len;
+	int i;
+	size_t name_len;
 
 	for (i = 0; i < maximum; i++)
 		if ((!strcmp(name, id_list[i].name)) && (id_list[i].type == 3))
@@ -1199,7 +1202,7 @@ void cas_write_file(void)
 			fputc(0xd0, f);
 
 		if (strlen(intname) < 6)
-			for (i = strlen(intname); i < 6; i++)
+			for (i = (int)strlen(intname); i < 6; i++)
 				intname[i] = 32;
 
 		for (i = 0; i < 6; i++)
@@ -1262,7 +1265,7 @@ int main(int argc, char *argv[])
 	strcpy_s(filename, ASMSX_MAX_PATH, argv[1]);
 	strcpy_s(assembler, ASMSX_MAX_PATH, filename);
 
-	for (i = strlen(filename) - 1; (filename[i] != '.') && i; i--);
+	for (i = (int)strlen(filename) - 1; (filename[i] != '.') && i; i--);
 	if (i)
 		filename[i]=0;
 	else

@@ -45,16 +45,6 @@
 /* variables */
 
 extern char *memory;
-extern char parity;
-
-extern int zilog;
-extern int pass;
-extern int size;
-extern int bios;
-extern int type;
-extern int conditional[16];
-extern int conditional_level;
-extern int cassette;
 extern char *assembler;
 extern char *source;
 extern char *intname;
@@ -64,6 +54,15 @@ extern char *original;
 extern char *outputfname;
 extern char *symbols;
 
+extern int parity;
+extern int zilog;
+extern int pass;
+extern int size;
+extern int bios;
+extern int type;
+extern int conditional[16];
+extern int conditional_level;
+extern int cassette;
 extern int ePC;
 extern int PC;
 extern int subpage;
@@ -78,6 +77,7 @@ extern int warnings;
 extern int lines;
 extern int maxpage[4];
 extern int last_global;
+
 extern FILE *foriginal;
 extern FILE *fmessages;
 extern FILE *foutput;
