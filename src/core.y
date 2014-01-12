@@ -11,6 +11,9 @@
 #ifndef COMPAT_S
 char *y_next_token = NULL;
 #endif /*  COMPAT_S */
+
+#define YYMALLOC	malloc
+#define YYFREE		free
 %}
 
 %union
