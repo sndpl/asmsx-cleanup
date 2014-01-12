@@ -18,4 +18,4 @@ flex.exe -i -olex.c lex.l
 cl.exe /nologo /W4 asmsx.c core.c lex.c parser1.c parser2.c parser3.c wav.c > asmsx.vc9.err
 rem /W1 to /W4 for warnings, /WX to treat warning as errors, /O2 for moderate optimization
 
-del core.c core.h lex.c parser?.c *.obj
+del core.c core.h lex.c parser?.c *.obj *.i
