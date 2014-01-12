@@ -36,20 +36,21 @@
 #define ASCII8 2
 #define ASCII16 3
 
-#define ASMSX_MAX_PATH 0x100
+#define ASMSX_MAX_PATH	0x100
+#define MEMORY_MAX	0x1000000	/* 16 megabytes - a bit too rich */
 
 #define MAX_INCLUDE_LEVEL 16
 
 
 /* variables */
 
-extern unsigned char *memory;
-extern unsigned char zilog;
-extern unsigned char pass;
-extern unsigned char size;
-extern unsigned char bios;
-extern unsigned char type;
-extern unsigned char parity;
+extern char *memory;
+extern int zilog;
+extern int pass;
+extern int size;
+extern int bios;
+extern int type;
+extern int parity;
 
 extern int conditional[16];
 extern int conditional_level;

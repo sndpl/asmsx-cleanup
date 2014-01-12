@@ -22,8 +22,6 @@
 #ifndef ASMSX_WAV_H
 #define ASMSX_WAV_H
 
-
-extern void wav_write_file(const char *bin_filename, const char *bin_intname, const int type, const unsigned int addr_start, const unsigned int addr_end, const unsigned int start, const unsigned char *memory);
-
+extern void wav_write_file(const char *, const char *, const int, const int, const int, const int, const char *memory);
 
 #endif	/* ASMSX_WAV_H */

@@ -94,12 +94,12 @@ void wav_write_byte(const unsigned char value, FILE *f)
 /* Main WAV writer funtion */
 /* TODO: pack parameters into a struct to keep it compact */
 /* TODO: memory is passed unprotected, this function has opportunity to mess it up. Not sure how to deal with it */
-void wav_write_file(const char *bin_filename, const char *bin_intname, const int type, const unsigned int addr_start, const unsigned int addr_end, const unsigned int start, const unsigned char *memory)
+void wav_write_file(const char *bin_filename, const char *bin_intname, const int type, const int addr_start, const int addr_end, const int start, const char *memory)
 {
 	char wav_filename[ASMSX_MAX_PATH];
 	char wav_intname[ASMSX_MAX_PATH];	/* TODO: max valid size is 7, could reduce size from ASMSX_MAX_PATH with some sanity checks */
 	FILE *f;
-	unsigned int wav_size, i;
+	int i, wav_size = 0;
 
 	unsigned char wav_header[44] =
 	{

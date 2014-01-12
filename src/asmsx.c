@@ -36,7 +36,8 @@
 /* Global variables */
 /* TODO: reduce the number of global variables */
 
-unsigned char *memory, zilog = 0, pass = 1, size = 0, bios = 0, type = 0, parity;
+char *memory;
+int zilog = 0, pass = 1, size = 0, bios = 0, type = 0, parity;
 int conditional[MAX_INCLUDE_LEVEL], conditional_level = 0, cassette = 0;
 char *source, *intname, *binary, *filename, *original, *outputfname, *symbols, *assembler;
 int lastpage;
@@ -951,8 +952,8 @@ void finalize(void)
 void initialize_memory(void)
 {
 	int i;
-	memory = (unsigned char*)malloc(0x1000000);	/* TODO: figure out what does this magic number mean, may be replace it with a definition */
-	for (i = 0; i < 0x1000000; i++)
+	memory = (char*)malloc(MEMORY_MAX);
+	for (i = 0; i < MEMORY_MAX; i++)
 		memory[i] = 0;
 }
 
@@ -973,8 +974,8 @@ void type_sinclair(void)
 	type = SINCLAIR;
 	if (!addr_start)
 	{
-		PC=0x8000;
-		ePC=PC;
+		PC = 0x8000;
+		ePC = PC;
 	}
 }
 
