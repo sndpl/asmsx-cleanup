@@ -11,9 +11,7 @@
 		6.-Supports MS-DOS, Windows, Linux and Mac text source files
 */
 
-%option noyywrap
-%option yylineno
-%option nounput
+%option noyywrap yylineno nounput
 
 %{
 #include <stdio.h>

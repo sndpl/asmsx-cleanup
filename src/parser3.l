@@ -8,9 +8,7 @@
 		
 */
 
-%option noyywrap
-%option yylineno
-%option nounput
+%option noyywrap yylineno nounput
 
 %{
 #include <stdio.h>

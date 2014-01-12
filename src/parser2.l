@@ -7,9 +7,7 @@
 		2.-Manage nested REPT/ENDR
 */
 
-%option noyywrap
-%option yylineno
-%option nounput
+%option noyywrap yylineno nounput
 
 %{
 #include <stdio.h>
