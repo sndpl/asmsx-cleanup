@@ -52,9 +52,9 @@ FILE *foriginal, *fmessages, *foutput;
 struct
 {
 	char *name;
-	unsigned int value;
-	unsigned char type;
-	unsigned int page;
+	int value;
+	char type;
+	int page;
 } id_list[MAX_ID];
 
 /* TODO: compartmentalize all functions that got moved from core.y into their own units */
@@ -384,7 +384,7 @@ void warning_message(int code)
 }
 
 
-void write_byte(int b)
+void write_byte(const char b)
 {
 	if ((!conditional_level) || (conditional[conditional_level]))
 	if (type != MEGAROM)
@@ -428,8 +428,8 @@ void write_text(const char *text)
 
 void write_word(const int w)
 {
-	write_byte(w & 0xff);
-	write_byte((w >> 8) & 0xff);
+	write_byte((char)(w & 0xff));
+	write_byte((char)((w >> 8) & 0xff));
 }
 
 
@@ -439,7 +439,7 @@ void conditional_jump(const int address)
 	jump = address - ePC - 1;
 	if ((jump > 127) || (jump <- 128))
 		error_message(8);
-	write_byte(address - ePC - 1);
+	write_byte((char)(address - ePC - 1));
 }
 
 
@@ -495,7 +495,7 @@ void register_local(const char *name)
 }
 
 
-void register_symbol(const char *name, int number, int type)
+void register_symbol(const char *name, int value, char type)
 {
 	#ifndef COMPAT_S
 	char *next_token = NULL;
@@ -521,12 +521,12 @@ void register_symbol(const char *name, int number, int type)
 
 	tmpstr = _strdup(name);
 	strcpy_s(id_list[maximum - 1].name, name_len, strtok_s(tmpstr, " ", &next_token));
-	id_list[maximum - 1].value = number;
+	id_list[maximum - 1].value = value;
 	id_list[maximum - 1].type = type;
 }
 
 
-void register_variable(const char *name, int number)
+void register_variable(const char *name, int value)
 {
 	#ifndef COMPAT_S
 	char *next_token = NULL;
@@ -537,7 +537,7 @@ void register_variable(const char *name, int number)
 	for (i = 0; i < maximum; i++)
 		if ((!strcmp(name, id_list[i].name)) && (id_list[i].type == 3))
 		{
-			id_list[i].value=number;
+			id_list[i].value = value;
 			return;
 		}
 
@@ -547,7 +547,7 @@ void register_variable(const char *name, int number)
 	name_len = strlen(name) + 1;
 	id_list[maximum - 1].name = (char*)malloc(name_len);
 	strcpy_s(id_list[maximum - 1].name, name_len, strtok_s((char *)name, " ", &next_token));
-	id_list[maximum - 1].value = number;
+	id_list[maximum - 1].value = value;
 	id_list[maximum - 1].type = 3;
 }
 
@@ -668,8 +668,8 @@ void save_symbols(void)
 void include_binary(const char* name, int skip, int n)
 {
 	FILE *file;
-	char k;
 	int i;
+	char k;
 
 	if (0 != fopen_s(&file, name, "rb"))
 		error_message(18);
@@ -688,7 +688,7 @@ void include_binary(const char* name, int skip, int n)
 
 	if (skip)
 		for (i = 0; (!feof(file)) && (i < skip); i++)
-			k = fgetc(file);
+			k = (char)fgetc(file);
 
 	if (skip && feof(file))
 		error_message(29);
@@ -697,7 +697,7 @@ void include_binary(const char* name, int skip, int n)
 	{
 		for (i = 0; (i < n) && (!feof(file));)
 		{
-			k = fgetc(file);
+			k = (char)fgetc(file);
 			if (!feof(file))
 			{
 				write_byte(k);
@@ -710,7 +710,7 @@ void include_binary(const char* name, int skip, int n)
 	else
 		for (; !feof(file); i++)
 		{
-			k = fgetc(file);
+			k = (char)fgetc(file);
 			if (!feof(file))
 				write_byte(k);
 		}
@@ -721,7 +721,7 @@ void include_binary(const char* name, int skip, int n)
 
 void write_zx_byte(unsigned char b)	/* TODO: move to zx specific unit */
 {
-	putc(b, foutput);
+	fputc(b, foutput);
 	parity ^= b;
 }
 
@@ -801,24 +801,24 @@ void write_binary(void)
 
 	if (type == BASIC)
 	{
-		putc(0xfe, foutput);
-		putc(addr_start & 0xff, foutput);
-		putc((addr_start >> 8) & 0xff, foutput);
-		putc(addr_end & 0xff, foutput);
-		putc((addr_end >> 8) & 0xff, foutput);
+		fputc(0xfe, foutput);
+		fputc(addr_start & 0xff, foutput);
+		fputc((addr_start >> 8) & 0xff, foutput);
+		fputc(addr_end & 0xff, foutput);
+		fputc((addr_end >> 8) & 0xff, foutput);
 		if (!start)
 			start = addr_start;
-		putc(start & 0xff, foutput);
-		putc((start >> 8) & 0xff, foutput);
+		fputc(start & 0xff, foutput);
+		fputc((start >> 8) & 0xff, foutput);
 	}
 
 	if (type == SINCLAIR)
 	{
 		if (start)
 		{
-			putc(0x13, foutput);
-			putc(0, foutput);
-			putc(0, foutput);
+			fputc(0x13, foutput);
+			fputc(0, foutput);
+			fputc(0, foutput);
 			parity = 0x20;
 			write_zx_byte(0);
 
@@ -863,9 +863,9 @@ void write_binary(void)
 			write_zx_byte(parity);
 		}
 
-		putc(19, foutput);	/* Header len */
-		putc(0, foutput);	/* MSB of len */
-		putc(0, foutput);	/* Header is 0 */
+		fputc(19, foutput);	/* Header len */
+		fputc(0, foutput);	/* MSB of len */
+		fputc(0, foutput);	/* Header is 0 */
 		parity = 0;
 
 		write_zx_byte(3);	/* Filetype (Code) */
@@ -897,18 +897,18 @@ void write_binary(void)
 		{
 			if (type != MEGAROM)
 				for (i = addr_start; i <= addr_end; i++)
-					putc(memory[i], foutput);
+					fputc(memory[i], foutput);
 			else
 				for (i = 0; i < (lastpage + 1) * pagesize * 1024; i++)
-					putc(memory[i], foutput);
+					fputc(memory[i], foutput);
 		}
 		else
 			if (type != MEGAROM)
 				for (i=addr_start; i < addr_start + size * 1024; i++)
-					putc(memory[i], foutput);
+					fputc(memory[i], foutput);
 			else
 				for (i = 0; i < size * 1024; i++)
-					putc(memory[i], foutput);
+					fputc(memory[i], foutput);
 	}
 
 	fclose(foutput);
@@ -1206,16 +1206,16 @@ void cas_write_file(void)
 		for (i = 0; i < 8; i++)
 			fputc(cas[i], f);
 
-		putc(addr_start & 0xff, f);
-		putc((addr_start >> 8) & 0xff, f);
-		putc(addr_end & 0xff, f);
-		putc((addr_end >> 8) & 0xff, f);
-		putc(start & 0xff, f);
-		putc((start >> 8) & 0xff, f);
+		fputc(addr_start & 0xff, f);
+		fputc((addr_start >> 8) & 0xff, f);
+		fputc(addr_end & 0xff, f);
+		fputc((addr_end >> 8) & 0xff, f);
+		fputc(start & 0xff, f);
+		fputc((start >> 8) & 0xff, f);
 	}
 
 	for (i = addr_start; i <= addr_end; i++)
-		putc(memory[i], f);
+		fputc(memory[i], f);
 
 	fclose(f);
 
