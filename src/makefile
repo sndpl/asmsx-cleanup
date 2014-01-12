@@ -1,5 +1,5 @@
 asmsx:	asmsx.c wav.c core.y lex.l parser1.c parser2.c parser3.c
-	bison -d -v -b y core.y -ocore.c
+	bison -d -v core.y -ocore.c
 	flex -i -olex.c lex.l 
 	gcc asmsx.c wav.c core.c lex.c parser1.c parser2.c parser3.c -oasmsx -s -lm -Wall -Wextra -Os -I../../compat_s/src
 parser1.c: parser1.l
