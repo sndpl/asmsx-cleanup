@@ -22,6 +22,9 @@
 #define YY_NO_UNISTD_H 1
 #endif
 
+#define P3TEXT_MAX	0x1000
+
+
 FILE *p3fout;
 char *p3text;
 %}
@@ -34,17 +37,17 @@ char *p3text;
 
 %%
 
-<INITIAL>"#"line[ \t]*[0-9]+\n strcat(p3text,yytext);BEGIN(line);
+<INITIAL>"#"line[ \t]*[0-9]+\n strcat_s(p3text, P3TEXT_MAX, yytext);BEGIN(line);
 <INITIAL>\n   fprintf_s(p3fout,"%s%s",p3text,yytext);p3text[0]=0;
-<INITIAL>.    strcat(p3text,yytext);
-<line>.?zilog[ \t]*\n strcat(p3text,yytext);BEGIN(zilog);
-<line>. strcat(p3text,yytext);BEGIN(INITIAL);
-<zilog>\42[^\42\n]+\42 strcat(p3text,yytext);
-<zilog>"(" strcat(p3text,"[");
-<zilog>")" strcat(p3text,"]");
-<zilog>"[" strcat(p3text,"(");
-<zilog>"]" strcat(p3text,")");
-<zilog>. strcat(p3text,yytext);
+<INITIAL>.    strcat_s(p3text, P3TEXT_MAX, yytext);
+<line>.?zilog[ \t]*\n strcat_s(p3text, P3TEXT_MAX, yytext);BEGIN(zilog);
+<line>. strcat_s(p3text, P3TEXT_MAX, yytext);BEGIN(INITIAL);
+<zilog>\42[^\42\n]+\42 strcat_s(p3text, P3TEXT_MAX, yytext);
+<zilog>"(" strcat_s(p3text, P3TEXT_MAX, "[");
+<zilog>")" strcat_s(p3text, P3TEXT_MAX, "]");
+<zilog>"[" strcat_s(p3text, P3TEXT_MAX, "(");
+<zilog>"]" strcat_s(p3text, P3TEXT_MAX, ")");
+<zilog>. strcat_s(p3text, P3TEXT_MAX, yytext);
 <zilog>\n fprintf_s(p3fout,"%s%s",p3text,yytext);p3text[0]=0;
 
 %%
@@ -58,7 +61,7 @@ int preprocessor3(void)
 {
  FILE *input;
 
- p3text=(char*)malloc(0x1000);
+ p3text=(char*)malloc(P3TEXT_MAX);
  p3text[0]=0;
 
  if (0 != fopen_s(&input, "~tmppre.0", "r"))

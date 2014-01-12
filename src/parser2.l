@@ -20,6 +20,9 @@
 #define YY_NO_UNISTD_H 1
 #endif
 
+#define P2TEXT_MAX	0x1000
+#define P2BUF_MAX	0x4000
+
 FILE *p2output;
 char *p2text, *p2buf, p2nested = 0, p2level;
 unsigned int p2no, p2lines, i;
@@ -36,20 +39,20 @@ extern int prompt_error2(char);
 
 %%
 
-<INITIAL>"#"line[ \t]*[0-9]+\n strcat(p2text,yytext);p2lines=atoi(&yytext[5]);BEGIN(line);
+<INITIAL>"#"line[ \t]*[0-9]+\n strcat_s(p2text, P2TEXT_MAX, yytext);p2lines=atoi(&yytext[5]);BEGIN(line);
 <line>.?rept[ \t]+ BEGIN(repnum);
-<line>. strcat(p2text,yytext);BEGIN(INITIAL);
+<line>. strcat_s(p2text, P2TEXT_MAX, yytext);BEGIN(INITIAL);
 <repnum>[0-9]+[ \t]* {
              p2no=atoi(yytext);
              p2buf[0]=0;
              p2text[0]=0;
              BEGIN(rept); }
-<rept>.?rept[ \t]+[0-9]+[ \t]* p2buf=strcat(p2buf,yytext);p2nested++;p2level++;
+<rept>.?rept[ \t]+[0-9]+[ \t]* strcat_s(p2buf, P2BUF_MAX, yytext);p2nested++;p2level++;
 <rept>"#"line[ \t]*[0-9]+\n[ \t]*.?endr[ \t]*\n {
               if (p2nested)
                {
                 p2nested--;
-                p2buf=strcat(p2buf,yytext);
+                strcat_s(p2buf, P2BUF_MAX, yytext);
                } else
               {
                for (i=0;i<p2no;i++)
@@ -58,12 +61,12 @@ extern int prompt_error2(char);
                BEGIN(INITIAL);
               }
              }
-<rept>. p2buf=strcat(p2text,yytext);
-<rept>\n   p2buf=strcat(p2buf,yytext);
+<rept>. strcat_s(p2text, P2TEXT_MAX, yytext);/* TODO: investigate! This was p2buf=strcat(p2text,yytext) in original */
+<rept>\n   strcat_s(p2buf, P2BUF_MAX, yytext);
 <rept><<EOF>> error_message(2);
 <repnum>.     prompt_error2(1);
 <INITIAL>\n   fprintf_s(p2output,"%s%s",p2text,yytext);p2text[0]=0;
-<INITIAL>.    strcat(p2text,yytext);
+<INITIAL>.    strcat_s(p2text, P2TEXT_MAX, yytext);
 
 %%
 
@@ -91,8 +94,8 @@ int preprocessor2(void)
  char *filename,loop=0;
 
  filename=(char*)malloc(ASMSX_MAX_PATH);
- p2text=(char*)malloc(0x1000);
- p2buf=(char*)malloc(0x4000);
+ p2text=(char*)malloc(P2TEXT_MAX);
+ p2buf=(char*)malloc(P2BUF_MAX);
  p2text[0]=0;
 
  printf_s("Expanding system macros\n");

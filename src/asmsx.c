@@ -586,7 +586,7 @@ unsigned int read_local(const char *name)
 void output_text(void)
 {
 	strcpy_s(outputfname, ASMSX_MAX_PATH, filename);	/* Get output file name */
-	outputfname = strcat(outputfname, ".txt");
+	strcat_s(outputfname, ASMSX_MAX_PATH, ".txt");
 
 	if (0 != fopen_s(&fmessages, outputfname, "wt"))
 		return;		/* TODO: validate if this is ok */
@@ -759,11 +759,11 @@ void write_binary(void)
 		error_message(24);
 
 	if (type == Z80)
-		binary = strcat(binary, ".z80");
+		strcat_s(binary, ASMSX_MAX_PATH, ".z80");
 
 	if (type == ROM)
 	{
-		binary = strcat(binary, ".rom");
+		strcat_s(binary, ASMSX_MAX_PATH, ".rom");
 		PC = addr_start + 2;
 		write_word(start);
 		if (!size)
@@ -771,17 +771,17 @@ void write_binary(void)
 	}
 
 	if (type == BASIC)
-		binary = strcat(binary, ".bin");
+		strcat_s(binary, ASMSX_MAX_PATH, ".bin");
 
 	if (type == MSXDOS)
-		binary = strcat(binary, ".com");
+		strcat_s(binary, ASMSX_MAX_PATH, ".com");
 
 	if (type == SINCLAIR)
-		binary = strcat(binary, ".tap");
+		strcat_s(binary, ASMSX_MAX_PATH, ".tap");
 
 	if (type == MEGAROM)
 	{
-		binary = strcat(binary, ".rom");
+		strcat_s(binary, ASMSX_MAX_PATH, ".rom");
 		PC = 0x4002;
 		subpage = 0x00;
 		pageinit = 0x4000;
@@ -921,7 +921,7 @@ void finalize(void)
 
 	/* Get symbols file name */
 	strcpy_s(symbols, ASMSX_MAX_PATH, filename);
-	symbols = strcat(symbols, ".sym");
+	strcat_s(symbols, ASMSX_MAX_PATH, ".sym");
 
 	write_binary();
 
@@ -1182,7 +1182,7 @@ void cas_write_file(void)
 	}
 
 	binary[strlen(binary) - 3] = 0;
-	binary = strcat(binary, "cas");
+	strcat_s(binary, ASMSX_MAX_PATH, "cas");
 
 	if (0 != fopen_s(&f, binary, "wb"))
 		return;	/* TODO: print some error ??? */
@@ -1263,7 +1263,7 @@ int main(int argc, char *argv[])
 	if (i)
 		filename[i]=0;
 	else
-		strcat(assembler, ".asm");
+		strcat_s(assembler, ASMSX_MAX_PATH, ".asm");
 
 	preprocessor1(assembler);
 	preprocessor3();

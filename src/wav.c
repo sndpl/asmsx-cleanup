@@ -117,7 +117,7 @@ void wav_write_file(const char *bin_filename, const char *bin_intname, const int
 
 	strcpy_s(wav_filename, ASMSX_MAX_PATH, bin_filename);
 	wav_filename[strlen(wav_filename) - 3] = 0;	/* drop supplied extension */
-	strcat(wav_filename, "wav");	/* make "wav" new extension */
+	strcat_s(wav_filename, ASMSX_MAX_PATH, "wav");	/* make "wav" new extension */
 
 	if (0 != fopen_s(&f, wav_filename, "wb"))
 	{

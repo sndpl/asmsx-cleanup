@@ -53,7 +53,7 @@ extern int prompt_error1(char);
 
 %%
 
-<INITIAL>\42[^\42]*\42 strcat(p1text,yytext);
+<INITIAL>\42[^\42]*\42 strcat_s(p1text, ASMSX_MAX_PATH, yytext);
 <INITIAL>.?include/[ \042\t]+ p1tmp=NULL;BEGIN(inclusion);
 <inclusion>[ \t]*      /* strip spaces */
 <inclusion>[^ \t\n]+   p1tmp = strtok_s(yytext, "\42", &p1next_token);
@@ -111,16 +111,16 @@ extern int prompt_error1(char);
 <pascal_comment>[^}]* /* Skip all within */
 <pascal_comment>"}" BEGIN(INITIAL);
 
-<INITIAL>\42 strcat(p1text,yytext);BEGIN(chain);
-<chain>\42 strcat(p1text,yytext);BEGIN(INITIAL);
+<INITIAL>\42 strcat_s(p1text, ASMSX_MAX_PATH, yytext);BEGIN(chain);
+<chain>\42 strcat_s(p1text, ASMSX_MAX_PATH, yytext);BEGIN(INITIAL);
 <chain>\n prompt_error1(1);
-<chain>[^\42\n] strcat(p1text,yytext);
+<chain>[^\42\n] strcat_s(p1text, ASMSX_MAX_PATH, yytext);
 
-<INITIAL>[ \t]+ if (strlen(p1text)>0) strcat(p1text," "); // Should be 0 for Windows
+<INITIAL>[ \t]+ if (strlen(p1text)>0) strcat_s(p1text, ASMSX_MAX_PATH, " "); // Should be 0 for Windows
 <INITIAL>\n     { if (strlen(p1text)>0) fprintf_s(p1fout,"#line %d\n%s\n",yylineno-1,p1text);  // Should be 0 for Windows?
          p1text[0]=0;
        }
-<INITIAL>.      strcat(p1text,yytext);
+<INITIAL>.      strcat_s(p1text, ASMSX_MAX_PATH, yytext);
 
 %%
 #define VERSION 
