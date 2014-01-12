@@ -16,7 +16,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "compat_s.h"
+#include "compat_s.h"	/* https://github.com/oboroc/compat_s/ */
 #include "asmsx.h"
 
 #define YY_NO_INPUT 1

@@ -21,7 +21,7 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "compat_s.h"
+#include "compat_s.h"	/* https://github.com/oboroc/compat_s/ */
 #include "asmsx.h"
 
 

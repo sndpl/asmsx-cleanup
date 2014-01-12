@@ -8,7 +8,7 @@
 #define YY_NO_UNISTD_H 1
 #endif
 #include "core.h"
-#include "compat_s.h"
+#include "compat_s.h"	/* https://github.com/oboroc/compat_s/ */
 #include "asmsx.h"
 
 #ifndef COMPAT_S
