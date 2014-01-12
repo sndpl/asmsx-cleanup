@@ -18,4 +18,4 @@ win_flex.exe --wincompat -i -olex.c lex.l
 cl.exe /nologo /TC /G6 /W4 /Os asmsx.c wav.c core.c lex.c parser1.c parser2.c parser3.c > asmsx.vc6wfb.err
 rem /W1 to /W4 for warnings, /WX to treat warning as errors, /O2 for moderate optimization
 
-del core.c core.h lex.c parser?.c *.obj *.i
+del core.c core.h lex.c parser?.c *.obj *.i *.output *.map

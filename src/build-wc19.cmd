@@ -23,4 +23,4 @@ wcc386.exe /W4 parser2.c
 wcc386.exe /W4 parser3.c
 link386.exe asmsx.obj core.obj lex.obj parser1.obj parser2.obj parser3.obj wav.obj
 
-del core.c core.h lex.c parser?.c *.obj
+del core.c core.h lex.c parser?.c *.obj *.i *.output *.map

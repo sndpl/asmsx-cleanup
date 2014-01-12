@@ -9,4 +9,4 @@ parser2.c: parser2.l
 parser3.c: parser3.l
 	flex -i -Pparser3 -oparser3.c parser3.l
 clean:
-	rm -f core.c core.h lex.c parser?.c *.o
+	rm -f core.c core.h lex.c parser?.c *.o *.i *.output *.map
