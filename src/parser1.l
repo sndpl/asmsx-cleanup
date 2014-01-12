@@ -138,7 +138,6 @@ int prompt_error1(char c)
  }
  fclose(p1fout);
  exit(c);
- return 0;
 }
 
 int yywrap(void)

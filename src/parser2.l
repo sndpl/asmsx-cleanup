@@ -80,7 +80,6 @@ int prompt_error2(char c)
  }
  fclose(p2output);
  exit(c);
- return 0;
 }
 
 int yywrap(void)
