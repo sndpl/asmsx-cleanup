@@ -1,4 +1,4 @@
-%option noyywrap yylineno nodefault
+%option noyywrap yylineno nodefault warn
 
 %{
 #include <stdio.h>
