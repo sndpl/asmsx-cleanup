@@ -74,9 +74,10 @@ void wav_write_nothing(FILE *f)
 /* Write full byte */
 void wav_write_byte(const unsigned char value, FILE *f)
 {
-	unsigned char l, m;
+	int l;
+	unsigned char m;
 
-	m = value;
+	m = (unsigned char)value;
 	wav_write_zero(f);
 	for (l = 0; l < 8; l++) 
 	{
@@ -84,7 +85,7 @@ void wav_write_byte(const unsigned char value, FILE *f)
 			wav_write_one(f);
 		else
 			wav_write_zero(f);
-		m = (m >> 1);
+		m = (unsigned char)(m >> 1);
 	}
 	wav_write_one(f);
 	wav_write_one(f);
@@ -101,7 +102,7 @@ void wav_write_file(const char *bin_filename, const char *bin_intname, const int
 	FILE *f;
 	int i, wav_size = 0;
 
-	unsigned char wav_header[44] =
+	int wav_header[44] =
 	{
 		0x52, 0x49, 0x46, 0x46, 0x44, 0x00, 0x00, 0x00, 0x57, 0x41, 0x56,
 		0x45, 0x66, 0x6D, 0x74, 0x20, 0x10, 0x00, 0x00, 0x00, 0x01, 0x00,
