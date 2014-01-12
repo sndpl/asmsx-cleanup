@@ -36,7 +36,8 @@
 /* Global variables */
 /* TODO: reduce the number of global variables */
 
-char *memory, *source, *intname, *binary, *filename, *original, *outputfname, *symbols, *assembler;
+char *source, *intname, *binary, *filename, *original, *outputfname, *symbols, *assembler;
+unsigned char *memory;
 int zilog = 0, pass = 1, size = 0, bios = 0, type = 0;
 int conditional[MAX_INCLUDE_LEVEL], conditional_level = 0, cassette = 0;
 int lastpage, parity;
@@ -400,7 +401,7 @@ void write_byte(const int b)
 			error_message(17);
 		if ((size) && (addr_start + size * 1024 > 65536) && (pass == 2))
 			error_message(1);
-		memory[PC++] = (char)b;
+		memory[PC++] = (unsigned char)b;
 		ePC++;
 	}
 
@@ -410,7 +411,7 @@ void write_byte(const int b)
 			error_message(35);
 		if (PC >= pageinit + 1024 * pagesize)
 			error_message(31);
-		memory[subpage * pagesize * 1024 + PC - pageinit] = (char)b;
+		memory[subpage * pagesize * 1024 + PC - pageinit] = (unsigned char)b;
 		PC++;
 		ePC++;
 	}
@@ -955,7 +956,7 @@ void finalize(void)
 void initialize_memory(void)
 {
 	int i;
-	memory = (char*)malloc(MEMORY_MAX);
+	memory = (unsigned char*)malloc(MEMORY_MAX);
 	for (i = 0; i < MEMORY_MAX; i++)
 		memory[i] = 0;
 }

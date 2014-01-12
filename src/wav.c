@@ -72,12 +72,12 @@ void wav_write_nothing(FILE *f)
 
 
 /* Write full byte */
-void wav_write_byte(const unsigned char value, FILE *f)
+void wav_write_byte(const unsigned char b, FILE *f)
 {
 	int l;
 	unsigned char m;
 
-	m = (unsigned char)value;
+	m = b;
 	wav_write_zero(f);
 	for (l = 0; l < 8; l++) 
 	{
@@ -95,7 +95,7 @@ void wav_write_byte(const unsigned char value, FILE *f)
 /* Main WAV writer funtion */
 /* TODO: pack parameters into a struct to keep it compact */
 /* TODO: memory is passed unprotected, this function has opportunity to mess it up. Not sure how to deal with it */
-void wav_write_file(const char *bin_filename, const char *bin_intname, const int type, const int addr_start, const int addr_end, const int start, const char *memory)
+void wav_write_file(const char *bin_filename, const char *bin_intname, const int type, const int addr_start, const int addr_end, const int start, const unsigned char *memory)
 {
 	char wav_filename[ASMSX_MAX_PATH];
 	char wav_intname[ASMSX_MAX_PATH];	/* TODO: max valid size is 7, could reduce size from ASMSX_MAX_PATH with some sanity checks */
@@ -157,12 +157,12 @@ void wav_write_file(const char *bin_filename, const char *bin_intname, const int
 
 		/* Pad MSX name with spaces at the end until it is 6 characters long */
 		if (6 > strlen(wav_intname))
-			for (i = strlen(wav_intname); i < 6; i++)	/* TODO: check if this actualy pads 6th character, it is possible that condition shold be "i <= 6" */
+			for (i = (int)strlen(wav_intname); i < 6; i++)	/* TODO: check if this actualy pads 6th character, it is possible that condition shold be "i <= 6" */
 				wav_intname[i] = 32;
         
 		/* Write MSX name */
 		for (i = 0; i < 6; i++)
-			wav_write_byte(wav_intname[i], f);
+			wav_write_byte((unsigned char)wav_intname[i], f);
         
 		/* Write blank */
 		for (i = 0; i < 1500; i++)

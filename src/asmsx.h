@@ -44,7 +44,6 @@
 
 /* variables */
 
-extern char *memory;
 extern char *assembler;
 extern char *source;
 extern char *intname;
@@ -53,6 +52,8 @@ extern char *filename;
 extern char *original;
 extern char *outputfname;
 extern char *symbols;
+
+extern unsigned char *memory;
 
 extern int parity;
 extern int zilog;
