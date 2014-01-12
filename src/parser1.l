@@ -40,7 +40,7 @@ struct
 	char *name;
 } p1inc_stack[MAX_INCLUDE_LEVEL];
 
-extern int prompt_error1(int);
+extern void prompt_error1(int);
 %}
 
 %option yylineno
@@ -125,7 +125,7 @@ extern int prompt_error1(int);
 %%
 #define VERSION 
 
-int prompt_error1(int c)
+void prompt_error1(int c)
 {
  printf_s("%s, line %d: ",p1name,yylineno-1);
  switch (c)
@@ -138,7 +138,6 @@ int prompt_error1(int c)
  }
  fclose(p1fout);
  exit(c);
- return c;
 }
 
 int yywrap(void)

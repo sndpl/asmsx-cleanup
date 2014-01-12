@@ -26,7 +26,7 @@
 FILE *p2output;
 char *p2text, *p2buf, p2nested = 0, p2level;
 unsigned int p2no, p2lines, i;
-extern int prompt_error2(int);
+extern void prompt_error2(int);
 %}
 
 %option yylineno
@@ -70,7 +70,7 @@ extern int prompt_error2(int);
 
 %%
 
-int prompt_error2(int c)
+void prompt_error2(int c)
 {
  printf_s(", line %d: ", p2lines);
  switch (c)
@@ -80,7 +80,6 @@ int prompt_error2(int c)
  }
  fclose(p2output);
  exit(c);
- return c;
 }
 
 int yywrap(void)
