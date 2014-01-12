@@ -92,7 +92,7 @@ extern void register_symbol(const char *, int, char);
 extern void register_variable(const char *, int);
 extern void output_text(void);
 extern void cas_write_file(void);
-extern void write_byte(const char);
+extern void write_byte(const int);
 extern void write_text(const char *);
 extern void write_word(const int);
 extern void conditional_jump(const int);

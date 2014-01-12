@@ -384,7 +384,7 @@ void warning_message(int code)
 }
 
 
-void write_byte(const char b)
+void write_byte(const int b)
 {
 	if ((!conditional_level) || (conditional[conditional_level]))
 	if (type != MEGAROM)
@@ -401,7 +401,7 @@ void write_byte(const char b)
 			error_message(17);
 		if ((size) && (addr_start + size * 1024 > 65536) && (pass == 2))
 			error_message(1);
-		memory[PC++] = b;
+		memory[PC++] = (char)b;
 		ePC++;
 	}
 
@@ -411,7 +411,7 @@ void write_byte(const char b)
 			error_message(35);
 		if (PC >= pageinit + 1024 * pagesize)
 			error_message(31);
-		memory[subpage * pagesize * 1024 + PC - pageinit] = b;
+		memory[subpage * pagesize * 1024 + PC - pageinit] = (char)b;
 		PC++;
 		ePC++;
 	}
