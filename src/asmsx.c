@@ -1243,7 +1243,7 @@ int defined_symbol(const char *name)
 
 int main(int argc, char *argv[])
 {
-	int i = 0;
+	size_t strpos;
 
 	printf_s("asmsx %s MSX cross assembler https://github.com/asmsx/asmsx/ (%s)\n", ASMSX_VERSION, __DATE__);
 
@@ -1266,11 +1266,15 @@ int main(int argc, char *argv[])
 	strcpy_s(filename, ASMSX_MAX_PATH, argv[1]);
 	strcpy_s(assembler, ASMSX_MAX_PATH, filename);
 
-	for (i = (int)strlen(filename) - 1; (filename[i] != '.') && i; i--);
-	if (i)
-		filename[i]=0;
+	strpos = strlen(filename);
+	do
+		strpos--;
+	while ((strpos != 0u) && (filename[strpos] != '.'));
+
+	if (strpos != 0)
+		filename[strpos]=0;	/* if there is a file extension, remove it */
 	else
-		strcat_s(assembler, ASMSX_MAX_PATH, ".asm");
+		strcat_s(assembler, ASMSX_MAX_PATH, ".asm");	/* file name supplied without extensions, add it */
 
 	preprocessor1(assembler);
 	preprocessor3();
