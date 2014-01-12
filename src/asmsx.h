@@ -45,13 +45,13 @@
 /* variables */
 
 extern char *memory;
+extern char parity;
+
 extern int zilog;
 extern int pass;
 extern int size;
 extern int bios;
 extern int type;
-extern int parity;
-
 extern int conditional[16];
 extern int conditional_level;
 extern int cassette;
@@ -96,8 +96,8 @@ extern void write_byte(const char);
 extern void write_text(const char *);
 extern void write_word(const int);
 extern void conditional_jump(const int);
-extern unsigned int read_label(const char *);
-extern unsigned int read_local(const char *);
+extern int read_label(const char *);
+extern int read_local(const char *);
 extern void yyerror(const char *);
 extern void include_binary(const char *, int, int);
 extern void finalize(void);
@@ -108,8 +108,8 @@ extern void type_basic(void);
 extern void type_msxdos(void);
 extern void set_subpage(int, int);
 extern void locate_32k(void);
-extern void select_page_direct(unsigned int, unsigned int);
-extern void select_page_register(unsigned int, unsigned int);
+extern void select_page_direct(int, int);
+extern void select_page_register(int, int);
 extern int defined_symbol(const char *);
 
 /* bison / flex */

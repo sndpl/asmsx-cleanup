@@ -36,10 +36,10 @@
 /* Global variables */
 /* TODO: reduce the number of global variables */
 
-char *memory;
-int zilog = 0, pass = 1, size = 0, bios = 0, type = 0, parity;
+char parity;
+char *memory, *source, *intname, *binary, *filename, *original, *outputfname, *symbols, *assembler;
+int zilog = 0, pass = 1, size = 0, bios = 0, type = 0;
 int conditional[MAX_INCLUDE_LEVEL], conditional_level = 0, cassette = 0;
-char *source, *intname, *binary, *filename, *original, *outputfname, *symbols, *assembler;
 int lastpage;
 int ePC = 0, PC = 0, subpage, pagesize, usedpage[256], mapper, pageinit, addr_start = 0xffff, addr_end = 0x0000, start = 0, warnings = 0, lines;
 int maxpage[4] = {32, 64, 256, 256};
@@ -428,7 +428,7 @@ void write_text(const char *text)
 
 void write_word(const int w)
 {
-	write_byte((char)(w & 0xff));
+	write_byte((char)(w & 0xff));		/* TODO: check if it works for negative values */
 	write_byte((char)((w >> 8) & 0xff));
 }
 
@@ -552,7 +552,7 @@ void register_variable(const char *name, int value)
 }
 
 
-unsigned int read_label(const char *name)
+int read_label(const char *name)
 {
 	int i;
 
@@ -568,7 +568,7 @@ unsigned int read_label(const char *name)
 }
 
 
-unsigned int read_local(const char *name)
+int read_local(const char *name)
 {
 	int i;
 
@@ -719,36 +719,36 @@ void include_binary(const char* name, int skip, int n)
 }
 
 
-void write_zx_byte(unsigned char b)	/* TODO: move to zx specific unit */
+void write_zx_byte(const char b)	/* TODO: move to zx specific unit */
 {
 	fputc(b, foutput);
 	parity ^= b;
 }
 
 
-void write_zx_word(unsigned int w)	/* TODO: move to zx specific unit */
+void write_zx_word(int w)	/* TODO: move to zx specific unit */
 {
-	write_zx_byte((unsigned char)(w & 0xff));
-	write_zx_byte((unsigned char)((w >> 8) & 0xff));
+	write_zx_byte((char)(w & 0xff));
+	write_zx_byte((char)((w >> 8) & 0xff));
 }
 
 
-void write_zx_number(unsigned int i)	/* TODO: move to zx specific unit */
+void write_zx_number(int i)	/* TODO: move to zx specific unit */
 {
 	int c;
 	c = i / 10000;
 	i -= c * 10000;
-	write_zx_byte((unsigned char)(c + 48));
+	write_zx_byte((char)(c + 48));
 	c = i / 1000;
 	i -= c * 1000;
-	write_zx_byte((unsigned char)(c + 48));
+	write_zx_byte((char)(c + 48));
 	c = i / 100;
 	i -= c * 100;
-	write_zx_byte((unsigned char)(c + 48));
+	write_zx_byte((char)(c + 48));
 	c = i / 10;
-	write_zx_byte((unsigned char)(c + 48));
+	write_zx_byte((char)(c + 48));
 	i %= 10;
-	write_zx_byte((unsigned char)(c + 48));
+	write_zx_byte((char)(c + 48));
 }
 
 
@@ -1095,7 +1095,7 @@ void set_subpage(int n, int addr)
 void locate_32k(void)	/* TODO: must be some Z80 code, need to figure out what is it */
 {
 	int i;
-	unsigned char locate32[31] =
+	char locate32[31] =
 	{
 		0xCD, 0x38, 0x01, 0x0F, 0x0F, 0xE6, 0x03, 0x4F,
 		0x21, 0xC1, 0xFC, 0x85, 0x6F, 0x7E, 0xE6, 0x80,
@@ -1108,7 +1108,7 @@ void locate_32k(void)	/* TODO: must be some Z80 code, need to figure out what is
 }
 
 
-unsigned int selector(unsigned int addr)
+int selector(int addr)
 {
 	addr = (addr / pagesize) * pagesize;
 
@@ -1133,9 +1133,9 @@ unsigned int selector(unsigned int addr)
 }
 
 
-void select_page_direct(unsigned int n, unsigned int addr)
+void select_page_direct(int n, int addr)
 {
-	unsigned int sel;
+	int sel;
 
 	sel = selector(addr);
 
@@ -1144,29 +1144,29 @@ void select_page_direct(unsigned int n, unsigned int addr)
 
 	write_byte(0xf5);
 	write_byte(0x3e);
-	write_byte(n);
+	write_byte((char)n);
 	write_byte(0x32);
 	write_word(sel);
 	write_byte(0xf1);
 }
 
 
-void select_page_register(unsigned int r, unsigned int addr)
+void select_page_register(int r, int addr)
 {
-	unsigned int sel;
+	int sel;
 
 	sel = selector(addr);
 
 	if (r != 7)
 	{
-		write_byte(0xf5);			/* PUSH AF */
-		write_byte(0x40 | (7 << 3) | r);	/* LD A,r */
+		write_byte(0xf5);				/* PUSH AF */
+		write_byte((char)(0x40 | (7 << 3) | r));	/* LD A,r */
 	}
 
 	write_byte(0x32);
 	write_word(sel);
 	if (r != 7)
-		write_byte(0xf1);			/* POP AF */
+		write_byte(0xf1);				/* POP AF */
 }
 
 
@@ -1174,7 +1174,7 @@ void cas_write_file(void)
 {
 	FILE *f;
 	int i;
-	unsigned char cas[8] = {0x1F, 0xA6, 0xDE, 0xBA, 0xCC, 0x13, 0x7D, 0x74};
+	char cas[8] = {0x1F, 0xA6, 0xDE, 0xBA, 0xCC, 0x13, 0x7D, 0x74};
 
 	if ((type == MEGAROM) || ((type == ROM) && (addr_start < 0x8000)))
 	{
