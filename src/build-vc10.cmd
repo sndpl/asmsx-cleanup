@@ -15,7 +15,7 @@ flex.exe -i -Pparser2 -oparser2.c parser2.l
 flex.exe -i -Pparser3 -oparser3.c parser3.l
 bison.exe -d -v core.y -ocore.c
 flex.exe -i -olex.c lex.l
-cl.exe /nologo /TC /W4 asmsx.c wav.c core.c lex.c parser1.c parser2.c parser3.c > asmsx.vc10.err
+cl.exe /nologo /TC /W4 /Os asmsx.c wav.c core.c lex.c parser1.c parser2.c parser3.c > asmsx.vc10.err
 rem /W1 to /W4 for warnings, /WX to treat warning as errors, /O2 for moderate optimization
 
 del core.c core.h lex.c parser?.c *.obj *.i
