@@ -3,9 +3,9 @@
 	(c) Eduardo Robsy Petrus, 2010
 
 	Functions:
-		1.-Identify ZILOG macro
-		2.-Set accordingly indirection and mathematical style 
-		
+		1. Identify ZILOG macro
+		2. Set accordingly indirection and mathematical style 
+
 */
 
 %option noyywrap yylineno nounput warn
@@ -26,7 +26,6 @@
 
 #define P3TEXT_MAX	0x1000
 
-
 FILE *p3fout;
 char *p3text;
 %}
@@ -36,48 +35,48 @@ char *p3text;
 
 %%
 
-<INITIAL>"#"line[ \t]*[0-9]+\n strcat_s(p3text, P3TEXT_MAX, yytext);BEGIN(line);
-<INITIAL>\n   fprintf_s(p3fout,"%s%s",p3text,yytext);p3text[0]=0;
-<INITIAL>.    strcat_s(p3text, P3TEXT_MAX, yytext);
-<line>.?zilog[ \t]*\n strcat_s(p3text, P3TEXT_MAX, yytext);BEGIN(zilog);
-<line>. strcat_s(p3text, P3TEXT_MAX, yytext);BEGIN(INITIAL);
-<zilog>\42[^\42\n]+\42 strcat_s(p3text, P3TEXT_MAX, yytext);
-<zilog>"(" strcat_s(p3text, P3TEXT_MAX, "[");
-<zilog>")" strcat_s(p3text, P3TEXT_MAX, "]");
-<zilog>"[" strcat_s(p3text, P3TEXT_MAX, "(");
-<zilog>"]" strcat_s(p3text, P3TEXT_MAX, ")");
-<zilog>. strcat_s(p3text, P3TEXT_MAX, yytext);
-<zilog>\n fprintf_s(p3fout,"%s%s",p3text,yytext);p3text[0]=0;
+<INITIAL>"#"line[ \t]*[0-9]+\n	strcat_s(p3text, P3TEXT_MAX, yytext); BEGIN(line);
+<INITIAL>\n			fprintf_s(p3fout, "%s%s", p3text, yytext); p3text[0] = 0;
+<INITIAL>.			strcat_s(p3text, P3TEXT_MAX, yytext);
+<line>.?zilog[ \t]*\n		strcat_s(p3text, P3TEXT_MAX, yytext); BEGIN(zilog);
+<line>.				strcat_s(p3text, P3TEXT_MAX, yytext); BEGIN(INITIAL);
+<zilog>\42[^\42\n]+\42		strcat_s(p3text, P3TEXT_MAX, yytext);
+<zilog>"("			strcat_s(p3text, P3TEXT_MAX, "[");
+<zilog>")"			strcat_s(p3text, P3TEXT_MAX, "]");
+<zilog>"["			strcat_s(p3text, P3TEXT_MAX, "(");
+<zilog>"]"			strcat_s(p3text, P3TEXT_MAX, ")");
+<zilog>.			strcat_s(p3text, P3TEXT_MAX, yytext);
+<zilog>\n			fprintf_s(p3fout, "%s%s", p3text, yytext); p3text[0] = 0;
 
 %%
 
 int preprocessor3(void)
 {
- FILE *input;
+	FILE *input;
 
- p3text=(char*)malloc(P3TEXT_MAX);
- p3text[0]=0;
+	p3text = (char*)malloc(P3TEXT_MAX);
+	p3text[0] = 0;
 
- if (0 != fopen_s(&input, "~tmppre.0", "r"))
- {
-  printf_s("Fatal: cannot process file\n");
-  exit(1);
- }
+	if (0 != fopen_s(&input, "~tmppre.0", "r"))
+	{
+		printf_s("Fatal: cannot process file\n");
+		exit(1);
+	}
 
- yyin=input;
+	yyin = input;
  
- if (0 != fopen_s(&p3fout, "~tmppre.1", "w"))
- {
-  printf_s("Fatal: cannot create temporary file in preprocessor3()\n");
-  exit(1);
- }
+	if (0 != fopen_s(&p3fout, "~tmppre.1", "w"))
+	{
+		printf_s("Fatal: cannot create temporary file in preprocessor3()\n");
+		exit(1);
+	}
 
- yylex();
+	yylex();
 
- fclose(input);
- fclose(p3fout);
+	fclose(input);
+	fclose(p3fout);
 
- free(p3text);
+	free(p3text);
  
- return 0;
+	return 0;
 }
