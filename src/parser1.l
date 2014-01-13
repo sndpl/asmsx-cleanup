@@ -3,12 +3,12 @@
 	(c) Eduardo Robsy Petrus, 2000-2010
 
 	Functions:
-		1.-Eliminate all comments
-		2.-Eliminate blank lines
-		3.-Eliminate duplicated spaces and tabulators
-		4.-Include source file name and line numbers
-		5.-Manage INCLUDE files nested up to 16 levels
-		6.-Supports MS-DOS, Windows, Linux and Mac text source files
+		1. Eliminate all comments
+		2. Eliminate blank lines
+		3. Eliminate duplicated spaces and tabulators
+		4. Include source file name and line numbers
+		5. Manage INCLUDE files nested up to 16 levels
+		6. Supports MS-DOS, Windows, Linux and Mac text source files
 */
 
 %option noyywrap yylineno nounput warn
