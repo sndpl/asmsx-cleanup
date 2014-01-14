@@ -220,6 +220,7 @@ pip-log.txt
 *.exe
 *.output
 *.map
+*.bin
 
 #asmsx
 core.h
