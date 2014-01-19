@@ -7,7 +7,7 @@ Z80 cross assembler for MSX family of 8-bit computers
 Current project goals:
 
 - get rid of mutable global state: remove global variables and have functions take all input as "by value" parameters;
-- move code out of scanner and lexer files (*.y and *.l);
+- move code out of scanner and parser files (*.y and *.l);
 - replace custom list and hash code with uthash macros;
 - expand manual, move it from plain text to texinfo and start generating both txt and pdf versions.
 
