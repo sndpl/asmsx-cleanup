@@ -28,19 +28,39 @@ char *p3text;
 
 %%
 
-<INITIAL>"#"line[ \t]*[0-9]+\n	strcat(p3text, yytext); BEGIN(line);
-<INITIAL>\n			fprintf(p3fout, "%s%s", p3text, yytext); p3text[0] = 0;
+<INITIAL>"#"line[ \t]*[0-9]+\n	{
+					strcat(p3text, yytext);
+					BEGIN(line);
+				}
+
+<INITIAL>\n			{
+					fprintf(p3fout, "%s%s", p3text, yytext);
+					p3text[0] = 0;
+				}
+
 <INITIAL>.			strcat(p3text, yytext);
-<line>.?zilog[ \t]*\n		strcat(p3text, yytext); BEGIN(zilog);
-<line>.				strcat(p3text, yytext); BEGIN(INITIAL);
+
+<line>.?zilog[ \t]*\n		{
+					strcat(p3text, yytext);
+					BEGIN(zilog);
+				}
+
+<line>.				{
+					strcat(p3text, yytext);
+					BEGIN(INITIAL);
+				}
+
 <zilog>\42[^\42\n]+\42		strcat(p3text, yytext);
 <zilog>"("			strcat(p3text, "[");
 <zilog>")"			strcat(p3text, "]");
 <zilog>"["			strcat(p3text, "(");
 <zilog>"]"			strcat(p3text, ")");
 <zilog>.			strcat(p3text, yytext);
-<zilog>\n			fprintf(p3fout, "%s%s", p3text, yytext); p3text[0] = 0;
 
+<zilog>\n			{
+					fprintf(p3fout, "%s%s", p3text, yytext);
+					p3text[0] = 0;
+				}
 %%
 
 int preprocessor3(void)

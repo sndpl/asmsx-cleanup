@@ -33,16 +33,32 @@ extern void prompt_error2(int);
 
 %%
 
-<INITIAL>"#"line[ \t]*[0-9]+\n	strcat(p2text, yytext); p2lines = atoi(&yytext[5]); BEGIN(line);
+<INITIAL>"#"line[ \t]*[0-9]+\n	{
+					strcat(p2text, yytext);
+					p2lines = atoi(&yytext[5]);
+					BEGIN(line);
+				}
+
 <line>.?rept[ \t]+		BEGIN(repnum);
-<line>.				strcat(p2text, yytext); BEGIN(INITIAL);
+
+<line>.				{
+					strcat(p2text, yytext);
+					BEGIN(INITIAL);
+				}
+
 <repnum>[0-9]+[ \t]*		{
 					p2no = atoi(yytext);
 					p2buf[0] = 0;
 					p2text[0] = 0;
 					BEGIN(rept);
 				}
-<rept>.?rept[ \t]+[0-9]+[ \t]*	strcat(p2buf, yytext); p2nested++; p2level++;
+
+<rept>.?rept[ \t]+[0-9]+[ \t]*	{
+					strcat(p2buf, yytext);
+					p2nested++;
+					p2level++;
+				}
+
 <rept>"#"line[ \t]*[0-9]+\n[ \t]*.?endr[ \t]*\n	{
 					if (p2nested)
 					{
@@ -57,14 +73,17 @@ extern void prompt_error2(int);
 						BEGIN(INITIAL);
 					}
 				}
+
 <rept>.				strcat(p2text, yytext);	/* TODO: investigate! This was p2buf=strcat(p2text,yytext) in original */
 <rept>\n			strcat(p2buf, yytext);
 <rept><<EOF>>			error_message(2);
 <repnum>.			prompt_error2(1);
+
 <INITIAL>\n			{
 					fprintf(p2output, "%s%s", p2text, yytext);
 					p2text[0] = 0;
 				}
+
 <INITIAL>.			strcat(p2text, yytext);
 
 %%
