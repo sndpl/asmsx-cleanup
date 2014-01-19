@@ -57,7 +57,7 @@ struct
 	int page;
 } id_list[MAX_ID];
 
-/* TODO: compartmentalize all functions that got moved from core.y into their own units */
+/* TODO: compartmentalize all functions that got moved from z80gen.y into their own units */
 
 /* Register standard BIOS routines */
 void msx_bios(void)

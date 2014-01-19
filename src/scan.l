@@ -9,7 +9,7 @@
 #if ((_MSC_VER) || (__DMC__))
 #define YY_NO_UNISTD_H 1
 #endif
-#include "core.tab.h"
+#include "z80gen.tab.h"
 #include "compat_s.h"	/* https://github.com/oboroc/compat_s/ */
 #include "asmsx.h"
 

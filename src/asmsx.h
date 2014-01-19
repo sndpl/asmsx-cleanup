@@ -99,7 +99,6 @@ extern void write_word(const int);
 extern void conditional_jump(const int);
 extern int read_label(const char *);
 extern int read_local(const char *);
-extern void yyerror(const char *);
 extern void include_binary(const char *, int, int);
 extern void finalize(void);
 extern void type_sinclair(void);
@@ -117,7 +116,8 @@ extern int defined_symbol(const char *);
 extern FILE *yyin, *yyout;
 
 extern int yylex(void);
-extern int yyparse(void);
 
+extern int yyparse(void);
+extern void yyerror(const char *);
 
 #endif	/* ASMSX_ASMSX_H */
