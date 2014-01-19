@@ -223,7 +223,6 @@ pip-log.txt
 *.bin
 
 #asmsx
-core.h
-core.c
-lex.c
-parser?.c
+*.tab.h
+*.tab.c
+lex.*.c
