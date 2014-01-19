@@ -68,6 +68,12 @@ int preprocessor3(void)
 	FILE *input;
 
 	p3text = (char*)malloc(P3TEXT_MAX);
+	if (!p3text)
+	{
+		error_message(1);
+		exit(1);
+	}
+
 	p3text[0] = 0;
 
 	input = fopen("~tmppre.0", "r");

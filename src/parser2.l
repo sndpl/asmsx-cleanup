@@ -113,8 +113,26 @@ int preprocessor2(void)
 	char *filename, loop = 0;
 
 	filename = (char*)malloc(ASMSX_MAX_PATH);
+	if (!filename)
+	{
+		error_message(1);
+		exit(1);
+	}
+
 	p2text = (char*)malloc(P2TEXT_MAX);
+	if (!p2text)
+	{
+		error_message(1);
+		exit(1);
+	}
+
 	p2buf = (char*)malloc(P2BUF_MAX);
+	if (!p2buf)
+	{
+		error_message(1);
+		exit(1);
+	}
+
 	p2text[0] = 0;
 
 	printf("Expanding system macros\n");

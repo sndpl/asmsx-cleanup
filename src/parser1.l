@@ -67,6 +67,12 @@ extern void prompt_error1(int);
 							prompt_error1(4);
 
 					p1inc_stack[p1incidx].name = (char*)malloc(ASMSX_MAX_PATH);
+					if (!p1inc_stack[p1incidx].name)
+					{
+						error_message(1);
+						exit(1);
+					}
+
 					strcpy(p1inc_stack[p1incidx].name, p1name);
 					p1inc_stack[p1incidx].line = yylineno;
 					p1inc_stack[p1incidx++].buffer = YY_CURRENT_BUFFER;
@@ -173,8 +179,25 @@ int preprocessor1(char *input_name)
 {
 	/* Memory allocation for strings */
 	p1text = (char*)malloc(ASMSX_MAX_PATH);
+	if (!p1text)
+	{
+		error_message(1);
+		exit(1);
+	}
+
 	p1name = (char*)malloc(ASMSX_MAX_PATH);
+	if (!p1name)
+	{
+		error_message(1);
+		exit(1);
+	}
+
 	p1tmp = (char*)malloc(ASMSX_MAX_PATH);
+	if (!p1tmp)
+	{
+		error_message(1);
+		exit(1);
+	}
 
 	/* Strings initialization */
 	p1text[0] = 0;
