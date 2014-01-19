@@ -5,12 +5,8 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define YY_NO_INPUT 1
-#if ((_MSC_VER) || (__DMC__))
-#define YY_NO_UNISTD_H 1
-#endif
-#include "z80gen.tab.h"
 #include "asmsx.h"
+#include "z80gen.tab.h"
 %}
 
 %%

@@ -17,12 +17,6 @@
 
 #include "asmsx.h"
 
-#define YY_NO_INPUT 1
-
-#if ((_MSC_VER) || (__DMC__))
-#define YY_NO_UNISTD_H 1
-#endif
-
 #define P3TEXT_MAX	0x1000
 
 FILE *p3fout;

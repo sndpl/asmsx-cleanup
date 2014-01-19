@@ -24,6 +24,13 @@
 
 #define ASMSX_VERSION "0.16.1"
 
+#ifdef _MSC_VER
+#define YY_NO_UNISTD_H 1
+#define strdup	_strdup
+#endif
+
+#define YY_NO_INPUT 1
+
 #define Z80 0
 #define ROM 1
 #define BASIC 2
