@@ -490,6 +490,12 @@ void register_label(const char *name)
 	}
 
 	id_list[maximum - 1].name = (char*)malloc(strlen(name) + 4);
+	if (!id_list[maximum - 1].name)
+	{
+		error_message(1);
+		exit(1);
+	}
+
 	strcpy(id_list[maximum - 1].name, name);
 	id_list[maximum - 1].value = ePC;
 	id_list[maximum - 1].type = 1;
@@ -519,6 +525,12 @@ void register_local(const char *name)
 	}
 
 	id_list[maximum - 1].name = (char*)malloc(strlen(name) + 4);
+	if (!id_list[maximum - 1].name)
+	{
+		error_message(1);
+		exit(1);
+	}
+
 	strcpy(id_list[maximum - 1].name, name);
 	id_list[maximum - 1].value = ePC;
 	id_list[maximum - 1].type = 1;
@@ -547,6 +559,11 @@ void register_symbol(const char *name, int value, char type)
 	}
 
 	id_list[maximum - 1].name = (char*)malloc(strlen(name) + 1);
+	if (!id_list[maximum - 1].name)
+	{
+		error_message(1);
+		exit(1);
+	}
 
 	tmpstr = (char *)strdup(name);
 	strcpy(id_list[maximum - 1].name, strtok(tmpstr, " "));
@@ -573,6 +590,12 @@ void register_variable(const char *name, int value)
 	}
 
 	id_list[maximum - 1].name = (char*)malloc(strlen(name) + 1);
+	if (!id_list[maximum - 1].name)
+	{
+		error_message(1);
+		exit(1);
+	}
+
 	strcpy(id_list[maximum - 1].name, strtok((char *)name, " "));
 	id_list[maximum - 1].value = value;
 	id_list[maximum - 1].type = 3;
@@ -999,7 +1022,14 @@ void finalize(void)
 void initialize_memory(void)
 {
 	int i;
+
 	memory = (unsigned char*)malloc(MEMORY_MAX);
+	if (!memory)
+	{
+		error_message(1);
+		exit(1);
+	}
+
 	for (i = 0; i < MEMORY_MAX; i++)
 		memory[i] = 0;
 }
@@ -1008,7 +1038,14 @@ void initialize_memory(void)
 void initialize_system(void)
 {
 	initialize_memory();
+
 	intname = malloc(ASMSX_MAX_PATH);
+	if (!intname)
+	{
+		error_message(1);
+		exit(1);
+	}
+
 	intname[0] = 0;
 	register_symbol("Eduardo_A_Robsy_Petrus_2007", 0, 0);	/* TODO: check if this is used anywhere */
 }
@@ -1355,15 +1392,57 @@ int main(int argc, char *argv[])
 		exit(0);
 	}
 
-	clock();
+//	clock();
 	initialize_system();
+
 	assembler = (char *)malloc(ASMSX_MAX_PATH);
+	if (!assembler)
+	{
+		error_message(1);
+		exit(1);
+	}
+
 	source = (char *)malloc(ASMSX_MAX_PATH);
+	if (!source)
+	{
+		error_message(1);
+		exit(1);
+	}
+
 	original = (char *)malloc(ASMSX_MAX_PATH);
+	if (!original)
+	{
+		error_message(1);
+		exit(1);
+	}
+
 	binary = (char *)malloc(ASMSX_MAX_PATH);
+	if (!binary)
+	{
+		error_message(1);
+		exit(1);
+	}
+
 	symbols = (char *)malloc(ASMSX_MAX_PATH);
+	if (!symbols)
+	{
+		error_message(1);
+		exit(1);
+	}
+
 	outputfname = (char *)malloc(ASMSX_MAX_PATH);
+	if (!outputfname)
+	{
+		error_message(1);
+		exit(1);
+	}
+
 	filename = (char *)malloc(ASMSX_MAX_PATH);
+	if (!filename)
+	{
+		error_message(1);
+		exit(1);
+	}
 
 	strcpy(filename, argv[1]);
 	strcpy(assembler, filename);
@@ -1374,7 +1453,7 @@ int main(int argc, char *argv[])
 	while ((strpos != 0u) && (filename[strpos] != '.'));
 
 	if (strpos != 0)
-		filename[strpos]=0;	/* if there is a file extension, remove it */
+		filename[strpos] = 0;	/* if there is a file extension, remove it */
 	else
 		strcat(assembler, ".asm");	/* file name supplied without extensions, add it */
 
