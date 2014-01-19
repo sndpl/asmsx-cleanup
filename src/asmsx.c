@@ -25,7 +25,6 @@
 #include <time.h>
 #include <math.h>
 
-#include "compat_s.h"	/* https://github.com/oboroc/compat_s/ */
 #include "asmsx.h"
 #include "wav.h"
 #include "parser1.h"
@@ -194,153 +193,149 @@ void msx_bios(void)
 
 void error_message(int code)
 {
-	#ifndef COMPAT_S
-	char *next_token = NULL;
-	#endif /*  COMPAT_S */
-
-	printf_s("%s, line %d: ", strtok_s(source, "\042", &next_token), lines);
+	printf("%s, line %d: ", strtok(source, "\042"), lines);
 	switch (code)
 	{
 		case 0:
-			printf_s("syntax error\n");
+			printf("syntax error\n");
 			break;
 		case 1:
-			printf_s("memory overflow\n");
+			printf("memory overflow\n");
 			break;
 		case 2:
-			printf_s("wrong register combination\n");
+			printf("wrong register combination\n");
 			break;
 		case 3:
-			printf_s("wrong interruption mode\n");
+			printf("wrong interruption mode\n");
 			break;
 		case 4:
-			printf_s("destination register should be A\n");
+			printf("destination register should be A\n");
 			break;
 		case 5:
-			printf_s("source register should be A\n");
+			printf("source register should be A\n");
 			break;
 		case 6:
-			printf_s("value should be 0\n");
+			printf("value should be 0\n");
 			break;
 		case 7:
-			printf_s("missing condition\n");
+			printf("missing condition\n");
 			break;
 		case 8:
-			printf_s("unreachable address\n");
+			printf("unreachable address\n");
 			break;
 		case 9:
-			printf_s("wrong condition\n");
+			printf("wrong condition\n");
 			break;
 		case 10:
-			printf_s("wrong restart address\n");
+			printf("wrong restart address\n");
 			break;
 		case 11:
-			printf_s("symbol table overflow\n");
+			printf("symbol table overflow\n");
 			break;
 		case 12:
-			printf_s("undefined identifier\n");
+			printf("undefined identifier\n");
 			break;
 		case 13:
-			printf_s("undefined local label\n");
+			printf("undefined local label\n");
 			break;
 		case 14:
-			printf_s("symbol redefinition\n");
+			printf("symbol redefinition\n");
 			break;
 		case 15:
-			printf_s("size redefinition\n");
+			printf("size redefinition\n");
 			break;
 		case 16:
-			printf_s("reserved word used as identifier\n");
+			printf("reserved word used as identifier\n");
 			break;
 		case 17:
-			printf_s("code size overflow\n");
+			printf("code size overflow\n");
 			break;
 		case 18:
-			printf_s("binary file not found\n");
+			printf("binary file not found\n");
 			break;
 		case 19:
-			printf_s("ROM directive should preceed any code\n");
+			printf("ROM directive should preceed any code\n");
 			break;
 		case 20:
-			printf_s("previously defined type\n");
+			printf("previously defined type\n");
 			break;
 		case 21:
-			printf_s("BASIC directive should preceed any code\n");
+			printf("BASIC directive should preceed any code\n");
 			break;
 		case 22:
-			printf_s("page out of range\n");
+			printf("page out of range\n");
 			break;
 		case 23:
-			printf_s("MSXDOS directive should preceed any code\n");
+			printf("MSXDOS directive should preceed any code\n");
 			break;
 		case 24:
-			printf_s("no code in the whole file\n");
+			printf("no code in the whole file\n");
 			break;
 		case 25:
-			printf_s("only available for MSXDOS\n");
+			printf("only available for MSXDOS\n");
 			break;
 		case 26:
-			printf_s("machine not defined\n");
+			printf("machine not defined\n");
 			break;
 		case 27:
-			printf_s("MegaROM directive should preceed any code\n");
+			printf("MegaROM directive should preceed any code\n");
 			break;
 		case 28:
-			printf_s("cannot write ROM code/data to page 3\n");
+			printf("cannot write ROM code/data to page 3\n");
 			break;
 		case 29:
-			printf_s("included binary shorter than expected\n");
+			printf("included binary shorter than expected\n");
 			break;
 		case 30:
-			printf_s("wrong number of bytes to skip/include\n");
+			printf("wrong number of bytes to skip/include\n");
 			break;
 		case 31:
-			printf_s("megaROM subpage overflow\n");
+			printf("megaROM subpage overflow\n");
 			break;
 		case 32:
-			printf_s("subpage 0 can only be defined by megaROM directive\n");
+			printf("subpage 0 can only be defined by megaROM directive\n");
 			break;
 		case 33:
-			printf_s("unsupported mapper type\n");
+			printf("unsupported mapper type\n");
 			break;
 		case 34:
-			printf_s("megaROM code should be between 4000h and BFFFh\n");
+			printf("megaROM code should be between 4000h and BFFFh\n");
 			break;
 		case 35:
-			printf_s("code/data without subpage\n");
+			printf("code/data without subpage\n");
 			break;
 		case 36:
-			printf_s("megaROM mapper subpage out of range\n");
+			printf("megaROM mapper subpage out of range\n");
 			break;
 		case 37:
-			printf_s("megaROM subpage already defined\n");
+			printf("megaROM subpage already defined\n");
 			break;
 		case 38:
-			printf_s("Konami megaROM forces page 0 at 4000h\n");
+			printf("Konami megaROM forces page 0 at 4000h\n");
 			break;
 		case 39:
-			printf_s("megaROM subpage not defined\n");
+			printf("megaROM subpage not defined\n");
 			break;
 		case 40:
-			printf_s("megaROM-only macro used\n");
+			printf("megaROM-only macro used\n");
 			break;
 		case 41:
-			printf_s("only for ROMs and megaROMs\n");
+			printf("only for ROMs and megaROMs\n");
 			break;
 		case 42:
-			printf_s("ELSE without IF\n");
+			printf("ELSE without IF\n");
 			break;
 		case 43:
-			printf_s("ENDIF without IF\n");
+			printf("ENDIF without IF\n");
 			break;
 		case 44:
-			printf_s("Cannot nest more IFs\n");
+			printf("Cannot nest more IFs\n");
 			break;
 		case 45:
-			printf_s("IF not closed\n");
+			printf("IF not closed\n");
 			break;
 		case 46:
-			printf_s("Sinclair directive should preceed any code\n");
+			printf("Sinclair directive should preceed any code\n");
 			break;
 	}
 
@@ -351,33 +346,29 @@ void error_message(int code)
 
 void warning_message(int code)
 {
-	#ifndef COMPAT_S
-	char *next_token = NULL;
-	#endif /*  COMPAT_S */
-
 	if (2 != pass)
 		return;
 
-	printf_s("%s, line %d: Warning: ", strtok_s(source, "\042", &next_token), lines);
+	printf("%s, line %d: Warning: ", strtok(source, "\042"), lines);
 	switch (code)
 	{
 		case 1:
-			printf_s("16-bit overflow\n");
+			printf("16-bit overflow\n");
 			break;
 		case 2:
-			printf_s("8-bit overflow\n");
+			printf("8-bit overflow\n");
 			break;
 		case 3:
-			printf_s("3-bit overflow\n");
+			printf("3-bit overflow\n");
 			break;
 		case 4:
-			printf_s("output cannot be converted to CAS\n");
+			printf("output cannot be converted to CAS\n");
 			break;
 		case 5:
-			printf_s("not official Zilog syntax\n");
+			printf("not official Zilog syntax\n");
 			break;
 		case 6:
-			printf_s("undocumented Zilog instruction\n");
+			printf("undocumented Zilog instruction\n");
 			break;
 	}
 	warnings++;
@@ -446,7 +437,6 @@ void conditional_jump(const int address)
 void register_label(const char *name)
 {
 	int i;
-	size_t name_len;
 
 	if (pass == 2)
 		for (i = 0; i < maximum; i++)
@@ -463,9 +453,8 @@ void register_label(const char *name)
 	if (++maximum == MAX_ID)
 		error_message(11);
 
-	name_len = strlen(name) + 4;
-	id_list[maximum - 1].name = (char*)malloc(name_len);
-	strcpy_s(id_list[maximum - 1].name, name_len, name);
+	id_list[maximum - 1].name = (char*)malloc(strlen(name) + 4);
+	strcpy(id_list[maximum - 1].name, name);
 	id_list[maximum - 1].value = ePC;
 	id_list[maximum - 1].type = 1;
 	id_list[maximum - 1].page = subpage;
@@ -476,7 +465,6 @@ void register_label(const char *name)
 void register_local(const char *name)
 {
 	int i;
-	size_t name_len;
 
 	if (pass == 2)
 		return;
@@ -488,9 +476,8 @@ void register_local(const char *name)
 	if (++maximum == MAX_ID)
 		error_message(11);
 
-	name_len = strlen(name) + 4;
-	id_list[maximum - 1].name = (char*)malloc(name_len);
-	strcpy_s(id_list[maximum - 1].name, name_len, name);
+	id_list[maximum - 1].name = (char*)malloc(strlen(name) + 4);
+	strcpy(id_list[maximum - 1].name, name);
 	id_list[maximum - 1].value = ePC;
 	id_list[maximum - 1].type = 1;
 	id_list[maximum - 1].page = subpage;
@@ -499,12 +486,7 @@ void register_local(const char *name)
 
 void register_symbol(const char *name, int value, char type)
 {
-	#ifndef COMPAT_S
-	char *next_token = NULL;
-	#endif /*  COMPAT_S */
-
 	int i;
-	size_t name_len;
 	char *tmpstr;
 
 	if (2 == pass)
@@ -519,11 +501,10 @@ void register_symbol(const char *name, int value, char type)
 	if (++maximum == MAX_ID)
 		error_message(11);
 
-	name_len = strlen(name) + 1;
-	id_list[maximum - 1].name = (char*)malloc(name_len);
+	id_list[maximum - 1].name = (char*)malloc(strlen(name) + 1);
 
-	tmpstr = (char *)_strdup(name);
-	strcpy_s(id_list[maximum - 1].name, name_len, strtok_s(tmpstr, " ", &next_token));
+	tmpstr = (char *)strdup(name);
+	strcpy(id_list[maximum - 1].name, strtok(tmpstr, " "));
 	id_list[maximum - 1].value = value;
 	id_list[maximum - 1].type = type;
 }
@@ -531,12 +512,7 @@ void register_symbol(const char *name, int value, char type)
 
 void register_variable(const char *name, int value)
 {
-	#ifndef COMPAT_S
-	char *next_token = NULL;
-	#endif /*  COMPAT_S */
-
 	int i;
-	size_t name_len;
 
 	for (i = 0; i < maximum; i++)
 		if ((!strcmp(name, id_list[i].name)) && (id_list[i].type == 3))
@@ -548,9 +524,8 @@ void register_variable(const char *name, int value)
 	if (++maximum == MAX_ID)
 		error_message(11);
 
-	name_len = strlen(name) + 1;
-	id_list[maximum - 1].name = (char*)malloc(name_len);
-	strcpy_s(id_list[maximum - 1].name, name_len, strtok_s((char *)name, " ", &next_token));
+	id_list[maximum - 1].name = (char*)malloc(strlen(name) + 1);
+	strcpy(id_list[maximum - 1].name, strtok((char *)name, " "));
 	id_list[maximum - 1].value = value;
 	id_list[maximum - 1].type = 3;
 }
@@ -590,15 +565,16 @@ int read_local(const char *name)
 
 void output_text(void)
 {
-	strcpy_s(outputfname, ASMSX_MAX_PATH, filename);	/* Get output file name */
-	strcat_s(outputfname, ASMSX_MAX_PATH, ".txt");
+	strcpy(outputfname, filename);	/* Get output file name */
+	strcat(outputfname, ".txt");
 
-	if (0 != fopen_s(&fmessages, outputfname, "wt"))
-		return;		/* TODO: validate if this is ok */
+	fmessages = fopen(outputfname, "wt");
+	if (!fmessages)
+		return;
 
-	fprintf_s(fmessages, "; Output text file from %s\n", assembler);
-	fprintf_s(fmessages, "; generated by asmsx %s\n\n", ASMSX_VERSION);
-	printf_s("Output text file %s saved\n", outputfname);
+	fprintf(fmessages, "; Output text file from %s\n", assembler);
+	fprintf(fmessages, "; generated by asmsx %s\n\n", ASMSX_VERSION);
+	printf("Output text file %s saved\n", outputfname);
 }
 
 
@@ -613,11 +589,12 @@ void save_symbols(void)
 
 	if (j > 0)
 	{
-		if (0 != fopen_s(&f, symbols, "wt"))
+		f = fopen(symbols, "wt");
+		if (!f)
 			error_message(0);
 
-		fprintf_s(f, "; Symbol table from %s\n", assembler);
-		fprintf_s(f, "; generated by asmsx %s\n\n", ASMSX_VERSION);
+		fprintf(f, "; Symbol table from %s\n", assembler);
+		fprintf(f, "; generated by asmsx %s\n\n", ASMSX_VERSION);
 
 		j = 0;
 		for (i = 0; i < maximum; i++)
@@ -626,14 +603,14 @@ void save_symbols(void)
 
 		if (j > 0)
 		{
-			fprintf_s(f, "; global and local labels\n");
+			fprintf(f, "; global and local labels\n");
 			for (i = 0; i < maximum; i++)
 				if ((id_list[i].type) == 1)
 				{
 					if (type != MEGAROM)
-						fprintf_s(f, "%4.4Xh %s\n", id_list[i].value, id_list[i].name);
+						fprintf(f, "%4.4Xh %s\n", id_list[i].value, id_list[i].name);
 					else
-						fprintf_s(f, "%2.2Xh:%4.4Xh %s\n", id_list[i].page & 0xff, id_list[i].value, id_list[i].name);
+						fprintf(f, "%2.2Xh:%4.4Xh %s\n", id_list[i].page & 0xff, id_list[i].value, id_list[i].name);
 				}
 		}
 
@@ -644,10 +621,10 @@ void save_symbols(void)
 
 		if (j > 0)
 		{
-			fprintf_s(f, "; other identifiers\n");
+			fprintf(f, "; other identifiers\n");
 			for (i = 0; i < maximum; i++)
 				if (id_list[i].type == 2)
-					fprintf_s(f, "%4.4Xh %s\n", id_list[i].value, id_list[i].name);
+					fprintf(f, "%4.4Xh %s\n", id_list[i].value, id_list[i].name);
 		}
 
 		j = 0;
@@ -657,14 +634,14 @@ void save_symbols(void)
 
 		if (j > 0)
 		{
-			fprintf_s(f, "; variables - value on exit\n");
+			fprintf(f, "; variables - value on exit\n");
 			for (i = 0; i < maximum; i++)
 			if (id_list[i].type == 3)
-				fprintf_s(f, "%4.4Xh %s\n", id_list[i].value, id_list[i].name);
+				fprintf(f, "%4.4Xh %s\n", id_list[i].value, id_list[i].name);
 		}
 
 		fclose(f);
-		printf_s("Symbol file %s saved\n", symbols);
+		printf("Symbol file %s saved\n", symbols);
 	}
 }
 
@@ -675,20 +652,21 @@ void include_binary(const char* name, int skip, int n)
 	int i;
 	char k;
 
-	if (0 != fopen_s(&file, name, "rb"))
+	file = fopen(name, "rb");
+	if (!file)
 		error_message(18);
 
 	if (pass == 1)
-		printf_s("Including binary file %s", name);
+		printf("Including binary file %s", name);
 
 	if ((pass == 1) && (skip))
-		printf_s(", skipping %i bytes", skip);
+		printf(", skipping %i bytes", skip);
 
 	if ((pass == 1) && (n))
-		printf_s(", saving %i bytes", n);
+		printf(", saving %i bytes", n);
 
 	if (pass == 1)
-		printf_s("\n");
+		printf("\n");
 
 	if (skip)
 		for (i = 0; (!feof(file)) && (i < skip); i++)
@@ -764,11 +742,11 @@ void write_binary(void)
 		error_message(24);
 
 	if (type == Z80)
-		strcat_s(binary, ASMSX_MAX_PATH, ".z80");
+		strcat(binary, ".z80");
 
 	if (type == ROM)
 	{
-		strcat_s(binary, ASMSX_MAX_PATH, ".rom");
+		strcat(binary, ".rom");
 		PC = addr_start + 2;
 		write_word(start);
 		if (!size)
@@ -776,17 +754,17 @@ void write_binary(void)
 	}
 
 	if (type == BASIC)
-		strcat_s(binary, ASMSX_MAX_PATH, ".bin");
+		strcat(binary, ".bin");
 
 	if (type == MSXDOS)
-		strcat_s(binary, ASMSX_MAX_PATH, ".com");
+		strcat(binary, ".com");
 
 	if (type == SINCLAIR)
-		strcat_s(binary, ASMSX_MAX_PATH, ".tap");
+		strcat(binary, ".tap");
 
 	if (type == MEGAROM)
 	{
-		strcat_s(binary, ASMSX_MAX_PATH, ".rom");
+		strcat(binary, ".rom");
 		PC = 0x4002;
 		subpage = 0x00;
 		pageinit = 0x4000;
@@ -796,11 +774,13 @@ void write_binary(void)
 			j += usedpage[i];
 		j >>= 1;
 		if (j < lastpage)
-			printf_s("Warning: %i out of %i megaROM pages are not defined\n", lastpage - j, lastpage);
+			printf("Warning: %i out of %i megaROM pages are not defined\n", lastpage - j, lastpage);
 	}
 
-	printf_s("Binary file %s saved\n", binary);
-	if (0 != fopen_s(&foutput, binary, "wb"))
+	printf("Binary file %s saved\n", binary);
+
+	foutput = fopen(binary, "wb");
+	if (!foutput)
 		return;	/* TODO: print some error??? */
 
 	if (type == BASIC)
@@ -922,11 +902,11 @@ void write_binary(void)
 void finalize(void)
 {
 	/* Get name of binary output file */
-	strcpy_s(binary, ASMSX_MAX_PATH, filename);
+	strcpy(binary, filename);
 
 	/* Get symbols file name */
-	strcpy_s(symbols, ASMSX_MAX_PATH, filename);
-	strcat_s(symbols, ASMSX_MAX_PATH, ".sym");
+	strcpy(symbols, filename);
+	strcat(symbols, ".sym");
 
 	write_binary();
 
@@ -939,15 +919,15 @@ void finalize(void)
 	if (maximum > 0)
 		save_symbols();
 
-	printf_s("Completed in %.2f seconds", (float)clock() / (float)CLOCKS_PER_SEC);
+	printf("Completed in %.2f seconds", (float)clock() / (float)CLOCKS_PER_SEC);
 
 	if (warnings > 1)
-		printf_s(", %i warnings\n", warnings);
+		printf(", %i warnings\n", warnings);
 	else
 		if (warnings == 1)
-			printf_s(", 1 warning\n");
+			printf(", 1 warning\n");
 		else
-			printf_s("\n");
+			printf("\n");
 	remove("~tmppre.*");
 	exit(0);
 }
@@ -1189,9 +1169,10 @@ void cas_write_file(void)
 	}
 
 	binary[strlen(binary) - 3] = 0;
-	strcat_s(binary, ASMSX_MAX_PATH, "cas");
+	strcat(binary, "cas");
 
-	if (0 != fopen_s(&f, binary, "wb"))
+	f = fopen(binary, "wb");
+	if (!f)
 		return;	/* TODO: print some error ??? */
 
 	for (i = 0; i < 8; i++)
@@ -1225,7 +1206,7 @@ void cas_write_file(void)
 
 	fclose(f);
 
-	printf_s("Cassette file %s saved\n", binary);
+	printf("Cassette file %s saved\n", binary);
 }
 
 
@@ -1245,11 +1226,11 @@ int main(int argc, char *argv[])
 {
 	size_t strpos;
 
-	printf_s("asmsx %s MSX cross assembler https://github.com/asmsx/asmsx/ (%s)\n", ASMSX_VERSION, __DATE__);
+	printf("asmsx %s MSX cross assembler https://github.com/asmsx/asmsx/ (%s)\n", ASMSX_VERSION, __DATE__);
 
 	if (2 != argc)
 	{
-        	printf_s("Syntax: asmsx [file.asm]\n");
+        	printf("Syntax: asmsx [file.asm]\n");
 		exit(0);
 	}
 
@@ -1263,8 +1244,8 @@ int main(int argc, char *argv[])
 	outputfname = (char *)malloc(ASMSX_MAX_PATH);
 	filename = (char *)malloc(ASMSX_MAX_PATH);
 
-	strcpy_s(filename, ASMSX_MAX_PATH, argv[1]);
-	strcpy_s(assembler, ASMSX_MAX_PATH, filename);
+	strcpy(filename, argv[1]);
+	strcpy(assembler, filename);
 
 	strpos = strlen(filename);
 	do
@@ -1274,14 +1255,15 @@ int main(int argc, char *argv[])
 	if (strpos != 0)
 		filename[strpos]=0;	/* if there is a file extension, remove it */
 	else
-		strcat_s(assembler, ASMSX_MAX_PATH, ".asm");	/* file name supplied without extensions, add it */
+		strcat(assembler, ".asm");	/* file name supplied without extensions, add it */
 
 	preprocessor1(assembler);
 	preprocessor3();
-	sprintf_s(original, ASMSX_MAX_PATH, "~tmppre.%i", preprocessor2());
-	printf_s("Assembling source file %s\n", assembler);
+	sprintf(original, "~tmppre.%i", preprocessor2());
+	printf("Assembling source file %s\n", assembler);
 	conditional[0] = 1;
-	if (0 != fopen_s(&foriginal, original, "r"))
+	foriginal = fopen(original, "r");
+	if (!foriginal)
 		return 1;	/* TODO: print some error ??? */
 	yyin = foriginal;
 	yyparse();

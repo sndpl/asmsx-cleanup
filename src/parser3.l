@@ -15,7 +15,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "compat_s.h"	/* https://github.com/oboroc/compat_s/ */
 #include "asmsx.h"
 
 #define YY_NO_INPUT 1
@@ -35,18 +34,18 @@ char *p3text;
 
 %%
 
-<INITIAL>"#"line[ \t]*[0-9]+\n	strcat_s(p3text, P3TEXT_MAX, yytext); BEGIN(line);
-<INITIAL>\n			fprintf_s(p3fout, "%s%s", p3text, yytext); p3text[0] = 0;
-<INITIAL>.			strcat_s(p3text, P3TEXT_MAX, yytext);
-<line>.?zilog[ \t]*\n		strcat_s(p3text, P3TEXT_MAX, yytext); BEGIN(zilog);
-<line>.				strcat_s(p3text, P3TEXT_MAX, yytext); BEGIN(INITIAL);
-<zilog>\42[^\42\n]+\42		strcat_s(p3text, P3TEXT_MAX, yytext);
-<zilog>"("			strcat_s(p3text, P3TEXT_MAX, "[");
-<zilog>")"			strcat_s(p3text, P3TEXT_MAX, "]");
-<zilog>"["			strcat_s(p3text, P3TEXT_MAX, "(");
-<zilog>"]"			strcat_s(p3text, P3TEXT_MAX, ")");
-<zilog>.			strcat_s(p3text, P3TEXT_MAX, yytext);
-<zilog>\n			fprintf_s(p3fout, "%s%s", p3text, yytext); p3text[0] = 0;
+<INITIAL>"#"line[ \t]*[0-9]+\n	strcat(p3text, yytext); BEGIN(line);
+<INITIAL>\n			fprintf(p3fout, "%s%s", p3text, yytext); p3text[0] = 0;
+<INITIAL>.			strcat(p3text, yytext);
+<line>.?zilog[ \t]*\n		strcat(p3text, yytext); BEGIN(zilog);
+<line>.				strcat(p3text, yytext); BEGIN(INITIAL);
+<zilog>\42[^\42\n]+\42		strcat(p3text, yytext);
+<zilog>"("			strcat(p3text, "[");
+<zilog>")"			strcat(p3text, "]");
+<zilog>"["			strcat(p3text, "(");
+<zilog>"]"			strcat(p3text, ")");
+<zilog>.			strcat(p3text, yytext);
+<zilog>\n			fprintf(p3fout, "%s%s", p3text, yytext); p3text[0] = 0;
 
 %%
 
@@ -57,17 +56,19 @@ int preprocessor3(void)
 	p3text = (char*)malloc(P3TEXT_MAX);
 	p3text[0] = 0;
 
-	if (0 != fopen_s(&input, "~tmppre.0", "r"))
+	input = fopen("~tmppre.0", "r");
+	if (!input)
 	{
-		printf_s("Fatal: cannot process file\n");
+		printf("Fatal: cannot process file\n");
 		exit(1);
 	}
 
 	yyin = input;
  
-	if (0 != fopen_s(&p3fout, "~tmppre.1", "w"))
+	p3fout = fopen("~tmppre.1", "w");
+	if (!p3fout)
 	{
-		printf_s("Fatal: cannot create temporary file in preprocessor3()\n");
+		printf("Fatal: cannot create temporary file in preprocessor3()\n");
 		exit(1);
 	}
 

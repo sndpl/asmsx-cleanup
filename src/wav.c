@@ -21,7 +21,6 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "compat_s.h"	/* https://github.com/oboroc/compat_s/ */
 #include "asmsx.h"
 
 
@@ -116,11 +115,12 @@ void wav_write_file(const char *bin_filename, const char *bin_intname, const int
 		return;
 	}
 
-	strcpy_s(wav_filename, ASMSX_MAX_PATH, bin_filename);
+	strcpy(wav_filename, bin_filename);
 	wav_filename[strlen(wav_filename) - 3] = 0;	/* drop supplied extension */
-	strcat_s(wav_filename, ASMSX_MAX_PATH, "wav");	/* make "wav" new extension */
+	strcat(wav_filename, "wav");	/* make "wav" new extension */
 
-	if (0 != fopen_s(&f, wav_filename, "wb"))
+	f = fopen(wav_filename, "wb");
+	if (!f)
 	{
 		warning_message(0);	/* TODO: figure out if 0 is ok */
 		return;
@@ -153,7 +153,7 @@ void wav_write_file(const char *bin_filename, const char *bin_intname, const int
 			wav_write_byte(0xd0, f);
 
 		/* Make a local copy of internal tape name of the program */
-		strcpy_s(wav_intname, ASMSX_MAX_PATH, bin_intname);
+		strcpy(wav_intname, bin_intname);
 
 		/* Pad MSX name with spaces at the end until it is 6 characters long */
 		if (6 > strlen(wav_intname))
@@ -220,5 +220,5 @@ void wav_write_file(const char *bin_filename, const char *bin_intname, const int
 	/* Close file */
 	fclose(f);
 
-	printf_s("Audio file %s saved [%2.2f sec]\n", wav_filename, (float) wav_size / 176400);	/* TODO: try to externalize logging to caller */
+	printf("Audio file %s saved [%2.2f sec]\n", wav_filename, (float) wav_size / 176400);	/* TODO: try to externalize logging to caller */
 }

@@ -18,7 +18,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "compat_s.h"	/* https://github.com/oboroc/compat_s/ */
 #include "asmsx.h"
 
 #define YY_NO_INPUT 1
@@ -30,10 +29,6 @@
 char *p1text, *p1tmp, *p1name;
 int p1i, p1incidx = 0;
 FILE *p1fout, *p1fin;
-
-#ifndef COMPAT_S
-char *p1next_token = NULL;
-#endif /* COMPAT_S */
 
 struct
 {
@@ -52,30 +47,37 @@ extern void prompt_error1(int);
 
 %%
 
-<INITIAL>\42[^\42]*\42		strcat_s(p1text, ASMSX_MAX_PATH, yytext);
+<INITIAL>\42[^\42]*\42		strcat(p1text, yytext);
 <INITIAL>.?include/[ \042\t]+	p1tmp = NULL; BEGIN(inclusion);
 <inclusion>[ \t]*		/* strip spaces */
-<inclusion>[^ \t\n]+		p1tmp = strtok_s(yytext, "\42", &p1next_token);
+<inclusion>[^ \t\n]+		p1tmp = strtok(yytext, "\42");
 <inclusion>\n			{
 					if (NULL == p1tmp)
 						prompt_error1(5);
+
 					if (32 >= p1tmp[strlen(p1tmp) - 1])
 						prompt_error1(1);
+
 					if (MAX_INCLUDE_LEVEL <= p1incidx)
 						prompt_error1(2);
+
 					for (p1i = 0; p1i < p1incidx; p1i++)
 						if (!strcmp(p1tmp, p1inc_stack[p1i].name))
 							prompt_error1(4);
+
 					p1inc_stack[p1incidx].name = (char*)malloc(ASMSX_MAX_PATH);
-					strcpy_s(p1inc_stack[p1incidx].name, ASMSX_MAX_PATH, p1name);
+					strcpy(p1inc_stack[p1incidx].name, p1name);
 					p1inc_stack[p1incidx].line = yylineno;
 					p1inc_stack[p1incidx++].buffer = YY_CURRENT_BUFFER;
-					if (0 != fopen_s(&yyin, p1tmp, "r"))
+
+					yyin = fopen(p1tmp, "r");
+					if (!yyin)
 						prompt_error1(3);
-					printf_s("Including file %s\n", p1tmp);
+
+					printf("Including file %s\n", p1tmp);
 					yylineno = 1;
-					strcpy_s(p1name, ASMSX_MAX_PATH, p1tmp);
-					fprintf_s(p1fout, "#file \042%s\042\n", p1name);
+					strcpy(p1name, p1tmp);
+					fprintf(p1fout, "#file \042%s\042\n", p1name);
 					yy_switch_to_buffer(yy_create_buffer(yyin, YY_BUF_SIZE));
 					BEGIN(INITIAL);
 				}
@@ -86,16 +88,16 @@ extern void prompt_error1(int);
 					{
 						yy_delete_buffer(YY_CURRENT_BUFFER);
 						yy_switch_to_buffer(p1inc_stack[p1incidx].buffer);
-						yylineno=p1inc_stack[p1incidx].line;
-						strcpy_s(p1name, ASMSX_MAX_PATH, p1inc_stack[p1incidx].name);
-						fprintf_s(p1fout, "#file \042%s\042\n", p1name);
+						yylineno = p1inc_stack[p1incidx].line;
+						strcpy(p1name, p1inc_stack[p1incidx].name);
+						fprintf(p1fout, "#file \042%s\042\n", p1name);
 						free(p1inc_stack[p1incidx].name);
 					}
 					else
 					{
 						if (0 < strlen(p1text))
-							fprintf_s(p1fout, "#line %d\n%s\n", yylineno, p1text);
-						fprintf_s(p1fout, "%s", yytext);
+							fprintf(p1fout, "#line %d\n%s\n", yylineno, p1text);
+						fprintf(p1fout, "%s", yytext);
 						return 0;
 					}
 				}
@@ -113,18 +115,21 @@ extern void prompt_error1(int);
 <pascal_comment>[^}]*		/* Skip all within */
 <pascal_comment>"}"		BEGIN(INITIAL);
 
-<INITIAL>\42			strcat_s(p1text, ASMSX_MAX_PATH, yytext); BEGIN(chain);
-<chain>\42			strcat_s(p1text, ASMSX_MAX_PATH, yytext); BEGIN(INITIAL);
+<INITIAL>\42			strcat(p1text, yytext); BEGIN(chain);
+<chain>\42			strcat(p1text, yytext); BEGIN(INITIAL);
 <chain>\n			prompt_error1(1);
-<chain>[^\42\n]			strcat_s(p1text, ASMSX_MAX_PATH, yytext);
+<chain>[^\42\n]			strcat(p1text, yytext);
 
-<INITIAL>[ \t]+			if (0 < strlen(p1text)) strcat_s(p1text, ASMSX_MAX_PATH, " ");	/* Should be 0 for Windows */
+<INITIAL>[ \t]+			{
+					if (0 < strlen(p1text))
+						strcat(p1text, " ");	/* Should be 0 for Windows */
+				}
 <INITIAL>\n			{
 					if (0 < strlen(p1text))
-						fprintf_s(p1fout, "#line %d\n%s\n", yylineno - 1, p1text);	/* Should be 0 for Windows? */
+						fprintf(p1fout, "#line %d\n%s\n", yylineno - 1, p1text);	/* Should be 0 for Windows? */
 					p1text[0] = 0;
 				}
-<INITIAL>.			strcat_s(p1text, ASMSX_MAX_PATH, yytext);
+<INITIAL>.			strcat(p1text, yytext);
 
 %%
 
@@ -132,23 +137,23 @@ extern void prompt_error1(int);
 
 void prompt_error1(int c)
 {
-	printf_s("%s, line %d: ", p1name, yylineno - 1);
+	printf("%s, line %d: ", p1name, yylineno - 1);
 	switch (c)
 	{
 		case 1:
-			printf_s("Unterminated string");
+			printf("Unterminated string");
 			break;
 		case 2:
-			printf_s("Nested include level overflow");
+			printf("Nested include level overflow");
 			break;
 		case 3:
-			printf_s("Include file not found");
+			printf("Include file not found");
 			break;
 		case 4:
-			printf_s("Recursive include");
+			printf("Recursive include");
 			break;
 		case 5:
-			printf_s("Wrong file name");
+			printf("Wrong file name");
 			break;
 	}
 	fclose(p1fout);
@@ -166,26 +171,28 @@ int preprocessor1(char *input_name)
 	p1text[0] = 0;
 
 	/* Get source code name */
-	strcpy_s(p1name, ASMSX_MAX_PATH, input_name);
+	strcpy(p1name, input_name);
 
 	/* Open original source file */
-	if (0 != fopen_s(&p1fin, p1name, "r"))
+	p1fin = fopen(p1name, "r");
+	if (!p1fin)
 	{
-		printf_s("Fatal: cannot open %s\n", input_name);
+		printf("Fatal: cannot open %s\n", input_name);
 		exit(1);
 	}
 
 	/* Print parsing message */
-	printf_s("Parsing file %s\n", input_name);
+	printf("Parsing file %s\n", input_name);
 
 	/* Create p1fout file */
-	if (0 != fopen_s(&p1fout, "~tmppre.0", "w"))
+	p1fout = fopen("~tmppre.0", "w");
+	if (!p1fout)
 	{
-		printf_s("Fatal: cannot create temp file in preprocessor1()\n");
+		printf("Fatal: cannot create temp file in preprocessor1()\n");
 		exit(1);
 	}
 	
-	fprintf_s(p1fout, "#file \042%s\042\n", p1name);
+	fprintf(p1fout, "#file \042%s\042\n", p1name);
  
 	/* Start lexical scanner */
 	yyin = p1fin;

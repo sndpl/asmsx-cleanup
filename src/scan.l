@@ -10,12 +10,7 @@
 #define YY_NO_UNISTD_H 1
 #endif
 #include "z80gen.tab.h"
-#include "compat_s.h"	/* https://github.com/oboroc/compat_s/ */
 #include "asmsx.h"
-
-#ifndef COMPAT_S
-char *l_next_token = NULL;
-#endif /* COMPAT_S */
 %}
 
 %%
@@ -250,8 +245,18 @@ random			return PSEUDO_RANDOM;
 ">>"			return SHIFT_R;
 "<<"			return SHIFT_L;
 
-<<EOF>>			{ unput('\n'); pass++; if (2 == pass) printf_s("Assembling labels, calls and jumps\n"); if (0 != fopen_s(&yyin, original, "r")) exit(1); return PSEUDO_END; }
-\42[^\42\n]+\42		yylval.tex = strtok_s(yytext, "\42", &l_next_token); yylval.tex = strtok_s(yytext, "\42", &l_next_token); return TEXT;
+<<EOF>>			{
+				unput('\n');
+				pass++;
+				if (2 == pass)
+					printf("Assembling labels, calls and jumps\n");
+				yyin = fopen(original, "r");
+				if (!yyin)
+					exit(1);
+				return PSEUDO_END;
+			}
+
+\42[^\42\n]+\42		yylval.tex = strtok(yytext, "\42"); yylval.tex = strtok(yytext, "\42"); return TEXT;
 [a-z_]+[a-z0-9_]*	yylval.tex = yytext; return IDENTIFICATOR;
 "@@"[a-z0-9_]+		yylval.tex = yytext; return LOCAL_IDENTIFICATOR;
 

@@ -5,12 +5,7 @@
 #include <time.h>
 #include <math.h>
 
-#include "compat_s.h"	/* https://github.com/oboroc/compat_s/ */
 #include "asmsx.h"
-
-#ifndef COMPAT_S
-char *y_next_token = NULL;
-#endif /*  COMPAT_S */
 
 #define YYMALLOC	malloc
 #define YYFREE		free
@@ -227,7 +222,7 @@ line:	pseudo_instruction EOL
 	| mnemo_call EOL
 	| PREPRO_FILE TEXT EOL
 	{
-		strcpy_s(source, ASMSX_MAX_PATH, $2);
+		strcpy(source, $2);
 	}
 	| PREPRO_LINE value EOL
 	{
@@ -239,11 +234,11 @@ line:	pseudo_instruction EOL
 
 label:	IDENTIFICATOR ':'
 	{
-		register_label(strtok_s($1, ":", &y_next_token));
+		register_label(strtok($1, ":"));
 	}
 	| LOCAL_IDENTIFICATOR ':'
 	{
-		register_local(strtok_s($1, ":", &y_next_token));
+		register_local(strtok($1, ":"));
 	}
 ;
 
@@ -442,14 +437,14 @@ pseudo_instruction: PSEUDO_ORG value
 	{
 		if (conditional[conditional_level])
 		{
-			register_symbol(strtok_s($1, "=", &y_next_token), $3, 2);
+			register_symbol(strtok($1, "="), $3, 2);
 		}
 	}
 	| IDENTIFICATOR PSEUDO_ASSIGN value
 	{
 		if (conditional[conditional_level])
 		{
-			register_variable(strtok_s($1, "=", &y_next_token), $3);
+			register_variable(strtok($1, "="), $3);
 		}
 	}
 	| PSEUDO_INCBIN TEXT
@@ -544,7 +539,7 @@ pseudo_instruction: PSEUDO_ORG value
 			{
 				if (fmessages == NULL)
 					output_text();
-				fprintf_s(fmessages, "%s\n", $2);
+				fprintf(fmessages, "%s\n", $2);
 			}
 		}
 	}
@@ -556,7 +551,7 @@ pseudo_instruction: PSEUDO_ORG value
 			{
 				if (fmessages == NULL)
 					output_text();
-				fprintf_s(fmessages, "%d\n", (short)$2 & 0xffff);
+				fprintf(fmessages, "%d\n", (short)$2 & 0xffff);
 			}
 		}
 	}
@@ -568,7 +563,7 @@ pseudo_instruction: PSEUDO_ORG value
 			{
 				if (fmessages==NULL)
 					output_text();
-				fprintf_s(fmessages, "%.4f\n", $2);
+				fprintf(fmessages, "%.4f\n", $2);
 			}
 		}
 	}
@@ -580,7 +575,7 @@ pseudo_instruction: PSEUDO_ORG value
 			{
 				if (fmessages == NULL)
 					output_text();
-				fprintf_s(fmessages, "$%4.4x\n", (short)$2 & 0xffff);
+				fprintf(fmessages, "$%4.4x\n", (short)$2 & 0xffff);
 			}
 		}
 	}
@@ -592,7 +587,7 @@ pseudo_instruction: PSEUDO_ORG value
 			{
 				if (fmessages == NULL)
 					output_text();
-				fprintf_s(fmessages, "%.4f\n", ((float)($2 & 0xffff)) / 256);
+				fprintf(fmessages, "%.4f\n", ((float)($2 & 0xffff)) / 256);
 			}
 		}
 	}
@@ -646,7 +641,7 @@ pseudo_instruction: PSEUDO_ORG value
 		if (conditional[conditional_level])
 		{
 			if (!intname[0])
-				strcpy_s(intname, ASMSX_MAX_PATH, $2);
+				strcpy(intname, $2);
 			cassette |= $1;
 		}
 	}
@@ -656,7 +651,7 @@ pseudo_instruction: PSEUDO_ORG value
 		{
 			if (!intname[0])
 			{
-				strcpy_s(intname, ASMSX_MAX_PATH, binary);
+				strcpy(intname, binary);
 				intname[strlen(intname) - 1] = 0;
 			}
 			cassette |= $1;
@@ -668,7 +663,7 @@ pseudo_instruction: PSEUDO_ORG value
 	}
 	| PSEUDO_FILENAME TEXT
 	{
-		strcpy_s(filename, ASMSX_MAX_PATH, $2);
+		strcpy(filename, $2);
 	}
 ;
 
@@ -3257,6 +3252,6 @@ listing_16bits : value_16bits
 
 void yyerror(const char *s)
 {
-	printf_s("yyerror: %s\n", s);
+	printf("yyerror: %s\n", s);
 	error_message(0);
 }

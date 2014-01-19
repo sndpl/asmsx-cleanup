@@ -116,7 +116,6 @@ extern int defined_symbol(const char *);
 extern FILE *yyin, *yyout;
 
 extern int yylex(void);
-
 extern int yyparse(void);
 extern void yyerror(const char *);
 
