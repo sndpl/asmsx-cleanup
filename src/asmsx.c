@@ -340,7 +340,6 @@ void error_message(int code)
 	}
 
 	remove("~tmppre.?");
-//	exit(0);
 }
 
 
@@ -1392,7 +1391,6 @@ int main(int argc, char *argv[])
 		exit(0);
 	}
 
-//	clock();
 	initialize_system();
 
 	assembler = (char *)malloc(ASMSX_MAX_PATH);
