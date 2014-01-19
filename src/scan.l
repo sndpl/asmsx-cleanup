@@ -288,8 +288,6 @@ m			{
 				return CONDITION;
 			}
  
-0"/"1			return MULTI_MODE;
-
 .?db/[ \t]+		return PSEUDO_DB;
 .?defb/[ \t]+		return PSEUDO_DB;
 .?dt/[ \t]+		return PSEUDO_DB;

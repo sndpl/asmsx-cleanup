@@ -184,7 +184,6 @@
 %token <val> REGISTER_16_IX
 %token <val> REGISTER_16_IY
 %token <val> REGISTER_PAR
-%token <val> MULTI_MODE
 %token <val> CONDITION
 
 %token <val> NUMBER
