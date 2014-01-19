@@ -76,7 +76,10 @@ extern void prompt_error2(int);
 
 <rept>.				strcat(p2text, yytext);	/* TODO: investigate! This was p2buf=strcat(p2text,yytext) in original */
 <rept>\n			strcat(p2buf, yytext);
-<rept><<EOF>>			error_message(2);
+<rept><<EOF>>			{
+					error_message(2);
+					exit(2);
+				}
 <repnum>.			prompt_error2(1);
 
 <INITIAL>\n			{
