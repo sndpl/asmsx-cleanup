@@ -21,12 +21,6 @@
     <ClCompile Include="..\wav.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="core.tab.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="lex.lex.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="lex.parser1.c">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -34,6 +28,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="lex.parser3.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="lex.scan.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="z80gen.tab.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -56,12 +56,12 @@
     <ClInclude Include="..\..\..\compat_s\src\compat_s.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="core.tab.h">
+    <ClInclude Include="z80gen.tab.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="..\lex.l">
+    <CustomBuild Include="..\scan.l">
       <Filter>Source Files</Filter>
     </CustomBuild>
     <CustomBuild Include="..\parser1.l">
@@ -73,7 +73,7 @@
     <CustomBuild Include="..\parser3.l">
       <Filter>Source Files</Filter>
     </CustomBuild>
-    <CustomBuild Include="..\core.y">
+    <CustomBuild Include="..\z80gen.y">
       <Filter>Source Files</Filter>
     </CustomBuild>
   </ItemGroup>
