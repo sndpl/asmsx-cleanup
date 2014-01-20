@@ -50,7 +50,7 @@ char *p3text;
 					BEGIN(INITIAL);
 				}
 
-<zilog>\42[^\42\n]+\42		strcat(p3text, yytext);
+<zilog>\"[^\"\n]+\"		strcat(p3text, yytext);
 <zilog>"("			strcat(p3text, "[");
 <zilog>")"			strcat(p3text, "]");
 <zilog>"["			strcat(p3text, "(");

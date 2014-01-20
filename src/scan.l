@@ -406,9 +406,9 @@ random			return PSEUDO_RANDOM;
 				return PSEUDO_END;
 			}
 
-\42[^\42\n]+\42		{
-				yylval.tex = strtok(yytext, "\42");
-				yylval.tex = strtok(yytext, "\42");
+\"[^\"\n]+\"		{
+				yylval.tex = strtok(yytext, "\"");
+				yylval.tex = strtok(yytext, "\"");
 				return TEXT;
 			}
 

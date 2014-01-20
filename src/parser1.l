@@ -41,7 +41,7 @@ extern void prompt_error1(int);
 
 %%
 
-<INITIAL>\42[^\42]*\42		strcat(p1text, yytext);
+<INITIAL>\"[^\"]*\"		strcat(p1text, yytext);
 
 <INITIAL>.?include/[ \042\t]+	{
 					p1tmp = NULL;
@@ -50,7 +50,7 @@ extern void prompt_error1(int);
 
 <inclusion>[ \t]*		/* strip spaces */
 
-<inclusion>[^ \t\n]+		p1tmp = strtok(yytext, "\42");
+<inclusion>[^ \t\n]+		p1tmp = strtok(yytext, "\"");
 
 <inclusion>\n			{
 					if (NULL == p1tmp)
@@ -122,18 +122,18 @@ extern void prompt_error1(int);
 <pascal_comment>[^}]*		/* Skip all within */
 <pascal_comment>"}"		BEGIN(INITIAL);
 
-<INITIAL>\42			{
+<INITIAL>\"			{
 					strcat(p1text, yytext);
 					BEGIN(chain);
 				}
 
-<chain>\42			{
+<chain>\"			{
 					strcat(p1text, yytext);
 					BEGIN(INITIAL);
 				}
 
 <chain>\n			prompt_error1(1);
-<chain>[^\42\n]			strcat(p1text, yytext);
+<chain>[^\"\n]			strcat(p1text, yytext);
 
 <INITIAL>[ \t]+			{
 					if (0 < strlen(p1text))
