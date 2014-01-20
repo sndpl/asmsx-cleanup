@@ -1,12 +1,25 @@
-/*
-	PARSER-3
-	(c) Eduardo Robsy Petrus, 2010
+/* Look for ZILOG macro, if present, swap parentheses and square
+ brackets. This affects syntax for mathematical expressions and
+ instructions with indirect addressing.
 
-	Functions:
-		1. Identify ZILOG macro
-		2. Set accordingly indirection and mathematical style 
+ Copyright (C) 2000-2011 Eduardo A. Robsy Petrus
+ Copyright (C) 2014 Adrian Oboroc
+ 
+ This file is part of asmsx project <https://github.com/asmsx/asmsx/>.
+ 
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+ 
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+ 
+ You should have received a copy of the GNU General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.  */
 
-*/
 
 %option noyywrap yylineno nounput warn
 

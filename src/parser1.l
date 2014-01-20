@@ -1,15 +1,24 @@
-/*
-	PARSER-1
-	(c) Eduardo Robsy Petrus, 2000-2010
+/* Eliminate all white space and comments, process includes, retain
+ line's file origin and number, read Mac, Linux and Windows text files.
 
-	Functions:
-		1. Eliminate all comments
-		2. Eliminate blank lines
-		3. Eliminate duplicated spaces and tabulators
-		4. Include source file name and line numbers
-		5. Manage INCLUDE files nested up to 16 levels
-		6. Supports MS-DOS, Windows, Linux and Mac text source files
-*/
+ Copyright (C) 2000-2011 Eduardo A. Robsy Petrus
+ Copyright (C) 2014 Adrian Oboroc
+ 
+ This file is part of asmsx project <https://github.com/asmsx/asmsx/>.
+ 
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+ 
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+ 
+ You should have received a copy of the GNU General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.  */
+
 
 %option noyywrap yylineno nounput warn
 
