@@ -23,6 +23,7 @@
 
 %option noyywrap yylineno nounput warn
 
+/* anything between %{ and %} is included as-is. See http://flex.sourceforge.net/manual/Rules-Section.html */
 %{
 #include <stdio.h>
 #include <stdlib.h>
@@ -30,49 +31,51 @@
 
 #include "asmsx.h"
 
-#define P3TEXT_MAX	0x1000
+#define P3TEXT_MAX	0x1000	/* 4 Kilobytes */
 
 FILE *p3fout;
 char *p3text;
 %}
 
+/* %s defines inclusive state? Need to look it up */
 %s line
 %s zilog
 
 %%
 
-<INITIAL>"#"line[ \t]*[0-9]+\n	{
-					strcat(p3text, yytext);
-					BEGIN(line);
+<INITIAL>"#"line[ \t]*[0-9]+\n	{	/* line starts with #line ("#"line), then some white space ([ \t]*), then one or more decimal digits and ends with new line */
+					strcat(p3text, yytext);	/* copy input line to output */
+					BEGIN(line);		/* switch to "line" state */
 				}
 
-<INITIAL>\n			{
-					fprintf(p3fout, "%s%s", p3text, yytext);
-					p3text[0] = 0;
+<INITIAL>\n			{	/* new line is the first character of input line - empty line? */
+					fprintf(p3fout, "%s%s", p3text, yytext);	/* flush buffer to output file */
+					p3text[0] = 0;					/* empty output buffer */
 				}
 
-<INITIAL>.			strcat(p3text, yytext);
 
-<line>.?zilog[ \t]*\n		{
-					strcat(p3text, yytext);
-					BEGIN(zilog);
+<INITIAL>.			strcat(p3text, yytext);	/* line starts with any character except new line ('.'), copy it as is */
+
+<line>.?zilog[ \t]*\n		{	/* conditional on "line" state, any character but new line (.?), then 'zilog', then zero or more white space and a new line */
+					strcat(p3text, yytext);	/* copy to output as is */
+					BEGIN(zilog);		/* switch to "zilog" state */
 				}
 
-<line>.				{
-					strcat(p3text, yytext);
-					BEGIN(INITIAL);
+<line>.				{	/* conditional on "line" state, look for any character except new line ('.') */
+					strcat(p3text, yytext);	/* copy to output as is */
+					BEGIN(INITIAL);		/* reset state to default */
 				}
 
-<zilog>\"[^\"\n]+\"		strcat(p3text, yytext);
-<zilog>"("			strcat(p3text, "[");
-<zilog>")"			strcat(p3text, "]");
-<zilog>"["			strcat(p3text, "(");
-<zilog>"]"			strcat(p3text, ")");
-<zilog>.			strcat(p3text, yytext);
+<zilog>\"[^\"\n]+\"		strcat(p3text, yytext);	/* starts with '"' (\"), then one or more characters that are not quotes or new lines ([^\"\n]+), ends with another '"' - copy as is */
+<zilog>"("			strcat(p3text, "[");	/* replace '(' with '[' */
+<zilog>")"			strcat(p3text, "]");	/* replace ')' with ']' */
+<zilog>"["			strcat(p3text, "(");	/* replace '[' with '(' */
+<zilog>"]"			strcat(p3text, ")");	/* replace ']' with ')' */
+<zilog>.			strcat(p3text, yytext);	/* any other character, copy as is */
 
-<zilog>\n			{
-					fprintf(p3fout, "%s%s", p3text, yytext);
-					p3text[0] = 0;
+<zilog>\n			{	/* new line while in zilog state */
+					fprintf(p3fout, "%s%s", p3text, yytext);	/* flush buffer to output file */
+					p3text[0] = 0;					/* empty output buffer */
 				}
 %%
 
@@ -105,7 +108,7 @@ int preprocessor3(void)
 		exit(1);
 	}
 
-	yylex();
+	yylex();	/* read from ~tmppre.0, process with yylex() and output to ~tmppre.1 */
 
 	fclose(input);
 	fclose(p3fout);
