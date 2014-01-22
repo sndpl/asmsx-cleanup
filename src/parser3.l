@@ -43,6 +43,11 @@ char *p3text;
 
 %%
 
+(?#
+	This is a multi-line comment in pattern definition section.
+	Perhaps it would be good to switch from C to flex comments.
+)
+
 <INITIAL>"#"line[ \t]*[0-9]+\n	{	/* line starts with #line ("#"line), then some white space ([ \t]*), then one or more decimal digits and ends with new line */
 					strcat(p3text, yytext);	/* copy input line to output */
 					BEGIN(line);		/* switch to "line" state */
