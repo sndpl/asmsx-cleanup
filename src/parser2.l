@@ -21,6 +21,7 @@
 
 %option noyywrap yylineno nounput warn
 
+/* anything between %{ and %} is included as-is */
 %{
 #include <stdio.h>
 #include <stdlib.h>
@@ -28,8 +29,8 @@
 
 #include "asmsx.h"
 
-#define P2TEXT_MAX	0x1000
-#define P2BUF_MAX	0x4000
+#define P2TEXT_MAX	0x1000	/* 4 Kilobytes */
+#define P2BUF_MAX	0x4000	/* 16 Kilobytes */
 
 FILE *p2output;
 char *p2text, *p2buf;
@@ -38,6 +39,7 @@ unsigned int p2no, p2lines, i;
 extern void prompt_error2(int);
 %}
 
+/* %s defines inclusive state */
 %s rept
 %s repnum
 %s line
@@ -45,24 +47,24 @@ extern void prompt_error2(int);
 
 %%
 
-<INITIAL>"#"line[ \t]*[0-9]+\n	{
-					strcat(p2text, yytext);
-					p2lines = atoi(&yytext[5]);
-					BEGIN(line);
+<INITIAL>"#"line[ \t]*[0-9]+\n	{	/* line starts with #line ("#"line), then some white space ([ \t]*), then one or more decimal digits and ends with new line */
+					strcat(p2text, yytext);		/* add input to output buffer */
+					p2lines = atoi(&yytext[5]);	/* what is &yytext[5]? */
+					BEGIN(line);			/* start "line" state */
 				}
 
-<line>.?rept[ \t]+		BEGIN(repnum);
+<line>.?rept[ \t]+		BEGIN(repnum);	/* while in "line" state, encounter 0 or more of any character other then new line, "rept" verbatim, followed with white space */
 
-<line>.				{
-					strcat(p2text, yytext);
-					BEGIN(INITIAL);
+<line>.				{	/* while in "line" state, any character other then new line */
+					strcat(p2text, yytext);	/* is copied to output buffer */
+					BEGIN(INITIAL);		/* then reset state to default */
 				}
 
-<repnum>[0-9]+[ \t]*		{
-					p2no = atoi(yytext);
-					p2buf[0] = 0;
-					p2text[0] = 0;
-					BEGIN(rept);
+<repnum>[0-9]+[ \t]*		{	/* while in "repnum" state, any one or more digit, followed by optional white space */
+					p2no = atoi(yytext);	/* convert string number to unsigned integer value */
+					p2buf[0] = 0;		/* empty output buffer */
+					p2text[0] = 0;		/* empty the other buffer */
+					BEGIN(rept);		/* switch to "rept" state */
 				}
 
 <rept>.?rept[ \t]+[0-9]+[ \t]*	{
@@ -72,34 +74,49 @@ extern void prompt_error2(int);
 				}
 
 <rept>"#"line[ \t]*[0-9]+\n[ \t]*.?endr[ \t]*\n	{
-					if (p2nested)
+				/* line starts with #line ("#"line), followed by white space, followed by one or more digits, followed by new line
+				followed by zero or one of any character other then new line, followed by endr, followed by zero or more white space,
+				followed by new line */
+					if (p2nested)	/* level of nesting, 1 to 15 */
 					{
-						p2nested--;
-						strcat(p2buf, yytext);
+						p2nested--;		/* decrease nesting level */
+						strcat(p2buf, yytext);	/* copy input to buffer */
 					}
 					else
-					{
+					{	/* nesting level is 0 */
 						for (i = 0; i < p2no; i++)
-						fprintf(p2output, "%s", p2buf);
-						p2buf[0] = 0;
-						BEGIN(INITIAL);
+							fprintf(p2output, "%s", p2buf);	/* repeat p2buf content 'p2no' times */
+
+						p2buf[0] = 0;	/* empty output buffer */
+						BEGIN(INITIAL);	/* reset to default state */
 					}
 				}
 
-<rept>.				strcat(p2text, yytext);	/* TODO: investigate! This was p2buf=strcat(p2text,yytext) in original */
-<rept>\n			strcat(p2buf, yytext);
-<rept><<EOF>>			{
+<rept>.				{	/* any character in "rept" state */
+					strcat(p2buf, yytext);	/* TODO: investigate! This was p2buf = strcat(p2text, yytext) in original */
+				}
+
+<rept>\n			{	/* new line while in "rept" state */
+					strcat(p2buf, yytext);	/* copy verbatim */
+				}
+
+<rept><<EOF>>			{	/* reach end of file while "rept" block is unfinished */
 					error_message(2);
 					exit(2);
 				}
-<repnum>.			prompt_error2(1);
 
-<INITIAL>\n			{
-					fprintf(p2output, "%s%s", p2text, yytext);
-					p2text[0] = 0;
+<repnum>.			{	/* any character here means not a number after "repnum", numbers would be caught above */
+					prompt_error2(1);
 				}
 
-<INITIAL>.			strcat(p2text, yytext);
+<INITIAL>\n			{	/* new line in default state */
+					fprintf(p2output, "%s%s", p2text, yytext);	/* flush buffer to output file */
+					p2text[0] = 0;					/* reset buffer */
+				}
+
+<INITIAL>.			{	/* any character other then new line while in default state */
+					strcat(p2text, yytext);	/* copy verbatim */
+				}
 
 %%
 
