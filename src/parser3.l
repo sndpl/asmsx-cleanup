@@ -23,7 +23,7 @@
 
 %option noyywrap yylineno nounput warn
 
-/* anything between %{ and %} is included as-is. See http://flex.sourceforge.net/manual/Rules-Section.html */
+/* anything between %{ and %} is included as-is */
 %{
 #include <stdio.h>
 #include <stdlib.h>
@@ -37,7 +37,7 @@ FILE *p3fout;
 char *p3text;
 %}
 
-/* %s defines inclusive state? Need to look it up */
+/* %s defines inclusive state */
 %s line
 %s zilog
 
