@@ -1330,7 +1330,7 @@ void cas_write_file(void)
 
 	f = fopen(binary, "wb");
 	if (!f)
-		return;	/* TODO: print some error ??? */
+		return;
 
 	for (i = 0; i < 8; i++)
 		fputc(cas[i], f);
