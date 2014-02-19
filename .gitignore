@@ -222,7 +222,14 @@ pip-log.txt
 *.map
 *.bin
 
-#asmsx
+#asmsx compilation derivate files
 *.tab.h
 *.tab.c
 lex.*.c
+
+#asmsx output files
+~*.*
+*.bin
+*.cas
+*.txt
+*.wav
