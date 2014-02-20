@@ -97,7 +97,6 @@ void wav_write_byte(const unsigned char b, FILE *f)
 void wav_write_file(const char *bin_filename, const char *bin_intname, const int type, const int addr_start, const int addr_end, const int start, const unsigned char *memory)
 {
 	char wav_filename[ASMSX_MAX_PATH];
-	char wav_intname[ASMSX_MAX_PATH];	/* TODO: max valid size is 7, could reduce size from ASMSX_MAX_PATH with some sanity checks */
 	FILE *f;
 	int i, wav_size = 0;
 
@@ -128,6 +127,8 @@ void wav_write_file(const char *bin_filename, const char *bin_intname, const int
 
 	if ((BASIC == type) || (ROM == type))
 	{
+		char wav_intname[ASMSX_MAX_PATH];	/* TODO: max valid size is 7, could reduce size from ASMSX_MAX_PATH with some sanity checks */
+
 		wav_size = (3968 * 2 + 1500 * 2 + 11 * (10 + 6 + 6 + addr_end - addr_start + 1)) * 40;
 		wav_size = wav_size << 1;
 
