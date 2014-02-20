@@ -651,7 +651,6 @@ void output_text(void)
 void save_symbols(void)
 {
 	int i, j;
-	FILE *f;
 
 	j = 0;
 	for (i = 0; i < maximum; i++)
@@ -659,6 +658,7 @@ void save_symbols(void)
 
 	if (j > 0)
 	{
+		FILE *f;
 		f = fopen(symbols, "wt");
 		if (!f)
 		{
@@ -811,7 +811,7 @@ void write_zx_number(int i)	/* TODO: move to zx specific unit */
 	write_zx_byte((char)(c + 48));
 	c = i / 10;
 	write_zx_byte((char)(c + 48));
-	i %= 10;
+//	i %= 10;	/* cppcheck wtf */
 	write_zx_byte((char)(c + 48));
 }
 
@@ -849,6 +849,7 @@ void write_binary(void)
 
 	if (type == MEGAROM)
 	{
+
 		strcat(binary, ".rom");
 		PC = 0x4002;
 		subpage = 0x00;
@@ -885,6 +886,7 @@ void write_binary(void)
 	{
 		if (start)
 		{
+
 			fputc(0x13, foutput);
 			fputc(0, foutput);
 			fputc(0, foutput);
@@ -1095,11 +1097,12 @@ void type_rom(void)
 
 void type_megarom(int n)
 {
-	int i;
-
 	if (pass == 1)
+	{
+		int i;
 		for (i = 0; i < 256; i++)
 			usedpage[i] = 0;
+	}
 
 	if ((pass == 1) && (!addr_start))
 	{
