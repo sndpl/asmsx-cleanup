@@ -23,7 +23,7 @@ asmsx highlights:
 - accepts standard Z80 syntax (implicit accumulator);
 - works with various radices: decimal, hex, octal and binary;
 - supports arithmetic and logic operations in source code;
-- supports floating point decimal values by converting them to 16-bit fixead
+- supports floating point decimal values by converting them to 16-bit fixed
 point values;
 - actual mathematical functions: trigonometric, potential etc.
 - supports multiple files through inclusion, nesting is allowed;
