@@ -36,6 +36,9 @@
     <ClCompile Include="z80gen.tab.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\warning.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\asmsx.h">
@@ -57,6 +60,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="z80gen.tab.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\warning.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

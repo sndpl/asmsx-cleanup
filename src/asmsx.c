@@ -26,6 +26,7 @@
 #include <math.h>
 
 #include "asmsx.h"
+#include "warning.h"
 #include "wav.h"
 #include "parser1.h"
 #include "parser2.h"
@@ -340,37 +341,6 @@ void error_message(int code)
 	}
 
 	remove("~tmppre.?");
-}
-
-
-void warning_message(int code, int _pass, char *_source, int _lines, int *warnings)
-{
-	if (2 != _pass)
-		return;
-
-	printf("%s, line %d: Warning: ", strtok(_source, "\042"), _lines);
-	switch (code)
-	{
-		case 1:
-			printf("16-bit overflow\n");
-			break;
-		case 2:
-			printf("8-bit overflow\n");
-			break;
-		case 3:
-			printf("3-bit overflow\n");
-			break;
-		case 4:
-			printf("output cannot be converted to CAS\n");
-			break;
-		case 5:
-			printf("not official Zilog syntax\n");
-			break;
-		case 6:
-			printf("undocumented Zilog instruction\n");
-			break;
-	}
-	(*warnings)++;	/* ??? run this through debugger to confirm it works as hoped ??? */
 }
 
 

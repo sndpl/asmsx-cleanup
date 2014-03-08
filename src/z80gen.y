@@ -6,6 +6,7 @@
 #include <math.h>
 
 #include "asmsx.h"
+#include "warning.h"
 
 #define YYMALLOC	malloc
 #define YYFREE		free
