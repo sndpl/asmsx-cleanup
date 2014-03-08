@@ -343,12 +343,12 @@ void error_message(int code)
 }
 
 
-void warning_message(int code)
+void warning_message(int code, int _pass, char *_source, int _lines, int *warnings)
 {
-	if (2 != pass)
+	if (2 != _pass)
 		return;
 
-	printf("%s, line %d: Warning: ", strtok(source, "\042"), lines);
+	printf("%s, line %d: Warning: ", strtok(_source, "\042"), _lines);
 	switch (code)
 	{
 		case 1:
@@ -370,7 +370,7 @@ void warning_message(int code)
 			printf("undocumented Zilog instruction\n");
 			break;
 	}
-	warnings++;
+	(*warnings)++;	/* ??? run this through debugger to confirm it works as hoped ??? */
 }
 
 
@@ -1324,7 +1324,7 @@ void cas_write_file(void)
 
 	if ((type == MEGAROM) || ((type == ROM) && (addr_start < 0x8000)))
 	{
-		warning_message(0);
+		warning_message(0, pass, source, lines, &warnings);
 		return;
 	}
 

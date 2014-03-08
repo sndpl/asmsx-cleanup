@@ -111,6 +111,7 @@ void wav_write_file(const char *bin_filename, const char *bin_intname, const int
 	if ((MEGAROM == type) || ((ROM == type) && (0x8000 > addr_start)))
 	{
 	//	warning_message(0);	/* TODO: replace this with return code and have warning printed by caller */
+		warning_message(0, pass, source, lines, &warnings);
 		return;
 	}
 
@@ -122,6 +123,7 @@ void wav_write_file(const char *bin_filename, const char *bin_intname, const int
 	if (!f)
 	{
 	//	warning_message(0);	/* TODO: figure out if 0 is ok */
+		warning_message(0, pass, source, lines, &warnings);
 		return;
 	}
 

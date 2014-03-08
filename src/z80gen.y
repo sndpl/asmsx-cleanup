@@ -1143,7 +1143,9 @@ mnemo_exchange: MNEMO_EX REGISTER_PAR ',' REGISTER_PAR
 		}
 
 		if ((zilog) && ($2 != 1))
-			warning_message(5);
+		{
+			warning_message(5, pass, source, lines, &warnings);
+		}
 		write_byte(0xeb);
 	}
 	| MNEMO_EX REGISTER_AF ',' REGISTER_AF APOSTROPHE
@@ -1379,7 +1381,9 @@ mnemo_arithm8bit: MNEMO_ADD REGISTER ',' REGISTER
 		}
 
 		if (zilog)
-			warning_message(5);
+		{
+			warning_message(5, pass, source, lines, &warnings);
+		}
 
 		write_byte(0x90 | $4);
 	}
@@ -1392,7 +1396,9 @@ mnemo_arithm8bit: MNEMO_ADD REGISTER ',' REGISTER
 		}
 
 		if (zilog)
-			warning_message(5);
+		{
+			warning_message(5, pass, source, lines, &warnings);
+		}
 
 		write_byte(0xdd);
 		write_byte(0x90 | $4);
@@ -1406,7 +1412,9 @@ mnemo_arithm8bit: MNEMO_ADD REGISTER ',' REGISTER
 		}
 
 		if (zilog)
-			warning_message(5);
+		{
+			warning_message(5, pass, source, lines, &warnings);
+		}
 
 		write_byte(0xfd);
 		write_byte(0x90 | $4);
@@ -1420,7 +1428,9 @@ mnemo_arithm8bit: MNEMO_ADD REGISTER ',' REGISTER
 		}
 
 		if (zilog)
-			warning_message(5);
+		{
+			warning_message(5, pass, source, lines, &warnings);
+		}
 
 		write_byte(0xd6);
 		write_byte($4);
@@ -1434,7 +1444,9 @@ mnemo_arithm8bit: MNEMO_ADD REGISTER ',' REGISTER
 		}
 
 		if (zilog)
-			warning_message(5);
+		{
+			warning_message(5, pass, source, lines, &warnings);
+		}
 
 		write_byte(0x96);
 	}
@@ -1447,7 +1459,9 @@ mnemo_arithm8bit: MNEMO_ADD REGISTER ',' REGISTER
 		}
 
 		if (zilog)
-			warning_message(5);
+		{
+			warning_message(5, pass, source, lines, &warnings);
+		}
 
 		write_byte(0xdd);
 		write_byte(0x96);
@@ -1462,7 +1476,9 @@ mnemo_arithm8bit: MNEMO_ADD REGISTER ',' REGISTER
 		}
 
 		if (zilog)
-			warning_message(5);
+		{
+			warning_message(5, pass, source, lines, &warnings);
+		}
 
 		write_byte(0xfd);
 		write_byte(0x96);
@@ -1554,7 +1570,9 @@ mnemo_arithm8bit: MNEMO_ADD REGISTER ',' REGISTER
 		}
 
 		if (zilog)
-			warning_message(5);
+		{
+			warning_message(5, pass, source, lines, &warnings);
+		}
 
 		write_byte(0xa0 | $4);
 	}
@@ -1567,7 +1585,9 @@ mnemo_arithm8bit: MNEMO_ADD REGISTER ',' REGISTER
 		}
 
 		if (zilog)
-			warning_message(5);
+		{
+			warning_message(5, pass, source, lines, &warnings);
+		}
 
 		write_byte(0xdd);
 		write_byte(0xa0 | $4);
@@ -1581,7 +1601,9 @@ mnemo_arithm8bit: MNEMO_ADD REGISTER ',' REGISTER
 		}
 
 		if (zilog)
-			warning_message(5);
+		{
+			warning_message(5, pass, source, lines, &warnings);
+		}
 
 		write_byte(0xfd);
 		write_byte(0xa0 | $4);
@@ -1595,7 +1617,9 @@ mnemo_arithm8bit: MNEMO_ADD REGISTER ',' REGISTER
 		}
 
 		if (zilog)
-			warning_message(5);
+		{
+			warning_message(5, pass, source, lines, &warnings);
+		}
 
 		write_byte(0xe6);
 		write_byte($4);
@@ -1609,7 +1633,9 @@ mnemo_arithm8bit: MNEMO_ADD REGISTER ',' REGISTER
 		}
 
 		if (zilog)
-			warning_message(5);
+		{
+			warning_message(5, pass, source, lines, &warnings);
+		}
 
 		write_byte(0xa6);
 	}
@@ -1622,7 +1648,9 @@ mnemo_arithm8bit: MNEMO_ADD REGISTER ',' REGISTER
 		}
 
 		if (zilog)
-			warning_message(5);
+		{
+			warning_message(5, pass, source, lines, &warnings);
+		}
 
 		write_byte(0xdd);
 		write_byte(0xa6);
@@ -1637,7 +1665,9 @@ mnemo_arithm8bit: MNEMO_ADD REGISTER ',' REGISTER
 		}
 
 		if (zilog)
-			warning_message(5);
+		{
+			warning_message(5, pass, source, lines, &warnings);
+		}
 
 		write_byte(0xfd);
 		write_byte(0xa6);
@@ -1652,7 +1682,9 @@ mnemo_arithm8bit: MNEMO_ADD REGISTER ',' REGISTER
 		}
 
 		if (zilog)
-			warning_message(5);
+		{
+			warning_message(5, pass, source, lines, &warnings);
+		}
 
 		write_byte(0xb0 | $4);
 	}
@@ -1665,7 +1697,9 @@ mnemo_arithm8bit: MNEMO_ADD REGISTER ',' REGISTER
 		}
 
 		if (zilog)
-			warning_message(5);
+		{
+			warning_message(5, pass, source, lines, &warnings);
+		}
 
 		write_byte(0xdd);
 		write_byte(0xb0 | $4);
@@ -1679,7 +1713,9 @@ mnemo_arithm8bit: MNEMO_ADD REGISTER ',' REGISTER
 		}
 
 		if (zilog)
-			warning_message(5);
+		{
+			warning_message(5, pass, source, lines, &warnings);
+		}
 
 		write_byte(0xfd);
 		write_byte(0xb0 | $4);
@@ -1693,7 +1729,9 @@ mnemo_arithm8bit: MNEMO_ADD REGISTER ',' REGISTER
 		}
 
 		if (zilog)
-			warning_message(5);
+		{
+			warning_message(5, pass, source, lines, &warnings);
+		}
 
 		write_byte(0xf6);
 		write_byte($4);
@@ -1707,7 +1745,9 @@ mnemo_arithm8bit: MNEMO_ADD REGISTER ',' REGISTER
 		}
 
 		if (zilog)
-			warning_message(5);
+		{
+			warning_message(5, pass, source, lines, &warnings);
+		}
 
 		write_byte(0xb6);
 	}
@@ -1720,7 +1760,9 @@ mnemo_arithm8bit: MNEMO_ADD REGISTER ',' REGISTER
 		}
 
 		if (zilog)
-			warning_message(5);
+		{
+			warning_message(5, pass, source, lines, &warnings);
+		}
 
 		write_byte(0xdd);
 		write_byte(0xb6);
@@ -1735,7 +1777,9 @@ mnemo_arithm8bit: MNEMO_ADD REGISTER ',' REGISTER
 		}
 
 		if (zilog)
-			warning_message(5);
+		{
+			warning_message(5, pass, source, lines, &warnings);
+		}
 
 		write_byte(0xfd);
 		write_byte(0xb6);
@@ -1750,7 +1794,9 @@ mnemo_arithm8bit: MNEMO_ADD REGISTER ',' REGISTER
 		}
 
 		if (zilog)
-			warning_message(5);
+		{
+			warning_message(5, pass, source, lines, &warnings);
+		}
 
 		write_byte(0xa8 | $4);
 	}
@@ -1763,7 +1809,9 @@ mnemo_arithm8bit: MNEMO_ADD REGISTER ',' REGISTER
 		}
 
 		if (zilog)
-			warning_message(5);
+		{
+			warning_message(5, pass, source, lines, &warnings);
+		}
 
 		write_byte(0xdd);
 		write_byte(0xa8 | $4);
@@ -1777,7 +1825,9 @@ mnemo_arithm8bit: MNEMO_ADD REGISTER ',' REGISTER
 		}
 
 		if (zilog)
-			warning_message(5);
+		{
+			warning_message(5, pass, source, lines, &warnings);
+		}
 
 		write_byte(0xfd);
 		write_byte(0xa8 | $4);
@@ -1791,7 +1841,9 @@ mnemo_arithm8bit: MNEMO_ADD REGISTER ',' REGISTER
 		}
 
 		if (zilog)
-			warning_message(5);
+		{
+			warning_message(5, pass, source, lines, &warnings);
+		}
 
 		write_byte(0xee);
 		write_byte($4);
@@ -1805,7 +1857,9 @@ mnemo_arithm8bit: MNEMO_ADD REGISTER ',' REGISTER
 		}
 
 		if (zilog)
-			warning_message(5);
+		{
+			warning_message(5, pass, source, lines, &warnings);
+		}
 
 		write_byte(0xae);
 	}
@@ -1818,7 +1872,9 @@ mnemo_arithm8bit: MNEMO_ADD REGISTER ',' REGISTER
 		}
 
 		if (zilog)
-			warning_message(5);
+		{
+			warning_message(5, pass, source, lines, &warnings);
+		}
 
 		write_byte(0xdd);
 		write_byte(0xae);
@@ -1833,7 +1889,9 @@ mnemo_arithm8bit: MNEMO_ADD REGISTER ',' REGISTER
 		}
 
 		if (zilog)
-			warning_message(5);
+		{
+			warning_message(5, pass, source, lines, &warnings);
+		}
 
 		write_byte(0xfd);
 		write_byte(0xae);
@@ -1848,7 +1906,9 @@ mnemo_arithm8bit: MNEMO_ADD REGISTER ',' REGISTER
 		}
 
 		if (zilog)
-			warning_message(5);
+		{
+			warning_message(5, pass, source, lines, &warnings);
+		}
 
 		write_byte(0xb8 | $4);
 	}
@@ -1861,7 +1921,9 @@ mnemo_arithm8bit: MNEMO_ADD REGISTER ',' REGISTER
 		}
 
 		if (zilog)
-			warning_message(5);
+		{
+			warning_message(5, pass, source, lines, &warnings);
+		}
 
 		write_byte(0xdd);
 		write_byte(0xb8 | $4);
@@ -1875,7 +1937,9 @@ mnemo_arithm8bit: MNEMO_ADD REGISTER ',' REGISTER
 		}
 
 		if (zilog)
-			warning_message(5);
+		{
+			warning_message(5, pass, source, lines, &warnings);
+		}
 
 		write_byte(0xfd);
 		write_byte(0xb8 | $4);
@@ -1889,7 +1953,9 @@ mnemo_arithm8bit: MNEMO_ADD REGISTER ',' REGISTER
 		}
 
 		if (zilog)
-			warning_message(5);
+		{
+			warning_message(5, pass, source, lines, &warnings);
+		}
 
 		write_byte(0xfe);
 		write_byte($4);
@@ -1903,7 +1969,9 @@ mnemo_arithm8bit: MNEMO_ADD REGISTER ',' REGISTER
 		}
 
 		if (zilog)
-			warning_message(5);
+		{
+			warning_message(5, pass, source, lines, &warnings);
+		}
 
 		write_byte(0xbe);
 	}
@@ -1916,7 +1984,9 @@ mnemo_arithm8bit: MNEMO_ADD REGISTER ',' REGISTER
 		}
 
 		if (zilog)
-			warning_message(5);
+		{
+			warning_message(5, pass, source, lines, &warnings);
+		}
 
 		write_byte(0xdd);
 		write_byte(0xbe);
@@ -1931,7 +2001,9 @@ mnemo_arithm8bit: MNEMO_ADD REGISTER ',' REGISTER
 		}
 
 		if (zilog)
-			warning_message(5);
+		{
+			warning_message(5, pass, source, lines, &warnings);
+		}
 
 		write_byte(0xfd);
 		write_byte(0xbe);
@@ -1940,14 +2012,18 @@ mnemo_arithm8bit: MNEMO_ADD REGISTER ',' REGISTER
 	| MNEMO_ADD REGISTER
 	{
 		if (zilog)
-			warning_message(5);
+		{
+			warning_message(5, pass, source, lines, &warnings);
+		}
 
 		write_byte(0x80 | $2);
 	}
 	| MNEMO_ADD REGISTER_IX
 	{
 		if (zilog)
-			warning_message(5);
+		{
+			warning_message(5, pass, source, lines, &warnings);
+		}
 
 		write_byte(0xdd);
 		write_byte(0x80 | $2);
@@ -1955,7 +2031,9 @@ mnemo_arithm8bit: MNEMO_ADD REGISTER ',' REGISTER
 	| MNEMO_ADD REGISTER_IY
 	{
 		if (zilog)
-			warning_message(5);
+		{
+			warning_message(5, pass, source, lines, &warnings);
+		}
 
 		write_byte(0xfd);
 		write_byte(0x80 | $2);
@@ -1963,7 +2041,9 @@ mnemo_arithm8bit: MNEMO_ADD REGISTER ',' REGISTER
 	| MNEMO_ADD value_8bits
 	{
 		if (zilog)
-			warning_message(5);
+		{
+			warning_message(5, pass, source, lines, &warnings);
+		}
 
 		write_byte(0xc6);
 		write_byte($2);
@@ -1971,14 +2051,18 @@ mnemo_arithm8bit: MNEMO_ADD REGISTER ',' REGISTER
 	| MNEMO_ADD REGISTER_IND_HL
 	{
 		if (zilog)
-			warning_message(5);
+		{
+			warning_message(5, pass, source, lines, &warnings);
+		}
 
 		write_byte(0x86);
 	}
 	| MNEMO_ADD rel_IX
 	{
 		if (zilog)
-			warning_message(5);
+		{
+			warning_message(5, pass, source, lines, &warnings);
+		}
 
 		write_byte(0xdd);
 		write_byte(0x86);
@@ -1987,7 +2071,9 @@ mnemo_arithm8bit: MNEMO_ADD REGISTER ',' REGISTER
 	| MNEMO_ADD rel_IY
 	{
 		if (zilog)
-			warning_message(5);
+		{
+			warning_message(5, pass, source, lines, &warnings);
+		}
 
 		write_byte(0xfd);
 		write_byte(0x86);
@@ -1996,14 +2082,18 @@ mnemo_arithm8bit: MNEMO_ADD REGISTER ',' REGISTER
 	| MNEMO_ADC REGISTER
 	{
 		if (zilog)
-			warning_message(5);
+		{
+			warning_message(5, pass, source, lines, &warnings);
+		}
 
 		write_byte(0x88 | $2);
 	}
 	| MNEMO_ADC REGISTER_IX
 	{
 		if (zilog)
-			warning_message(5);
+		{
+			warning_message(5, pass, source, lines, &warnings);
+		}
 
 		write_byte(0xdd);
 		write_byte(0x88 | $2);
@@ -2011,7 +2101,9 @@ mnemo_arithm8bit: MNEMO_ADD REGISTER ',' REGISTER
 	| MNEMO_ADC REGISTER_IY
 	{
 		if (zilog)
-			warning_message(5);
+		{
+			warning_message(5, pass, source, lines, &warnings);
+		}
 
 		write_byte(0xfd);
 		write_byte(0x88 | $2);
@@ -2019,7 +2111,9 @@ mnemo_arithm8bit: MNEMO_ADD REGISTER ',' REGISTER
 	| MNEMO_ADC value_8bits
 	{
 		if (zilog)
-			warning_message(5);
+		{
+			warning_message(5, pass, source, lines, &warnings);
+		}
 
 		write_byte(0xce);
 		write_byte($2);
@@ -2027,14 +2121,18 @@ mnemo_arithm8bit: MNEMO_ADD REGISTER ',' REGISTER
 	| MNEMO_ADC REGISTER_IND_HL
 	{
 		if (zilog)
-			warning_message(5);
+		{
+			warning_message(5, pass, source, lines, &warnings);
+		}
 
 		write_byte(0x8e);
 	}
 	| MNEMO_ADC rel_IX
 	{
 		if (zilog)
-			warning_message(5);
+		{
+			warning_message(5, pass, source, lines, &warnings);
+		}
 
 		write_byte(0xdd);
 		write_byte(0x8e);
@@ -2043,7 +2141,9 @@ mnemo_arithm8bit: MNEMO_ADD REGISTER ',' REGISTER
 	| MNEMO_ADC rel_IY
 	{
 		if (zilog)
-			warning_message(5);
+		{
+			warning_message(5, pass, source, lines, &warnings);
+		}
 
 		write_byte(0xfd);
 		write_byte(0x8e);
@@ -2087,14 +2187,18 @@ mnemo_arithm8bit: MNEMO_ADD REGISTER ',' REGISTER
 	| MNEMO_SBC REGISTER
 	{
 		if (zilog)
-			warning_message(5);
+		{
+			warning_message(5, pass, source, lines, &warnings);
+		}
 
 		write_byte(0x98 | $2);
 	}
 	| MNEMO_SBC REGISTER_IX
 	{
 		if (zilog)
-			warning_message(5);
+		{
+			warning_message(5, pass, source, lines, &warnings);
+		}
 
 		write_byte(0xdd);
 		write_byte(0x98 | $2);
@@ -2102,7 +2206,9 @@ mnemo_arithm8bit: MNEMO_ADD REGISTER ',' REGISTER
 	| MNEMO_SBC REGISTER_IY
 	{
 		if (zilog)
-			warning_message(5);
+		{
+			warning_message(5, pass, source, lines, &warnings);
+		}
 
 		write_byte(0xfd);
 		write_byte(0x98 | $2);
@@ -2110,7 +2216,9 @@ mnemo_arithm8bit: MNEMO_ADD REGISTER ',' REGISTER
 	| MNEMO_SBC value_8bits
 	{
 		if (zilog)
-			warning_message(5);
+		{
+			warning_message(5, pass, source, lines, &warnings);
+		}
 
 		write_byte(0xde);
 		write_byte($2);
@@ -2118,14 +2226,18 @@ mnemo_arithm8bit: MNEMO_ADD REGISTER ',' REGISTER
 	| MNEMO_SBC REGISTER_IND_HL
 	{
 		if (zilog)
-			warning_message(5);
+		{
+			warning_message(5, pass, source, lines, &warnings);
+		}
 
 		write_byte(0x9e);
 	}
 	| MNEMO_SBC rel_IX
 	{
 		if (zilog)
-			warning_message(5);
+		{
+			warning_message(5, pass, source, lines, &warnings);
+		}
 
 		write_byte(0xdd);
 		write_byte(0x9e);
@@ -2134,7 +2246,9 @@ mnemo_arithm8bit: MNEMO_ADD REGISTER ',' REGISTER
 	| MNEMO_SBC rel_IY
 	{
 		if (zilog)
-			warning_message(5);
+		{
+			warning_message(5, pass, source, lines, &warnings);
+		}
 
 		write_byte(0xfd);
 		write_byte(0x9e);
@@ -3207,7 +3321,9 @@ mnemo_io: MNEMO_IN REGISTER ',' '[' value_8bits ']'
 		}
 
 		if (zilog)
-			warning_message(5);
+		{
+			warning_message(5, pass, source, lines, &warnings);
+		}
 
 		write_byte(0xdb);
 		write_byte($4);
@@ -3232,7 +3348,9 @@ mnemo_io: MNEMO_IN REGISTER ',' '[' value_8bits ']'
 		}
 
 		if (zilog)
-			warning_message(5);
+		{
+			warning_message(5, pass, source, lines, &warnings);
+		}
 
 		write_byte(0xed);
 		write_byte(0x70);
@@ -3288,7 +3406,9 @@ mnemo_io: MNEMO_IN REGISTER ',' '[' value_8bits ']'
 		}
 
 		if (zilog)
-			warning_message(5);
+		{
+			warning_message(5, pass, source, lines, &warnings);
+		}
 
 		write_byte(0xd3);
 		write_byte($2);
@@ -3343,7 +3463,9 @@ mnemo_io: MNEMO_IN REGISTER ',' '[' value_8bits ']'
         | MNEMO_IN '[' value_8bits ']'
 	{
 		if (zilog)
-			warning_message(5);
+		{
+			warning_message(5, pass, source, lines, &warnings);
+		}
 
 		write_byte(0xdb);
 		write_byte($3);
@@ -3351,7 +3473,9 @@ mnemo_io: MNEMO_IN REGISTER ',' '[' value_8bits ']'
         | MNEMO_IN value_8bits
 	{
 		if (zilog)
-			warning_message(5);
+		{
+			warning_message(5, pass, source, lines, &warnings);
+		}
 
 		write_byte(0xdb);
 		write_byte($2);
@@ -3359,7 +3483,9 @@ mnemo_io: MNEMO_IN REGISTER ',' '[' value_8bits ']'
         | MNEMO_OUT '[' value_8bits ']'
 	{
 		if (zilog)
-			warning_message(5);
+		{
+			warning_message(5, pass, source, lines, &warnings);
+		}
 
 		write_byte(0xd3);
 		write_byte($3);
@@ -3367,7 +3493,9 @@ mnemo_io: MNEMO_IN REGISTER ',' '[' value_8bits ']'
         | MNEMO_OUT value_8bits
 	{
 		if (zilog)
-			warning_message(5);
+		{
+			warning_message(5, pass, source, lines, &warnings);
+		}
 
 		write_byte(0xd3);
 		write_byte($2);
@@ -3804,7 +3932,9 @@ value_real: REAL
 value_3bits: value
 	{
 		if (((int)$1 < 0) || ((int)$1 > 7))
-			warning_message(3);
+		{
+			warning_message(3, pass, source, lines, &warnings);
+		}
 
 		$$ = $1 & 0x07;
 	}
@@ -3813,7 +3943,9 @@ value_3bits: value
 value_8bits: value
 	{
 		if (((int)$1 > 255) || ((int) $1 < -128))
-			warning_message(2);
+		{
+			warning_message(2, pass, source, lines, &warnings);
+		}
 
 		$$ = $1 & 0xff;
 	}
@@ -3822,7 +3954,9 @@ value_8bits: value
 value_16bits: value
 	{
 		if (((int)$1 > 65535) || ((int)$1 < -32768))
-			warning_message(1);
+		{
+			warning_message(1, pass, source, lines, &warnings);
+		}
 
 		$$ = $1 & 0xffff;
 	}
