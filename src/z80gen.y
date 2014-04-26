@@ -6,7 +6,13 @@
 #include <math.h>
 
 #include "asmsx.h"
+
+/* TODO: remove this super ugly temporary hack once it is clear why vs2013 doesn't see warning.h */
+#ifdef _MSC_VER
+#include "..\warning.h"
+#else
 #include "warning.h"
+#endif
 
 #define YYMALLOC	malloc
 #define YYFREE		free
