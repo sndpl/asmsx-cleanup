@@ -1416,8 +1416,8 @@ int main(int argc, char *argv[])
 		exit(1);
 	}
 
-	strcpy(filename, argv[1]);
-	strcpy(assembler, filename);
+	strncpy(filename, argv[1], ASMSX_MAX_PATH - 1);
+	strncpy(assembler, filename, ASMSX_MAX_PATH - 1);
 
 	strpos = strlen(filename);
 	do
