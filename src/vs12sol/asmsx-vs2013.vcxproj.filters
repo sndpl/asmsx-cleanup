@@ -56,9 +56,6 @@
     <ClInclude Include="..\wav.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\compat_s\src\compat_s.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="z80gen.tab.h">
       <Filter>Header Files</Filter>
     </ClInclude>
