@@ -97,7 +97,6 @@
     <ClCompile Include="z80gen.tab.c" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\compat_s\src\compat_s.h" />
     <ClInclude Include="..\asmsx.h" />
     <ClInclude Include="..\parser1.h" />
     <ClInclude Include="..\parser2.h" />
