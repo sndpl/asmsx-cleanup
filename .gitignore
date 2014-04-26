@@ -227,6 +227,7 @@ pip-log.txt
 *.tab.h
 *.tab.c
 lex.*.c
+~*
 
 #asmsx output files
 ~*.*
