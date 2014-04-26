@@ -788,7 +788,7 @@ void write_zx_number(int i)	/* TODO: move to zx specific unit */
 
 void write_binary(void)
 {
-	int i, j;
+	int i;
 
 	if ((addr_start > addr_end) && (type != MEGAROM))
 	{
@@ -819,6 +819,7 @@ void write_binary(void)
 
 	if (type == MEGAROM)
 	{
+		int j;
 
 		strcat(binary, ".rom");
 		PC = 0x4002;
