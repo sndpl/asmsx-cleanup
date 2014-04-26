@@ -88,7 +88,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\asmsx.c" />
-    <ClCompile Include="..\warning.c" />
+    <ClCompile Include="..\warnmsg.c" />
     <ClCompile Include="..\wav.c" />
     <ClCompile Include="lex.parser1.c" />
     <ClCompile Include="lex.parser2.c" />
@@ -101,7 +101,7 @@
     <ClInclude Include="..\parser1.h" />
     <ClInclude Include="..\parser2.h" />
     <ClInclude Include="..\parser3.h" />
-    <ClInclude Include="..\warning.h" />
+    <ClInclude Include="..\warnmsg.h" />
     <ClInclude Include="..\wav.h" />
     <ClInclude Include="z80gen.tab.h" />
   </ItemGroup>

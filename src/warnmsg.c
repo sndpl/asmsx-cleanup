@@ -21,8 +21,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.  */
 #include <stdio.h>
 #include <string.h>
 
-#include "warning.h"
-
 void warning_message(int code, int _pass, char *_source, int _lines, int *warnings)
 {
 	if (2 != _pass)

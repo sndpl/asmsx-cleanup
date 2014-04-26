@@ -22,7 +22,7 @@
 #include <string.h>
 
 #include "asmsx.h"
-#include "warning.h"
+#include "warnmsg.h"
 
 
 #define FREQ_HI 0x7FFF

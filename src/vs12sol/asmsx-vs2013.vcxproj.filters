@@ -33,10 +33,10 @@
     <ClCompile Include="lex.scan.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="z80gen.tab.c">
+    <ClCompile Include="..\warnmsg.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\warning.c">
+    <ClCompile Include="z80gen.tab.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -56,10 +56,10 @@
     <ClInclude Include="..\wav.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="z80gen.tab.h">
+    <ClInclude Include="..\warnmsg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\warning.h">
+    <ClInclude Include="z80gen.tab.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

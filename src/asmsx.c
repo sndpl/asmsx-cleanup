@@ -26,7 +26,7 @@
 #include <math.h>
 
 #include "asmsx.h"
-#include "warning.h"
+#include "warnmsg.h"
 #include "wav.h"
 #include "parser1.h"
 #include "parser2.h"
