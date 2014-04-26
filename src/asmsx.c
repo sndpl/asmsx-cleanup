@@ -510,7 +510,6 @@ void register_local(const char *name)
 void register_symbol(const char *name, int value, char type)
 {
 	int i;
-	char *tmpstr;
 
 	if (2 == pass)
 		return;
@@ -534,8 +533,7 @@ void register_symbol(const char *name, int value, char type)
 		exit(1);
 	}
 
-	tmpstr = (char *)strdup(name);
-	strcpy(id_list[maximum - 1].name, strtok(tmpstr, " "));
+	strcpy(id_list[maximum - 1].name, strtok((char *)name, " "));
 	id_list[maximum - 1].value = value;
 	id_list[maximum - 1].type = type;
 }
