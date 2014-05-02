@@ -1,46 +1,26 @@
 ![asmsx](doc/asmsx.png)
 
-asmsx
-=====
+asmsx-cleanup
+=============
 
-Z80 cross assembler for MSX family of 8-bit computers
+asmsx is a Z80 cross-assembler for MSX family of 8-bit computers, written
+originally by Eduardo Robsy Petrus. Eduardo worked on asmsx for a decade before
+he decided to discontinue any further efforts and sold full rights to product
+on eBay. cjv99 purchased the rights and released the source code under GPLv3
+license: <https://code.google.com/p/asmsx-license-gpl/>.
 
+I started tinkering with asmsx in late 2013. First I've translated Spanish to
+English, both the source code and documentation. Next I've started reformatting
+and bugfixing the code with the help of warnings from a variety of C compilers.
 
-Current project goals:
+After a while I've hit the wall on asmsx cleanup project. Making significant
+changes to it is risky without a proper test harness, and building test units
+is very difficult due to extremely convoluted and interdependent nature of the
+source code.
 
-- get rid of mutable global state: remove global variables and have functions take all input as "by value" parameters;
-- move code out of scanner and parser files (*.l and *.y);
-- replace custom list and hash code with uthash macros;
-- expand manual, move it from plain text to texinfo and start generating both txt and pdf versions.
+I decided to put asmsx-cleanup project on pause and instead write a new Z80
+cross-assembler for MSX from scratch. I'm using Python and PLY, the project is
+called saspy: <https://github.com/oboroc/saspy/>.
 
-
-Completed goals:
-
-- full English translation of cjv99 asmsx 0.16 WIP release;
-- explicitly define all functions and variables;
-- add "extern" function definions were necessary;
-- check all implicit type casts and either make them explicit if they are ok or fix them if they are bad;
-- eliminate gloal variable name clash;
-- separate wav writer to a dedicated unit with no mutable state;
-
-
-Directory structure:
-
-./examples	source for two simple games
-
-./doc		asmsx manual
-
-./src		asmsx source code
-
-
-Compiling instructions:
-
-You'll need to install MinGW with gcc, flex and bison. Use build-mingw.cmd to compile asmsx for Windows using MinGW.
-
-
-Credits:
-
-- Eduardo 'Pitpan' Robsy for creating and eventually selling rights to asmsx;
-- cjv99 for buying rights for asmsx and releasing it as free software under GPLv3 license.
-
-Adrian Oboroc <http://oboroc.com> <http://twitter.com/AdrianOboroc>
+Adrian Oboroc
+May 2, 2014
