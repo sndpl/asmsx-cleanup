@@ -1,8 +1,8 @@
-asmsx:	asmsx.c wav.c z80gen.y scan.l lex.parser1.c lex.parser2.c lex.parser3.c
+asmsx:	asmsx.c wav.c warnmsg.c z80gen.y scan.l lex.parser1.c lex.parser2.c lex.parser3.c
 	bison -d -v z80gen.y -oz80gen.tab.c
 	flex -i -olex.scan.c scan.l
 	gcc -c -Os z80gen.tab.c lex.scan.c lex.parser1.c lex.parser2.c lex.parser3.c 
-	gcc asmsx.c wav.c z80gen.tab.o lex.scan.o lex.parser1.o lex.parser2.o lex.parser3.o -Wall -Wextra -Wconversion -pedantic -oasmsx.bin -lm -Os
+	gcc asmsx.c wav.c warnmsg.c z80gen.tab.o lex.scan.o lex.parser1.o lex.parser2.o lex.parser3.o -Wall -Wextra -Wconversion -pedantic -oasmsx.bin -lm -Os
 
 lex.parser1.c: parser1.l
 	flex -i -Pparser1 -olex.parser1.c parser1.l

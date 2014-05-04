@@ -3,7 +3,8 @@
  Copyright (C) 2000-2011 Eduardo A. Robsy Petrus
  Copyright (C) 2014 Adrian Oboroc
  
- This file is part of asmsx project <https://github.com/asmsx/asmsx/>.
+ This file is part of asmsx-cleanup project
+ <https://github.com/oboroc/asmsx-cleanup/>.
  
  This program is free software: you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
@@ -1066,34 +1067,34 @@ void type_rom(void)
 
 void type_megarom(int n)
 {
-	if (pass == 1)
+	if (1 == pass)
 	{
 		int i;
 		for (i = 0; i < 256; i++)
 			usedpage[i] = 0;
 	}
 
-	if ((pass == 1) && (!addr_start))
+	if ((1 == pass) && (!addr_start))
 	{
 		error_message(19);
 		exit(19);
 	}
 
 	/* 
-	if ((pass==1) && ((!PC) || (!ePC)))
+	if ((1 == pass) && ((!PC) || (!ePC)))
 	{
 		error_message(19);
 		exit(19);
 	}
 	*/
 
-	if ((type) && (type != MEGAROM))
+	if ((type) && (MEGAROM != type))
 	{
 		error_message(20);
 		exit(20);
 	}
 
-	if ((n < 0) || (n > 3))
+	if ((0 > n) || (3 < n))
 	{
 		error_message(33);
 		exit(33);
@@ -1105,7 +1106,7 @@ void type_megarom(int n)
 	pageinit = 0x4000;
 	lastpage = 0;
 
-	if ((n == 0) || (n == 1) || (n == 2))
+	if ((0 == n) || (1 == n) || (2 == n))
 		pagesize = 8;
 	else
 		pagesize = 16;
@@ -1125,13 +1126,13 @@ void type_megarom(int n)
 
 void type_basic(void)
 {
-	if ((pass == 1) && (!addr_start))
+	if ((1 == pass) && (!addr_start))
 	{
 		error_message(21);
 		exit(21);
 	}
 
-	if ((type) && (type != BASIC))
+	if ((type) && (BASIC != type))
 	{
 		error_message(20);
 		exit(20);
@@ -1355,7 +1356,8 @@ int main(int argc, char *argv[])
 {
 	size_t strpos;
 
-	printf("asmsx %s MSX cross assembler https://github.com/asmsx/asmsx/ (%s)\n", ASMSX_VERSION, __DATE__);
+	printf("asmsx %s https://github.com/oboroc/asmsx-cleanup/ (%s)\n", ASMSX_VERSION, __DATE__);
+
 
 	if (2 != argc)
 	{
