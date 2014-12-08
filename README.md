@@ -19,9 +19,7 @@ After a while my progress grinded to a halt. Making significant changes to code
 is very risky without a proper test harness, and building test units is very
 difficult due to extremely convoluted and interdependent nature of the code.
 
-I decided to put asmsx-cleanup project on pause and instead write a new Z80
-cross-assembler for MSX from scratch. I'm using Python and PLY. saspy is now on
-GitHub: <https://github.com/oboroc/saspy/>.
+I decided to put asmsx-cleanup project on pause for now.
 
 Adrian Oboroc
 May 2, 2014
