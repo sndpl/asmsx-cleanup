@@ -108,46 +108,46 @@
   <ItemGroup>
     <CustomBuild Include="..\z80gen.y">
       <FileType>Document</FileType>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">win_bison -d -v -oz80gen.tab.c ..\z80gen.y</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">bison -d -v -oz80gen.tab.c ..\z80gen.y</Command>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Performing GNU Bison processing on z80gen.y</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">z80gen.tab.c</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">win_bison -d -v -oz80gen.tab.c ..\z80gen.y</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">bison -d -v -oz80gen.tab.c ..\z80gen.y</Command>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Performing GNU Bison processing on z80gen.y</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">z80gen.tab.c</Outputs>
     </CustomBuild>
     <CustomBuild Include="..\scan.l">
       <FileType>Document</FileType>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">win_flex.exe --wincompat -i -olex.scan.c ..\scan.l</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">flex.exe -i -olex.scan.c ..\scan.l</Command>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Performing GNU Flex processing on scan.l</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">lex.scan.c</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">win_flex.exe --wincompat -i -olex.scan.c ..\scan.l</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">flex.exe -i -olex.scan.c ..\scan.l</Command>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Performing GNU Flex processing on scan.l</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">lex.scan.c</Outputs>
     </CustomBuild>
     <CustomBuild Include="..\parser1.l">
       <FileType>Document</FileType>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">win_flex.exe --wincompat -i -Pparser1 -olex.parser1.c ..\parser1.l</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">flex.exe -i -Pparser1 -olex.parser1.c ..\parser1.l</Command>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Performing GNU Flex processing on parser1.l</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">lex.parser1.c</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">win_flex.exe --wincompat -i -Pparser1 -olex.parser1.c ..\parser1.l</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">flex.exe -i -Pparser1 -olex.parser1.c ..\parser1.l</Command>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Performing GNU Flex processing on parser1.l</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">lex.parser1.c</Outputs>
     </CustomBuild>
     <CustomBuild Include="..\parser2.l">
       <FileType>Document</FileType>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">win_flex.exe --wincompat -i -Pparser2 -olex.parser2.c ..\parser2.l</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">flex.exe -i -Pparser2 -olex.parser2.c ..\parser2.l</Command>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Performing GNU Flex processing on parser2.l</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">lex.parser2.c</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">win_flex.exe --wincompat -i -Pparser2 -olex.parser2.c ..\parser2.l</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">flex.exe -i -Pparser2 -olex.parser2.c ..\parser2.l</Command>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Performing GNU Flex processing on parser2.l</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">lex.parser2.c</Outputs>
     </CustomBuild>
     <CustomBuild Include="..\parser3.l">
       <FileType>Document</FileType>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">win_flex.exe --wincompat -i -Pparser3 -olex.parser3.c ..\parser3.l</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">flex.exe -i -Pparser3 -olex.parser3.c ..\parser3.l</Command>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Performing GNU Flex processing on parser3.l</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">lex.parser3.c</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">win_flex.exe --wincompat -i -Pparser3 -olex.parser3.c ..\parser3.l</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">flex.exe -i -Pparser3 -olex.parser3.c ..\parser3.l</Command>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Performing GNU Flex processing on parser3.l</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">lex.parser3.c</Outputs>
     </CustomBuild>
