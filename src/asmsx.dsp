@@ -113,6 +113,14 @@ SOURCE=parser1.l
 
 !IF  "$(CFG)" == "asmsx - Win32 Release"
 
+# Begin Custom Build
+InputPath=parser1.l
+
+"lex.parser1.c" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
+	"C:\Program Files\Git\bin\flex.exe" -i  -Pparser1 -olex.parser1.c $(InputPath)
+
+# End Custom Build
+
 !ELSEIF  "$(CFG)" == "asmsx - Win32 Debug"
 
 # Begin Custom Build
@@ -131,6 +139,14 @@ InputPath=parser1.l
 SOURCE=parser2.l
 
 !IF  "$(CFG)" == "asmsx - Win32 Release"
+
+# Begin Custom Build
+InputPath=parser2.l
+
+"lex.parser2.c" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
+	"C:\Program Files\Git\bin\flex.exe" -i  -Pparser2 -olex.parser2.c $(InputPath)
+
+# End Custom Build
 
 !ELSEIF  "$(CFG)" == "asmsx - Win32 Debug"
 
@@ -151,6 +167,14 @@ SOURCE=parser3.l
 
 !IF  "$(CFG)" == "asmsx - Win32 Release"
 
+# Begin Custom Build
+InputPath=parser3.l
+
+"lex.parser3.c" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
+	"C:\Program Files\Git\bin\flex.exe" -i  -Pparser3 -olex.parser3.c $(InputPath)
+
+# End Custom Build
+
 !ELSEIF  "$(CFG)" == "asmsx - Win32 Debug"
 
 # Begin Custom Build
@@ -169,6 +193,14 @@ InputPath=parser3.l
 SOURCE=scan.l
 
 !IF  "$(CFG)" == "asmsx - Win32 Release"
+
+# Begin Custom Build
+InputPath=scan.l
+
+"lex.scan.c" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
+	"C:\Program Files\Git\bin\flex.exe" -i -olex.scan.c $(InputPath)
+
+# End Custom Build
 
 !ELSEIF  "$(CFG)" == "asmsx - Win32 Debug"
 
@@ -200,6 +232,14 @@ SOURCE=.\z80gen.tab.c
 SOURCE=z80gen.y
 
 !IF  "$(CFG)" == "asmsx - Win32 Release"
+
+# Begin Custom Build
+InputPath=z80gen.y
+
+"z80gen.tab.c" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
+	"C:\Program Files\Git\bin\bison.exe" -d -v -oz80gen.tab.c $(InputPath)
+
+# End Custom Build
 
 !ELSEIF  "$(CFG)" == "asmsx - Win32 Debug"
 
