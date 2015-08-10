@@ -193,7 +193,7 @@ void msx_bios(void)
 }
 
 
-void error_message(int code, int line)
+void error_message(const int code, const char *filename, const int lineno)
 {
 	printf("%s, line %d: ", strtok(source, "\042"), lines);
 	switch (code)
@@ -340,7 +340,7 @@ void error_message(int code, int line)
 			printf("Sinclair directive should preceed any code\n");
 			break;
 	}
-	printf("DEBUG: line\n");
+	printf("DEBUG: file name %s, line number %d\n", filename, lineno);
 	remove("~tmppre.?");
 }
 
@@ -352,13 +352,13 @@ void write_byte(const int b)
 	{
 		if (PC >= 0x10000)
 		{
-			error_message(1, __LINE__);
+			error_message(1, __FILE__, __LINE__);
 			exit(1);
 		}
 
 		if ((type == ROM) && (PC >= 0xC000))
 		{
-			error_message(28, __LINE__);
+			error_message(28, __FILE__, __LINE__);
 			exit(28);
 		}
 
@@ -370,13 +370,13 @@ void write_byte(const int b)
 
 		if ((size) && (PC >= addr_start + size * 1024) && (pass == 2))
 		{
-			error_message(17, __LINE__);
+			error_message(17, __FILE__, __LINE__);
 			exit(17);
 		}
 
 		if ((size) && (addr_start + size * 1024 > 65536) && (pass == 2))
 		{
-			error_message(1, __LINE__);
+			error_message(1, __FILE__, __LINE__);
 			exit(1);
 		}
 
@@ -388,13 +388,13 @@ void write_byte(const int b)
 	{
 		if (subpage == ASMSX_MAX_PATH)
 		{
-			error_message(35, __LINE__);
+			error_message(35, __FILE__, __LINE__);
 			exit(35);
 		}
 
 		if (PC >= pageinit + 1024 * pagesize)
 		{
-			error_message(31, __LINE__);
+			error_message(31, __FILE__, __LINE__);
 			exit(31);
 		}
 
@@ -426,7 +426,7 @@ void conditional_jump(const int address)
 	jump = address - ePC - 1;
 	if ((jump > 127) || (jump < -128))
 	{
-		error_message(8, __LINE__);
+		error_message(8, __FILE__, __LINE__);
 		exit(8);
 	}
 
@@ -449,20 +449,20 @@ void register_label(const char *name)
 	for (i = 0; i < maximum; i++)
 		if (!strcmp(name, id_list[i].name))
 		{
-			error_message(14, __LINE__);
+			error_message(14, __FILE__, __LINE__);
 			exit(14);
 		}
 
 	if (++maximum == MAX_ID)
 	{
-		error_message(11, __LINE__);
+		error_message(11, __FILE__, __LINE__);
 		exit(11);
 	}
 
 	id_list[maximum - 1].name = (char*)malloc(strlen(name) + 4);
 	if (!id_list[maximum - 1].name)
 	{
-		error_message(1, __LINE__);
+		error_message(1, __FILE__, __LINE__);
 		exit(1);
 	}
 
@@ -484,20 +484,20 @@ void register_local(const char *name)
 	for (i = last_global; i < maximum; i++)
 		if (!strcmp(name, id_list[i].name))
 		{
-			error_message(14, __LINE__);
+			error_message(14, __FILE__, __LINE__);
 			exit(14);
 		}
 
 	if (++maximum == MAX_ID)
 	{
-		error_message(11, __LINE__);
+		error_message(11, __FILE__, __LINE__);
 		exit(11);
 	}
 
 	id_list[maximum - 1].name = (char*)malloc(strlen(name) + 4);
 	if (!id_list[maximum - 1].name)
 	{
-		error_message(1, __LINE__);
+		error_message(1, __FILE__, __LINE__);
 		exit(1);
 	}
 
@@ -517,20 +517,20 @@ void register_symbol(const char *name, int value, char type)
 	for (i = 0; i < maximum; i++)
 		if (!strcmp(name, id_list[i].name))
 		{
-			error_message(14, __LINE__);
+			error_message(14, __FILE__, __LINE__);
 			exit(14);
 		}
 
 	if (++maximum == MAX_ID)
 	{
-		error_message(11, __LINE__);
+		error_message(11, __FILE__, __LINE__);
 		exit(11);
 	}
 
 	id_list[maximum - 1].name = (char*)malloc(strlen(name) + 1);
 	if (!id_list[maximum - 1].name)
 	{
-		error_message(1, __LINE__);
+		error_message(1, __FILE__, __LINE__);
 		exit(1);
 	}
 
@@ -553,14 +553,14 @@ void register_variable(const char *name, int value)
 
 	if (++maximum == MAX_ID)
 	{
-		error_message(11, __LINE__);
+		error_message(11, __FILE__, __LINE__);
 		exit(11);
 	}
 
 	id_list[maximum - 1].name = (char*)malloc(strlen(name) + 1);
 	if (!id_list[maximum - 1].name)
 	{
-		error_message(1, __LINE__);
+		error_message(1, __FILE__, __LINE__);
 		exit(1);
 	}
 
@@ -581,7 +581,7 @@ int read_label(const char *name)
 	if ((pass == 1) && (i == maximum))
 		return ePC;
 
-	error_message(12, __LINE__);
+	error_message(12, __FILE__, __LINE__);
 	exit(12);
 }
 
@@ -597,7 +597,7 @@ int read_local(const char *name)
 		if (!strcmp(name, id_list[i].name))
 			return id_list[i].value;
 
-	error_message(13, __LINE__);
+	error_message(13, __FILE__, __LINE__);
 	exit(13);
 }
 
@@ -631,7 +631,7 @@ void save_symbols(void)
 		f = fopen(symbols, "wt");
 		if (!f)
 		{
-			error_message(0, __LINE__);
+			error_message(0, __FILE__, __LINE__);
 			exit(0);
 		}
 
@@ -697,7 +697,7 @@ void include_binary(const char* name, int skip, int n)
 	file = fopen(name, "rb");
 	if (!file)
 	{
-		error_message(18, __LINE__);
+		error_message(18, __FILE__, __LINE__);
 		exit(18);
 	}
 
@@ -719,7 +719,7 @@ void include_binary(const char* name, int skip, int n)
 
 	if (skip && feof(file))
 	{
-		error_message(29, __LINE__);
+		error_message(29, __FILE__, __LINE__);
 		exit(29);
 	}
 
@@ -736,7 +736,7 @@ void include_binary(const char* name, int skip, int n)
 		}
 		if (i < n)
 		{
-			error_message(29, __LINE__);
+			error_message(29, __FILE__, __LINE__);
 			exit(29);
 		}
 	}
@@ -791,7 +791,7 @@ void write_binary(void)
 
 	if ((addr_start > addr_end) && (type != MEGAROM))
 	{
-		error_message(24, __LINE__);
+		error_message(24, __FILE__, __LINE__);
 		exit(24);
 	}
 
@@ -997,7 +997,7 @@ void initialize_memory(void)
 	memory = (unsigned char*)malloc(MEMORY_MAX);
 	if (!memory)
 	{
-		error_message(1, __LINE__);
+		error_message(1, __FILE__, __LINE__);
 		exit(1);
 	}
 
@@ -1013,7 +1013,7 @@ void initialize_system(void)
 	intname = malloc(ASMSX_MAX_PATH);
 	if (!intname)
 	{
-		error_message(1, __LINE__);
+		error_message(1, __FILE__, __LINE__);
 		exit(1);
 	}
 
@@ -1026,7 +1026,7 @@ void type_sinclair(void)
 {
 	if ((type) && (type != SINCLAIR))
 	{
-		error_message(46, __LINE__);
+		error_message(46, __FILE__, __LINE__);
 		exit(46);
 	}
 
@@ -1044,13 +1044,13 @@ void type_rom(void)
 {
 	if ((pass == 1) && (!addr_start))
 	{
-		error_message(19, __LINE__);
+		error_message(19, __FILE__, __LINE__);
 		exit(19);
 	}
 
 	if ((type) && (type != ROM))
 	{
-		error_message(20, __LINE__);
+		error_message(20, __FILE__, __LINE__);
 		exit(20);
 	}
 
@@ -1076,27 +1076,27 @@ void type_megarom(int n)
 
 	if ((1 == pass) && (!addr_start))
 	{
-		error_message(19, __LINE__);
+		error_message(19, __FILE__, __LINE__);
 		exit(19);
 	}
 
 	/* 
 	if ((1 == pass) && ((!PC) || (!ePC)))
 	{
-		error_message(19, __LINE__);
+		error_message(19, __FILE__, __LINE__);
 		exit(19);
 	}
 	*/
 
 	if ((type) && (MEGAROM != type))
 	{
-		error_message(20, __LINE__);
+		error_message(20, __FILE__, __LINE__);
 		exit(20);
 	}
 
 	if ((0 > n) || (3 < n))
 	{
-		error_message(33, __LINE__);
+		error_message(33, __FILE__, __LINE__);
 		exit(33);
 	}
 
@@ -1128,13 +1128,13 @@ void type_basic(void)
 {
 	if ((1 == pass) && (!addr_start))
 	{
-		error_message(21, __LINE__);
+		error_message(21, __FILE__, __LINE__);
 		exit(21);
 	}
 
 	if ((type) && (BASIC != type))
 	{
-		error_message(20, __LINE__);
+		error_message(20, __FILE__, __LINE__);
 		exit(20);
 	}
 
@@ -1146,13 +1146,13 @@ void type_msxdos(void)
 {
 	if ((pass == 1) && (!addr_start))
 	{
-		error_message(23, __LINE__);
+		error_message(23, __FILE__, __LINE__);
 		exit(23);
 	}
 
 	if ((type) && (type != MSXDOS))
 	{
-		error_message(20, __LINE__);
+		error_message(20, __FILE__, __LINE__);
 		exit(20);
 	}
 
@@ -1169,13 +1169,13 @@ void set_subpage(int n, int addr)
 
 	if (!n)
 	{
-		error_message(32, __LINE__);
+		error_message(32, __FILE__, __LINE__);
 		exit(32);
 	}
 
 	if (usedpage[n] == pass)
 	{
-		error_message(37, __LINE__);
+		error_message(37, __FILE__, __LINE__);
 		exit(37);
 	}
 	else
@@ -1183,13 +1183,13 @@ void set_subpage(int n, int addr)
 
 	if ((addr < 0x4000) || (addr > 0xbfff))
 	{
-		error_message(35, __LINE__);
+		error_message(35, __FILE__, __LINE__);
 		exit(35);
 	}
 
 	if (n > maxpage[mapper])
 	{
-		error_message(36, __LINE__);
+		error_message(36, __FILE__, __LINE__);
 		exit(36);
 	}
 
@@ -1224,7 +1224,7 @@ int selector(int addr)
 
 	if ((mapper == KONAMI) && (addr == 0x4000))
 	{
-		error_message(38, __LINE__);
+		error_message(38, __FILE__, __LINE__);
 		exit(38);
 	}
 
@@ -1254,7 +1254,7 @@ void select_page_direct(int n, int addr)
 
 	if ((pass == 2) && (!usedpage[n]))
 	{
-		error_message(39, __LINE__);
+		error_message(39, __FILE__, __LINE__);
 		exit(39);
 	}
 
@@ -1370,56 +1370,56 @@ int main(int argc, char *argv[])
 	assembler = (char *)malloc(ASMSX_MAX_PATH);
 	if (!assembler)
 	{
-		error_message(1, __LINE__);
+		error_message(1, __FILE__, __LINE__);
 		exit(1);
 	}
 
 	source = (char *)malloc(ASMSX_MAX_PATH);
 	if (!source)
 	{
-		error_message(1, __LINE__);
+		error_message(1, __FILE__, __LINE__);
 		exit(1);
 	}
 
 	original = (char *)malloc(ASMSX_MAX_PATH);
 	if (!original)
 	{
-		error_message(1, __LINE__);
+		error_message(1, __FILE__, __LINE__);
 		exit(1);
 	}
 
 	binary = (char *)malloc(ASMSX_MAX_PATH);
 	if (!binary)
 	{
-		error_message(1, __LINE__);
+		error_message(1, __FILE__, __LINE__);
 		exit(1);
 	}
 
 	symbols = (char *)malloc(ASMSX_MAX_PATH);
 	if (!symbols)
 	{
-		error_message(1, __LINE__);
+		error_message(1, __FILE__, __LINE__);
 		exit(1);
 	}
 
 	outputfname = (char *)malloc(ASMSX_MAX_PATH);
 	if (!outputfname)
 	{
-		error_message(1, __LINE__);
+		error_message(1, __FILE__, __LINE__);
 		exit(1);
 	}
 
 	filename = (char *)malloc(ASMSX_MAX_PATH);
 	if (!filename)
 	{
-		error_message(1, __LINE__);
+		error_message(1, __FILE__, __LINE__);
 		exit(1);
 	}
 
 	/* check if argv[1] can fit in char[ASMSX_MAX_PATH]*/
 	if (strlen(argv[1]) + 1 > ASMSX_MAX_PATH)
 	{
-		error_message(1, __LINE__);
+		error_message(1, __FILE__, __LINE__);
 		exit(1);
 	}
 	strcpy(filename, argv[1]);

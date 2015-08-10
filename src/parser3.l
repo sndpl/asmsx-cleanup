@@ -91,7 +91,7 @@ int preprocessor3(void)
 	p3text = (char*)malloc(P3TEXT_MAX);
 	if (!p3text)
 	{
-		error_message(1, __LINE__);
+		error_message(1, __FILE__, __LINE__);
 		exit(1);
 	}
 

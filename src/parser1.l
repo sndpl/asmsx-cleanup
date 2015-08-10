@@ -78,7 +78,7 @@ extern void prompt_error1(int);
 					p1inc_stack[p1incidx].name = (char*)malloc(ASMSX_MAX_PATH);
 					if (!p1inc_stack[p1incidx].name)
 					{
-						error_message(1, __LINE__);
+						error_message(1, __FILE__, __LINE__);
 						exit(1);
 					}
 
@@ -190,21 +190,21 @@ int preprocessor1(char *input_name)
 	p1text = (char*)malloc(ASMSX_MAX_PATH);
 	if (!p1text)
 	{
-		error_message(1, __LINE__);
+		error_message(1, __FILE__, __LINE__);
 		exit(1);
 	}
 
 	p1name = (char*)malloc(ASMSX_MAX_PATH);
 	if (!p1name)
 	{
-		error_message(1, __LINE__);
+		error_message(1, __FILE__, __LINE__);
 		exit(1);
 	}
 
 	p1tmp = (char*)malloc(ASMSX_MAX_PATH);
 	if (!p1tmp)
 	{
-		error_message(1, __LINE__);
+		error_message(1, __FILE__, __LINE__);
 		exit(1);
 	}
 

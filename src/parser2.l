@@ -101,7 +101,7 @@ extern void prompt_error2(int);
 				}
 
 <rept><<EOF>>			{	/* reach end of file while "rept" block is unfinished */
-					error_message(2, __LINE__);
+					error_message(2, __FILE__, __LINE__);
 					exit(2);
 				}
 
@@ -144,21 +144,21 @@ int preprocessor2(void)
 	filename = (char*)malloc(ASMSX_MAX_PATH);
 	if (!filename)
 	{
-		error_message(1, __LINE__);
+		error_message(1, __FILE__, __LINE__);
 		exit(1);
 	}
 
 	p2text = (char*)malloc(P2TEXT_MAX);
 	if (!p2text)
 	{
-		error_message(1, __LINE__);
+		error_message(1, __FILE__, __LINE__);
 		exit(1);
 	}
 
 	p2buf = (char*)malloc(P2BUF_MAX);
 	if (!p2buf)
 	{
-		error_message(1, __LINE__);
+		error_message(1, __FILE__, __LINE__);
 		exit(1);
 	}
 

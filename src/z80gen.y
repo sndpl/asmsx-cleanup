@@ -321,7 +321,7 @@ pseudo_instruction: PSEUDO_ORG value
 			subpage = ASMSX_MAX_PATH;
 			if ($2 > 3)
 			{
-				error_message(22, __LINE__);
+				error_message(22, __FILE__, __LINE__);
 				exit(22);
 			}
 			else
@@ -337,7 +337,7 @@ pseudo_instruction: PSEUDO_ORG value
 		{
 			if ((type != MEGAROM) && (type != ROM))
 			{
-				error_message(41, __LINE__);
+				error_message(41, __FILE__, __LINE__);
 				exit(41);
 			}
 			locate_32k();
@@ -349,7 +349,7 @@ pseudo_instruction: PSEUDO_ORG value
 		{
 			if (type != MEGAROM)
 			{
-				error_message(40, __LINE__);
+				error_message(40, __FILE__, __LINE__);
 				exit(40);
 			}
 			set_subpage($2, $4);
@@ -361,7 +361,7 @@ pseudo_instruction: PSEUDO_ORG value
 		{
 			if (type != MEGAROM)
 			{
-				error_message(40, __LINE__);
+				error_message(40, __FILE__, __LINE__);
 				exit(40);
 			}
 			select_page_direct($2, $4);
@@ -373,7 +373,7 @@ pseudo_instruction: PSEUDO_ORG value
 		{
 			if (type != MEGAROM)
 			{
-				error_message(40, __LINE__);
+				error_message(40, __FILE__, __LINE__);
 				exit(40);
 			}
 			select_page_register($2, $4);
@@ -406,7 +406,7 @@ pseudo_instruction: PSEUDO_ORG value
 		{
 			if (type != MSXDOS)
 			{
-				error_message(25, __LINE__);
+				error_message(25, __FILE__, __LINE__);
 				exit(25);
 			}
 
@@ -434,7 +434,7 @@ pseudo_instruction: PSEUDO_ORG value
 			ePC += $2;
 			if (PC > 0xffff)
 			{
-				error_message(1, __LINE__);
+				error_message(1, __FILE__, __LINE__);
 				exit(1);
 			}
 		}
@@ -482,7 +482,7 @@ pseudo_instruction: PSEUDO_ORG value
 		{
 			if ((int)($4) <= 0)
 			{
-				error_message(30, __LINE__);
+				error_message(30, __FILE__, __LINE__);
 				exit(30);
 			}
 
@@ -495,7 +495,7 @@ pseudo_instruction: PSEUDO_ORG value
 		{
 			if ((int)($4) <= 0)
 			{
-				error_message(30, __LINE__);
+				error_message(30, __FILE__, __LINE__);
 				exit(30);
 			}
 
@@ -508,7 +508,7 @@ pseudo_instruction: PSEUDO_ORG value
 		{
 			if (((int)($4) <= 0) || ((int)($6) <= 0))
 			{
-				error_message(30, __LINE__);
+				error_message(30, __FILE__, __LINE__);
 				exit(30);
 			}
 
@@ -521,7 +521,7 @@ pseudo_instruction: PSEUDO_ORG value
 		{
 			if (((int)($4) <= 0) || ((int)($6) <= 0))
 			{
-				error_message(30, __LINE__);
+				error_message(30, __FILE__, __LINE__);
 				exit(30);
 			}
 
@@ -539,7 +539,7 @@ pseudo_instruction: PSEUDO_ORG value
 		zilog = 0;
 		if (conditional_level)
 		{
-			error_message(45, __LINE__);
+			error_message(45, __FILE__, __LINE__);
 			exit(45);
 		}
 	}
@@ -640,7 +640,7 @@ pseudo_instruction: PSEUDO_ORG value
 			{
 				if (size > 0)
 				{
-					error_message(15, __LINE__);
+					error_message(15, __FILE__, __LINE__);
 					exit(15);
 				}
 				else
@@ -652,7 +652,7 @@ pseudo_instruction: PSEUDO_ORG value
 	{
 		if (conditional_level == 15)
 		{
-			error_message(44, __LINE__);
+			error_message(44, __FILE__, __LINE__);
 			exit(44);
 		}
 
@@ -667,7 +667,7 @@ pseudo_instruction: PSEUDO_ORG value
 	{
 		if (conditional_level == 15)
 		{
-			error_message(44, __LINE__);
+			error_message(44, __FILE__, __LINE__);
 			exit(44);
 		}
 
@@ -682,7 +682,7 @@ pseudo_instruction: PSEUDO_ORG value
 	{
 		if (!conditional_level)
 		{
-			error_message(42, __LINE__);
+			error_message(42, __FILE__, __LINE__);
 			exit(42);
 		}
 
@@ -692,7 +692,7 @@ pseudo_instruction: PSEUDO_ORG value
 	{
 		if (!conditional_level)
 		{
-			error_message(43, __LINE__);
+			error_message(43, __FILE__, __LINE__);
 			exit(43);
 		}
 
@@ -765,7 +765,7 @@ mnemo_load8bit: MNEMO_LD REGISTER ',' REGISTER
 	{
 		if (($2 > 3) && ($2 != 7))
 		{
-			error_message(2, __LINE__);
+			error_message(2, __FILE__, __LINE__);
 			exit(2);
 		}
 
@@ -776,7 +776,7 @@ mnemo_load8bit: MNEMO_LD REGISTER ',' REGISTER
 	{
 		if (($4 > 3) && ($4 != 7))
 		{
-			error_message(2, __LINE__);
+			error_message(2, __FILE__, __LINE__);
 			exit(2);
 		}
 
@@ -792,7 +792,7 @@ mnemo_load8bit: MNEMO_LD REGISTER ',' REGISTER
 	{
 		if (($2 > 3) && ($2 != 7))
 		{
-			error_message(2, __LINE__);
+			error_message(2, __FILE__, __LINE__);
 			exit(2);
 		}
 
@@ -803,7 +803,7 @@ mnemo_load8bit: MNEMO_LD REGISTER ',' REGISTER
 	{
 		if (($4 > 3) && ($4 != 7))
 		{
-			error_message(2, __LINE__);
+			error_message(2, __FILE__, __LINE__);
 			exit(2);
 		}
 
@@ -887,7 +887,7 @@ mnemo_load8bit: MNEMO_LD REGISTER ',' REGISTER
 	{
 		if ($2 != 7)
 		{
-			error_message(4, __LINE__);
+			error_message(4, __FILE__, __LINE__);
 			exit(4);
 		}
 
@@ -897,7 +897,7 @@ mnemo_load8bit: MNEMO_LD REGISTER ',' REGISTER
 	{
 		if ($2 != 7)
 		{
-			error_message(4, __LINE__);
+			error_message(4, __FILE__, __LINE__);
 			exit(4);
 		}
 
@@ -907,7 +907,7 @@ mnemo_load8bit: MNEMO_LD REGISTER ',' REGISTER
 	{
 		if ($2 != 7)
 		{
-			error_message(4, __LINE__);
+			error_message(4, __FILE__, __LINE__);
 			exit(4);
 		}
 
@@ -918,7 +918,7 @@ mnemo_load8bit: MNEMO_LD REGISTER ',' REGISTER
 	{
 		if ($4 != 7)
 		{
-			error_message(5, __LINE__);
+			error_message(5, __FILE__, __LINE__);
 			exit(5);
 		}
 
@@ -928,7 +928,7 @@ mnemo_load8bit: MNEMO_LD REGISTER ',' REGISTER
 	{
 		if ($4 != 7)
 		{
-			error_message(5, __LINE__);
+			error_message(5, __FILE__, __LINE__);
 			exit(5);
 		}
 
@@ -938,7 +938,7 @@ mnemo_load8bit: MNEMO_LD REGISTER ',' REGISTER
 	{
 		if ($6 != 7)
 		{
-			error_message(5, __LINE__);
+			error_message(5, __FILE__, __LINE__);
 			exit(5);
 		}
 
@@ -949,7 +949,7 @@ mnemo_load8bit: MNEMO_LD REGISTER ',' REGISTER
 	{
 		if ($2 != 7)
 		{
-			error_message(4, __LINE__);
+			error_message(4, __FILE__, __LINE__);
 			exit(4);
 		}
 
@@ -960,7 +960,7 @@ mnemo_load8bit: MNEMO_LD REGISTER ',' REGISTER
 	{
 		if ($2 != 7)
 		{
-			error_message(4, __LINE__);
+			error_message(4, __FILE__, __LINE__);
 			exit(4);
 		}
 
@@ -971,7 +971,7 @@ mnemo_load8bit: MNEMO_LD REGISTER ',' REGISTER
 	{
 		if ($4 != 7)
 		{
-			error_message(5, __LINE__);
+			error_message(5, __FILE__, __LINE__);
 			exit(5);
 		}
 
@@ -982,7 +982,7 @@ mnemo_load8bit: MNEMO_LD REGISTER ',' REGISTER
 	{
 		if ($4 != 7)
 		{
-			error_message(5, __LINE__);
+			error_message(5, __FILE__, __LINE__);
 			exit(5);
 		}
 
@@ -1069,7 +1069,7 @@ mnemo_load16bit: MNEMO_LD REGISTER_PAR ',' value_16bits
 	{
 		if ($3 != 2)
 		{
-			error_message(2, __LINE__);
+			error_message(2, __FILE__, __LINE__);
 			exit(2);
 		}
 
@@ -1089,7 +1089,7 @@ mnemo_load16bit: MNEMO_LD REGISTER_PAR ',' value_16bits
 	{
 		if ($2 == 3)
 		{
-			error_message(2, __LINE__);
+			error_message(2, __FILE__, __LINE__);
 			exit(2);
 		}
 
@@ -1113,7 +1113,7 @@ mnemo_load16bit: MNEMO_LD REGISTER_PAR ',' value_16bits
 	{
 		if ($2 == 3)
 		{
-			error_message(2, __LINE__);
+			error_message(2, __FILE__, __LINE__);
 			exit(2);
 		}
 
@@ -1139,7 +1139,7 @@ mnemo_exchange: MNEMO_EX REGISTER_PAR ',' REGISTER_PAR
 	{
 		if ((($2 != 1) || ($4 != 2)) && (($2 != 2) || ($4 != 1)))
 		{
-			error_message(2, __LINE__);
+			error_message(2, __FILE__, __LINE__);
 			exit(2);
 		}
 
@@ -1161,7 +1161,7 @@ mnemo_exchange: MNEMO_EX REGISTER_PAR ',' REGISTER_PAR
 	{
 		if ($4 != 2)
 		{
-			error_message(2, __LINE__);
+			error_message(2, __FILE__, __LINE__);
 			exit(2);
 		}
 
@@ -1223,7 +1223,7 @@ mnemo_arithm8bit: MNEMO_ADD REGISTER ',' REGISTER
 	{
 		if ($2 != 7)
 		{
-			error_message(4, __LINE__);
+			error_message(4, __FILE__, __LINE__);
 			exit(4);
 		}
 
@@ -1233,7 +1233,7 @@ mnemo_arithm8bit: MNEMO_ADD REGISTER ',' REGISTER
 	{
 		if ($2 != 7)
 		{
-			error_message(4, __LINE__);
+			error_message(4, __FILE__, __LINE__);
 			exit(4);
 		}
 
@@ -1244,7 +1244,7 @@ mnemo_arithm8bit: MNEMO_ADD REGISTER ',' REGISTER
 	{
 		if ($2 != 7)
 		{
-			error_message(4, __LINE__);
+			error_message(4, __FILE__, __LINE__);
 			exit(4);
 		}
 
@@ -1255,7 +1255,7 @@ mnemo_arithm8bit: MNEMO_ADD REGISTER ',' REGISTER
 	{
 		if ($2 != 7)
 		{
-			error_message(4, __LINE__);
+			error_message(4, __FILE__, __LINE__);
 			exit(4);
 		}
 
@@ -1266,7 +1266,7 @@ mnemo_arithm8bit: MNEMO_ADD REGISTER ',' REGISTER
 	{
 		if ($2 != 7)
 		{
-			error_message(4, __LINE__);
+			error_message(4, __FILE__, __LINE__);
 			exit(4);
 		}
 
@@ -1276,7 +1276,7 @@ mnemo_arithm8bit: MNEMO_ADD REGISTER ',' REGISTER
 	{
 		if ($2 != 7)
 		{
-			error_message(4, __LINE__);
+			error_message(4, __FILE__, __LINE__);
 			exit(4);
 		}
 
@@ -1288,7 +1288,7 @@ mnemo_arithm8bit: MNEMO_ADD REGISTER ',' REGISTER
 	{
 		if ($2 != 7)
 		{
-			error_message(4, __LINE__);
+			error_message(4, __FILE__, __LINE__);
 			exit(4);
 		}
 
@@ -1300,7 +1300,7 @@ mnemo_arithm8bit: MNEMO_ADD REGISTER ',' REGISTER
 	{
 		if ($2 != 7)
 		{
-			error_message(4, __LINE__);
+			error_message(4, __FILE__, __LINE__);
 			exit(4);
 		}
 
@@ -1310,7 +1310,7 @@ mnemo_arithm8bit: MNEMO_ADD REGISTER ',' REGISTER
 	{
 		if ($2 != 7)
 		{
-			error_message(4, __LINE__);
+			error_message(4, __FILE__, __LINE__);
 			exit(4);
 		}
 
@@ -1321,7 +1321,7 @@ mnemo_arithm8bit: MNEMO_ADD REGISTER ',' REGISTER
 	{
 		if ($2 != 7)
 		{
-			error_message(4, __LINE__);
+			error_message(4, __FILE__, __LINE__);
 			exit(4);
 		}
 
@@ -1332,7 +1332,7 @@ mnemo_arithm8bit: MNEMO_ADD REGISTER ',' REGISTER
 	{
 		if ($2 != 7)
 		{
-			error_message(4, __LINE__);
+			error_message(4, __FILE__, __LINE__);
 			exit(4);
 		}
 
@@ -1343,7 +1343,7 @@ mnemo_arithm8bit: MNEMO_ADD REGISTER ',' REGISTER
 	{
 		if ($2 != 7)
 		{
-			error_message(4, __LINE__);
+			error_message(4, __FILE__, __LINE__);
 			exit(4);
 		}
 
@@ -1353,7 +1353,7 @@ mnemo_arithm8bit: MNEMO_ADD REGISTER ',' REGISTER
 	{
 		if ($2 != 7)
 		{
-			error_message(4, __LINE__);
+			error_message(4, __FILE__, __LINE__);
 			exit(4);
 		}
 
@@ -1365,7 +1365,7 @@ mnemo_arithm8bit: MNEMO_ADD REGISTER ',' REGISTER
 	{
 		if ($2 != 7)
 		{
-			error_message(4, __LINE__);
+			error_message(4, __FILE__, __LINE__);
 			exit(4);
 		}
 
@@ -1377,7 +1377,7 @@ mnemo_arithm8bit: MNEMO_ADD REGISTER ',' REGISTER
 	{
 		if ($2 != 7)
 		{
-			error_message(4, __LINE__);
+			error_message(4, __FILE__, __LINE__);
 			exit(4);
 		}
 
@@ -1392,7 +1392,7 @@ mnemo_arithm8bit: MNEMO_ADD REGISTER ',' REGISTER
 	{
 		if ($2 != 7)
 		{
-			error_message(4, __LINE__);
+			error_message(4, __FILE__, __LINE__);
 			exit(4);
 		}
 
@@ -1408,7 +1408,7 @@ mnemo_arithm8bit: MNEMO_ADD REGISTER ',' REGISTER
 	{
 		if ($2 != 7)
 		{
-			error_message(4, __LINE__);
+			error_message(4, __FILE__, __LINE__);
 			exit(4);
 		}
 
@@ -1424,7 +1424,7 @@ mnemo_arithm8bit: MNEMO_ADD REGISTER ',' REGISTER
 	{
 		if ($2 != 7)
 		{
-			error_message(4, __LINE__);
+			error_message(4, __FILE__, __LINE__);
 			exit(4);
 		}
 
@@ -1440,7 +1440,7 @@ mnemo_arithm8bit: MNEMO_ADD REGISTER ',' REGISTER
 	{
 		if ($2 != 7)
 		{
-			error_message(4, __LINE__);
+			error_message(4, __FILE__, __LINE__);
 			exit(4);
 		}
 
@@ -1455,7 +1455,7 @@ mnemo_arithm8bit: MNEMO_ADD REGISTER ',' REGISTER
 	{
 		if ($2 != 7)
 		{
-			error_message(4, __LINE__);
+			error_message(4, __FILE__, __LINE__);
 			exit(4);
 		}
 
@@ -1472,7 +1472,7 @@ mnemo_arithm8bit: MNEMO_ADD REGISTER ',' REGISTER
 	{
 		if ($2 != 7)
 		{
-			error_message(4, __LINE__);
+			error_message(4, __FILE__, __LINE__);
 			exit(4);
 		}
 
@@ -1489,7 +1489,7 @@ mnemo_arithm8bit: MNEMO_ADD REGISTER ',' REGISTER
 	{
 		if ($2 != 7)
 		{
-			error_message(4, __LINE__);
+			error_message(4, __FILE__, __LINE__);
 			exit(4);
 		}
 
@@ -1499,7 +1499,7 @@ mnemo_arithm8bit: MNEMO_ADD REGISTER ',' REGISTER
 	{
 		if ($2 != 7)
 		{
-			error_message(4, __LINE__);
+			error_message(4, __FILE__, __LINE__);
 			exit(4);
 		}
 
@@ -1510,7 +1510,7 @@ mnemo_arithm8bit: MNEMO_ADD REGISTER ',' REGISTER
 	{
 		if ($2 != 7)
 		{
-			error_message(4, __LINE__);
+			error_message(4, __FILE__, __LINE__);
 			exit(4);
 		}
 
@@ -1521,7 +1521,7 @@ mnemo_arithm8bit: MNEMO_ADD REGISTER ',' REGISTER
 	{
 		if ($2 != 7)
 		{
-			error_message(4, __LINE__);
+			error_message(4, __FILE__, __LINE__);
 			exit(4);
 		}
 
@@ -1532,7 +1532,7 @@ mnemo_arithm8bit: MNEMO_ADD REGISTER ',' REGISTER
 	{
 		if ($2 != 7)
 		{
-			error_message(4, __LINE__);
+			error_message(4, __FILE__, __LINE__);
 			exit(4);
 		}
 
@@ -1542,7 +1542,7 @@ mnemo_arithm8bit: MNEMO_ADD REGISTER ',' REGISTER
 	{
 		if ($2 != 7)
 		{
-			error_message(4, __LINE__);
+			error_message(4, __FILE__, __LINE__);
 			exit(4);
 		}
 
@@ -1554,7 +1554,7 @@ mnemo_arithm8bit: MNEMO_ADD REGISTER ',' REGISTER
 	{
 		if ($2 != 7)
 		{
-			error_message(4, __LINE__);
+			error_message(4, __FILE__, __LINE__);
 			exit(4);
 		}
 
@@ -1566,7 +1566,7 @@ mnemo_arithm8bit: MNEMO_ADD REGISTER ',' REGISTER
 	{
 		if ($2 != 7)
 		{
-			error_message(4, __LINE__);
+			error_message(4, __FILE__, __LINE__);
 			exit(4);
 		}
 
@@ -1581,7 +1581,7 @@ mnemo_arithm8bit: MNEMO_ADD REGISTER ',' REGISTER
 	{
 		if ($2 != 7)
 		{
-			error_message(4, __LINE__);
+			error_message(4, __FILE__, __LINE__);
 			exit(4);
 		}
 
@@ -1597,7 +1597,7 @@ mnemo_arithm8bit: MNEMO_ADD REGISTER ',' REGISTER
 	{
 		if ($2 != 7)
 		{
-			error_message(4, __LINE__);
+			error_message(4, __FILE__, __LINE__);
 			exit(4);
 		}
 
@@ -1613,7 +1613,7 @@ mnemo_arithm8bit: MNEMO_ADD REGISTER ',' REGISTER
 	{
 		if ($2 != 7)
 		{
-			error_message(4, __LINE__);
+			error_message(4, __FILE__, __LINE__);
 			exit(4);
 		}
 
@@ -1629,7 +1629,7 @@ mnemo_arithm8bit: MNEMO_ADD REGISTER ',' REGISTER
 	{
 		if ($2 != 7)
 		{
-			error_message(4, __LINE__);
+			error_message(4, __FILE__, __LINE__);
 			exit(4);
 		}
 
@@ -1644,7 +1644,7 @@ mnemo_arithm8bit: MNEMO_ADD REGISTER ',' REGISTER
 	{
 		if ($2 != 7)
 		{
-			error_message(4, __LINE__);
+			error_message(4, __FILE__, __LINE__);
 			exit(4);
 		}
 
@@ -1661,7 +1661,7 @@ mnemo_arithm8bit: MNEMO_ADD REGISTER ',' REGISTER
 	{
 		if ($2 != 7)
 		{
-			error_message(4, __LINE__);
+			error_message(4, __FILE__, __LINE__);
 			exit(4);
 		}
 
@@ -1678,7 +1678,7 @@ mnemo_arithm8bit: MNEMO_ADD REGISTER ',' REGISTER
 	{
 		if ($2 != 7)
 		{
-			error_message(4, __LINE__);
+			error_message(4, __FILE__, __LINE__);
 			exit(4);
 		}
 
@@ -1693,7 +1693,7 @@ mnemo_arithm8bit: MNEMO_ADD REGISTER ',' REGISTER
 	{
 		if ($2 != 7)
 		{
-			error_message(4, __LINE__);
+			error_message(4, __FILE__, __LINE__);
 			exit(4);
 		}
 
@@ -1709,7 +1709,7 @@ mnemo_arithm8bit: MNEMO_ADD REGISTER ',' REGISTER
 	{
 		if ($2 != 7)
 		{
-			error_message(4, __LINE__);
+			error_message(4, __FILE__, __LINE__);
 			exit(4);
 		}
 
@@ -1725,7 +1725,7 @@ mnemo_arithm8bit: MNEMO_ADD REGISTER ',' REGISTER
 	{
 		if ($2 != 7)
 		{
-			error_message(4, __LINE__);
+			error_message(4, __FILE__, __LINE__);
 			exit(4);
 		}
 
@@ -1741,7 +1741,7 @@ mnemo_arithm8bit: MNEMO_ADD REGISTER ',' REGISTER
 	{
 		if ($2 != 7)
 		{
-			error_message(4, __LINE__);
+			error_message(4, __FILE__, __LINE__);
 			exit(4);
 		}
 
@@ -1756,7 +1756,7 @@ mnemo_arithm8bit: MNEMO_ADD REGISTER ',' REGISTER
 	{
 		if ($2 != 7)
 		{
-			error_message(4, __LINE__);
+			error_message(4, __FILE__, __LINE__);
 			exit(4);
 		}
 
@@ -1773,7 +1773,7 @@ mnemo_arithm8bit: MNEMO_ADD REGISTER ',' REGISTER
 	{
 		if ($2 != 7)
 		{
-			error_message(4, __LINE__);
+			error_message(4, __FILE__, __LINE__);
 			exit(4);
 		}
 
@@ -1790,7 +1790,7 @@ mnemo_arithm8bit: MNEMO_ADD REGISTER ',' REGISTER
 	{
 		if ($2 != 7)
 		{
-			error_message(4, __LINE__);
+			error_message(4, __FILE__, __LINE__);
 			exit(4);
 		}
 
@@ -1805,7 +1805,7 @@ mnemo_arithm8bit: MNEMO_ADD REGISTER ',' REGISTER
 	{
 		if ($2 != 7)
 		{
-			error_message(4, __LINE__);
+			error_message(4, __FILE__, __LINE__);
 			exit(4);
 		}
 
@@ -1821,7 +1821,7 @@ mnemo_arithm8bit: MNEMO_ADD REGISTER ',' REGISTER
 	{
 		if ($2 != 7)
 		{
-			error_message(4, __LINE__);
+			error_message(4, __FILE__, __LINE__);
 			exit(4);
 		}
 
@@ -1837,7 +1837,7 @@ mnemo_arithm8bit: MNEMO_ADD REGISTER ',' REGISTER
 	{
 		if ($2 != 7)
 		{
-			error_message(4, __LINE__);
+			error_message(4, __FILE__, __LINE__);
 			exit(4);
 		}
 
@@ -1853,7 +1853,7 @@ mnemo_arithm8bit: MNEMO_ADD REGISTER ',' REGISTER
 	{
 		if ($2 != 7)
 		{
-			error_message(4, __LINE__);
+			error_message(4, __FILE__, __LINE__);
 			exit(4);
 		}
 
@@ -1868,7 +1868,7 @@ mnemo_arithm8bit: MNEMO_ADD REGISTER ',' REGISTER
 	{
 		if ($2 != 7)
 		{
-			error_message(4, __LINE__);
+			error_message(4, __FILE__, __LINE__);
 			exit(4);
 		}
 
@@ -1885,7 +1885,7 @@ mnemo_arithm8bit: MNEMO_ADD REGISTER ',' REGISTER
 	{
 		if ($2 != 7)
 		{
-			error_message(4, __LINE__);
+			error_message(4, __FILE__, __LINE__);
 			exit(4);
 		}
 
@@ -1902,7 +1902,7 @@ mnemo_arithm8bit: MNEMO_ADD REGISTER ',' REGISTER
 	{
 		if ($2 != 7)
 		{
-			error_message(4, __LINE__);
+			error_message(4, __FILE__, __LINE__);
 			exit(4);
 		}
 
@@ -1917,7 +1917,7 @@ mnemo_arithm8bit: MNEMO_ADD REGISTER ',' REGISTER
 	{
 		if ($2 != 7)
 		{
-			error_message(4, __LINE__);
+			error_message(4, __FILE__, __LINE__);
 			exit(4);
 		}
 
@@ -1933,7 +1933,7 @@ mnemo_arithm8bit: MNEMO_ADD REGISTER ',' REGISTER
 	{
 		if ($2 != 7)
 		{
-			error_message(4, __LINE__);
+			error_message(4, __FILE__, __LINE__);
 			exit(4);
 		}
 
@@ -1949,7 +1949,7 @@ mnemo_arithm8bit: MNEMO_ADD REGISTER ',' REGISTER
 	{
 		if ($2 != 7)
 		{
-			error_message(4, __LINE__);
+			error_message(4, __FILE__, __LINE__);
 			exit(4);
 		}
 
@@ -1965,7 +1965,7 @@ mnemo_arithm8bit: MNEMO_ADD REGISTER ',' REGISTER
 	{
 		if ($2 != 7)
 		{
-			error_message(4, __LINE__);
+			error_message(4, __FILE__, __LINE__);
 			exit(4);
 		}
 
@@ -1980,7 +1980,7 @@ mnemo_arithm8bit: MNEMO_ADD REGISTER ',' REGISTER
 	{
 		if ($2 != 7)
 		{
-			error_message(4, __LINE__);
+			error_message(4, __FILE__, __LINE__);
 			exit(4);
 		}
 
@@ -1997,7 +1997,7 @@ mnemo_arithm8bit: MNEMO_ADD REGISTER ',' REGISTER
 	{
 		if ($2 != 7)
 		{
-			error_message(4, __LINE__);
+			error_message(4, __FILE__, __LINE__);
 			exit(4);
 		}
 
@@ -2461,7 +2461,7 @@ mnemo_arithm16bit: MNEMO_ADD REGISTER_PAR ',' REGISTER_PAR
 	{
 		if ($2 != 2)
 		{
-			error_message(2, __LINE__);
+			error_message(2, __FILE__, __LINE__);
 			exit(2);
 		}
 
@@ -2471,7 +2471,7 @@ mnemo_arithm16bit: MNEMO_ADD REGISTER_PAR ',' REGISTER_PAR
 	{
 		if ($2 != 2)
 		{
-			error_message(2, __LINE__);
+			error_message(2, __FILE__, __LINE__);
 			exit(2);
 		}
 
@@ -2482,7 +2482,7 @@ mnemo_arithm16bit: MNEMO_ADD REGISTER_PAR ',' REGISTER_PAR
 	{
 		if ($2 != 2)
 		{
-			error_message(2, __LINE__);
+			error_message(2, __FILE__, __LINE__);
 			exit(2);
 		}
 
@@ -2493,7 +2493,7 @@ mnemo_arithm16bit: MNEMO_ADD REGISTER_PAR ',' REGISTER_PAR
 	{
 		if ($4 == 2)
 		{
-			error_message(2, __LINE__);
+			error_message(2, __FILE__, __LINE__);
 			exit(2);
 		}
 
@@ -2509,7 +2509,7 @@ mnemo_arithm16bit: MNEMO_ADD REGISTER_PAR ',' REGISTER_PAR
 	{
 		if ($4 == 2)
 		{
-			error_message(2, __LINE__);
+			error_message(2, __FILE__, __LINE__);
 			exit(2);
 		}
 
@@ -2592,7 +2592,7 @@ mnemo_general: MNEMO_DAA
 	{
 		if (((int)($2) < 0) || ((int)($2) > 2))
 		{
-			error_message(3, __LINE__);
+			error_message(3, __FILE__, __LINE__);
 			exit(3);
 		}
 
@@ -2638,7 +2638,7 @@ mnemo_rotate: MNEMO_RLCA
 	{
 		if ($4 == 6)
 		{
-			error_message(2, __LINE__);
+			error_message(2, __FILE__, __LINE__);
 			exit(2);
 		}
 
@@ -2651,7 +2651,7 @@ mnemo_rotate: MNEMO_RLCA
 	{
 		if ($4 == 6)
 		{
-			error_message(2, __LINE__);
+			error_message(2, __FILE__, __LINE__);
 			exit(2);
 		}
 
@@ -2702,7 +2702,7 @@ mnemo_rotate: MNEMO_RLCA
 	{
 		if ($4 == 6)
 		{
-			error_message(2, __LINE__);
+			error_message(2, __FILE__, __LINE__);
 			exit(2);
 		}
 
@@ -2715,7 +2715,7 @@ mnemo_rotate: MNEMO_RLCA
 	{
 		if ($4 == 6)
 		{
-			error_message(2, __LINE__);
+			error_message(2, __FILE__, __LINE__);
 			exit(2);
 		}
 
@@ -2766,7 +2766,7 @@ mnemo_rotate: MNEMO_RLCA
 	{
 		if ($4 == 6)
 		{
-			error_message(2, __LINE__);
+			error_message(2, __FILE__, __LINE__);
 			exit(2);
 		}
 
@@ -2779,7 +2779,7 @@ mnemo_rotate: MNEMO_RLCA
 	{
 		if ($4 == 6)
 		{
-			error_message(2, __LINE__);
+			error_message(2, __FILE__, __LINE__);
 			exit(2);
 		}
 
@@ -2830,7 +2830,7 @@ mnemo_rotate: MNEMO_RLCA
 	{
 		if ($4 == 6)
 		{
-			error_message(2, __LINE__);
+			error_message(2, __FILE__, __LINE__);
 			exit(2);
 		}
 
@@ -2843,7 +2843,7 @@ mnemo_rotate: MNEMO_RLCA
 	{
 		if ($4 == 6)
 		{
-			error_message(2, __LINE__);
+			error_message(2, __FILE__, __LINE__);
 			exit(2);
 		}
 
@@ -2894,7 +2894,7 @@ mnemo_rotate: MNEMO_RLCA
 	{
 		if ($4 == 6)
 		{
-			error_message(2, __LINE__);
+			error_message(2, __FILE__, __LINE__);
 			exit(2);
 		}
 
@@ -2907,7 +2907,7 @@ mnemo_rotate: MNEMO_RLCA
 	{
 		if ($4 == 6)
 		{
-			error_message(2, __LINE__);
+			error_message(2, __FILE__, __LINE__);
 			exit(2);
 		}
 
@@ -2958,7 +2958,7 @@ mnemo_rotate: MNEMO_RLCA
 	{
 		if ($4 == 6)
 		{
-			error_message(2, __LINE__);
+			error_message(2, __FILE__, __LINE__);
 			exit(2);
 		}
 
@@ -2971,7 +2971,7 @@ mnemo_rotate: MNEMO_RLCA
 	{
 		if ($4 == 6)
 		{
-			error_message(2, __LINE__);
+			error_message(2, __FILE__, __LINE__);
 			exit(2);
 		}
 
@@ -3022,7 +3022,7 @@ mnemo_rotate: MNEMO_RLCA
 	{
 		if ($4 == 6)
 		{
-			error_message(2, __LINE__);
+			error_message(2, __FILE__, __LINE__);
 			exit(2);
 		}
 
@@ -3035,7 +3035,7 @@ mnemo_rotate: MNEMO_RLCA
 	{
 		if ($4 == 6)
 		{
-			error_message(2, __LINE__);
+			error_message(2, __FILE__, __LINE__);
 			exit(2);
 		}
 
@@ -3086,7 +3086,7 @@ mnemo_rotate: MNEMO_RLCA
 	{
 		if ($4 == 6)
 		{
-			error_message(2, __LINE__);
+			error_message(2, __FILE__, __LINE__);
 			exit(2);
 		}
 
@@ -3099,7 +3099,7 @@ mnemo_rotate: MNEMO_RLCA
 	{
 		if ($4 == 6)
 		{
-			error_message(2, __LINE__);
+			error_message(2, __FILE__, __LINE__);
 			exit(2);
 		}
 
@@ -3200,7 +3200,7 @@ mnemo_bits: MNEMO_BIT value_3bits ',' REGISTER
 	{
 		if ($6 == 6)
 		{
-			error_message(2, __LINE__);
+			error_message(2, __FILE__, __LINE__);
 			exit(2);
 		}
 
@@ -3213,7 +3213,7 @@ mnemo_bits: MNEMO_BIT value_3bits ',' REGISTER
 	{
 		if ($6 == 6)
 		{
-			error_message(2, __LINE__);
+			error_message(2, __FILE__, __LINE__);
 			exit(2);
 		}
 
@@ -3264,7 +3264,7 @@ mnemo_bits: MNEMO_BIT value_3bits ',' REGISTER
 	{
 		if ($6 == 6)
 		{
-			error_message(2, __LINE__);
+			error_message(2, __FILE__, __LINE__);
 			exit(2);
 		}
 
@@ -3277,7 +3277,7 @@ mnemo_bits: MNEMO_BIT value_3bits ',' REGISTER
 	{
 		if ($6 == 6)
 		{
-			error_message(2, __LINE__);
+			error_message(2, __FILE__, __LINE__);
 			exit(2);
 		}
 
@@ -3306,7 +3306,7 @@ mnemo_io: MNEMO_IN REGISTER ',' '[' value_8bits ']'
 	{
 		if ($2 != 7)
 		{
-			error_message(4, __LINE__);
+			error_message(4, __FILE__, __LINE__);
 			exit(4);
 		}
 
@@ -3317,7 +3317,7 @@ mnemo_io: MNEMO_IN REGISTER ',' '[' value_8bits ']'
 	{
 		if ($2 != 7)
 		{
-			error_message(4, __LINE__);
+			error_message(4, __FILE__, __LINE__);
 			exit(4);
 		}
 
@@ -3333,7 +3333,7 @@ mnemo_io: MNEMO_IN REGISTER ',' '[' value_8bits ']'
 	{
 		if ($5 != 1)
 		{
-			error_message(2, __LINE__);
+			error_message(2, __FILE__, __LINE__);
 			exit(2);
 		}
 
@@ -3344,7 +3344,7 @@ mnemo_io: MNEMO_IN REGISTER ',' '[' value_8bits ']'
 	{
 		if ($3 != 1)
 		{
-			error_message(2, __LINE__);
+			error_message(2, __FILE__, __LINE__);
 			exit(2);
 		}
 
@@ -3360,7 +3360,7 @@ mnemo_io: MNEMO_IN REGISTER ',' '[' value_8bits ']'
 	{
 		if ($5 != 1)
 		{
-			error_message(2, __LINE__);
+			error_message(2, __FILE__, __LINE__);
 			exit(2);
 		}
 
@@ -3391,7 +3391,7 @@ mnemo_io: MNEMO_IN REGISTER ',' '[' value_8bits ']'
 	{
 		if ($6 != 7)
 		{
-			error_message(5, __LINE__);
+			error_message(5, __FILE__, __LINE__);
 			exit(5);
 		}
 
@@ -3402,7 +3402,7 @@ mnemo_io: MNEMO_IN REGISTER ',' '[' value_8bits ']'
 	{
 		if ($4 != 7)
 		{
-			error_message(5, __LINE__);
+			error_message(5, __FILE__, __LINE__);
 			exit(5);
 		}
 
@@ -3418,7 +3418,7 @@ mnemo_io: MNEMO_IN REGISTER ',' '[' value_8bits ']'
 	{
 		if ($3 != 1)
 		{
-			error_message(2, __LINE__);
+			error_message(2, __FILE__, __LINE__);
 			exit(2);
 		}
 
@@ -3429,13 +3429,13 @@ mnemo_io: MNEMO_IN REGISTER ',' '[' value_8bits ']'
 	{
 		if ($3 != 1)
 		{
-			error_message(2, __LINE__);
+			error_message(2, __FILE__, __LINE__);
 			exit(2);
 		}
 
 		if ($6 != 0)
 		{
-			error_message(6, __LINE__);
+			error_message(6, __FILE__, __LINE__);
 			exit(6);
 		}
 
@@ -3517,7 +3517,7 @@ mnemo_jump: MNEMO_JP value_16bits
 	{
 		if ($2 != 1)
 		{
-			error_message(7, __LINE__);
+			error_message(7, __FILE__, __LINE__);
 			exit(7);
 		}
 
@@ -3533,7 +3533,7 @@ mnemo_jump: MNEMO_JP value_16bits
 	{
 		if ($2 != 1)
 		{
-			error_message(7, __LINE__);
+			error_message(7, __FILE__, __LINE__);
 			exit(7);
 		}
 
@@ -3552,7 +3552,7 @@ mnemo_jump: MNEMO_JP value_16bits
 					write_byte(0x20);
 				else
 				{
-					error_message(9, __LINE__);
+					error_message(9, __FILE__, __LINE__);
 					exit(9);
 				}
 
@@ -3562,7 +3562,7 @@ mnemo_jump: MNEMO_JP value_16bits
 	{
 		if ($2 != 2)
 		{
-			error_message(2, __LINE__);
+			error_message(2, __FILE__, __LINE__);
 			exit(2);
 		}
 
@@ -3613,7 +3613,7 @@ mnemo_call: MNEMO_CALL value_16bits
 	{
 		if ($2 != 1)
 		{
-			error_message(7, __LINE__);
+			error_message(7, __FILE__, __LINE__);
 			exit(7);
 		}
 
@@ -3632,7 +3632,7 @@ mnemo_call: MNEMO_CALL value_16bits
 	{
 		if ($2 != 1)
 		{
-			error_message(7, __LINE__);
+			error_message(7, __FILE__, __LINE__);
 			exit(7);
 		}
 
@@ -3652,7 +3652,7 @@ mnemo_call: MNEMO_CALL value_16bits
 	{
 		if (((int)($2) % 8 != 0) || ((int)($2) / 8 > 7) || ((int)($2) / 8 < 0))
 		{
-			error_message(10, __LINE__);
+			error_message(10, __FILE__, __LINE__);
 			exit(10);
 		}
 
@@ -3724,7 +3724,7 @@ value:	NUMBER
 	{
 		if (!$3)
 		{
-			error_message(1, __LINE__);
+			error_message(1, __FILE__, __LINE__);
 			exit(1);
 		}
 		else
@@ -3734,7 +3734,7 @@ value:	NUMBER
 	{
 		if (!$3)
 		{
-			error_message(1, __LINE__);
+			error_message(1, __FILE__, __LINE__);
 			exit(1);
 		}
 		else $$ = $1 % $3;
@@ -3818,7 +3818,7 @@ value_real: REAL
 	{
 		if (!$3)
 		{
-			error_message(1, __LINE__);
+			error_message(1, __FILE__, __LINE__);
 			exit(1);
 		}
 		else
@@ -3840,7 +3840,7 @@ value_real: REAL
 	{
 		if ($3 < 1e-6)
 		{
-			error_message(1, __LINE__);
+			error_message(1, __FILE__, __LINE__);
 			exit(1);
 		}
 		else
@@ -3862,7 +3862,7 @@ value_real: REAL
 	{
 		if (!$3)
 		{
-			error_message(1, __LINE__);
+			error_message(1, __FILE__, __LINE__);
 			exit(1);
 		}
 		else
@@ -4004,6 +4004,6 @@ listing_16bits : value_16bits
 void yyerror(const char *s)
 {
 	printf("yyerror: %s\n", s);
-	error_message(0, __LINE__);
+	error_message(0, __FILE__, __LINE__);
 	exit(0);
 }
