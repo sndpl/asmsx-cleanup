@@ -19,6 +19,6 @@ In May 2014 my progress grinded to a halt. Making significant changes to code
 was very risky without a proper test harness. Building test units is difficult
 due to extremely convoluted and interdependent nature of code.
 
-I started tinkering with this project again in July 2015. Right now I'm
-building a Visual Studio 6 project that uses flex/bison from git Windows
-client.
+I resumed working on this project in July 2015. So far I've added
+Visual Studio 6 and Visual Studio 2015 solutions that use bison and flex from
+git Windows client.
