@@ -90,7 +90,7 @@ extern FILE *fmessages;
 extern FILE *foutput;
 
 /* Function prototypes */
-extern void error_message(int);
+extern void error_message(int, int);
 extern void msx_bios(void);
 extern void register_label(const char *);
 extern void register_local(const char *);
